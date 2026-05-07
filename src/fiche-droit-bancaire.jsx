@@ -4555,8 +4555,8 @@ export default function App() {
           </div>
         </div>
 
-        {/* badges révision */}
-        <div style={{ display: "flex", gap: 8, alignItems: "center", marginLeft: "auto" }}>
+        {/* groupe central : badges révision + toggles + examen blanc */}
+        <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap", justifyContent: "center" }}>
           {loaded && dueCount > 0 && !reviewMode && (
             <button
               onClick={() => {
@@ -4613,10 +4613,7 @@ export default function App() {
               À jour
             </div>
           )}
-        </div>
 
-        {/* toggles mode masqué */}
-        <div style={{ display: "flex", gap: 6 }}>
           <button
             onClick={() => setMaskedMode(m => ({ ...m, pepites: !m.pepites }))}
             style={{
@@ -4717,32 +4714,23 @@ export default function App() {
         </div>
 
         {/* progression */}
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 14, flex: 1, justifyContent: "flex-end" }}>
           <div style={{ textAlign: "right", display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
-            <div style={{ fontSize: 11, color: C.inkSoft, textTransform: "uppercase", letterSpacing: "0.08em" }}>Progression</div>
-            <div style={{ fontFamily: "'Fraunces', serif", fontSize: 18, color: C.navy, fontWeight: 600 }}>{percentage}%</div>
+            <div style={{ fontSize: 12, color: C.inkSoft, textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 600 }}>Progression</div>
+            <div style={{ fontFamily: "'Fraunces', serif", fontSize: 28, color: C.navy, fontWeight: 600, lineHeight: 1.1, marginTop: 2 }}>{percentage}%</div>
             <div style={{
               display: "flex",
-              height: 4,
-              width: 80,
-              borderRadius: 2,
+              height: 6,
+              width: 140,
+              borderRadius: 3,
               overflow: "hidden",
-              marginTop: 4,
+              marginTop: 6,
               backgroundColor: C.ruleSoft,
             }}>
               <div style={{ flex: totalRed,    backgroundColor: CONFIDENCE.red.color }}/>
               <div style={{ flex: totalYellow, backgroundColor: CONFIDENCE.yellow.color }}/>
               <div style={{ flex: totalGreen,  backgroundColor: CONFIDENCE.green.color }}/>
             </div>
-          </div>
-          <div style={{
-            width: 90, height: 6, backgroundColor: C.ruleSoft, borderRadius: 3, overflow: "hidden"
-          }}>
-            <div style={{
-              width: `${percentage}%`, height: "100%",
-              backgroundColor: C.burgundy,
-              transition: "width 0.4s ease"
-            }}/>
           </div>
           {isMobile && (
             <button onClick={() => setNotesOpen(o => !o)} style={{
