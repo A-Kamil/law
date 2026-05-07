@@ -6545,7 +6545,7 @@ export default function App() {
       seen[s.group].items.push(s);
     });
     return out;
-  }, [search]);
+  }, [search, flatTOC]);
 
   const totalGreen = Object.values(progress).filter(s => s?.confidence === "green").length;
   const totalYellow = Object.values(progress).filter(s => s?.confidence === "yellow").length;
