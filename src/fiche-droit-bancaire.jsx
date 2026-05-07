@@ -4190,10 +4190,2056 @@ const SECTIONS = {
 };
 
 // ============================================================
+// CONTENU — FICHE 2 : DROIT DU COMMERCE ÉLECTRONIQUE — TITRE 2
+// ============================================================
+const TOC_DCE = [
+  { id: "dce-intro",          title: "Rappels — Intro & Titre 1",         group: "Avant-propos",                                level: 1 },
+  { id: "dce-t2-intro",       title: "Titre 2 — Intelligence numérique",  group: "Avant-propos",                                level: 1 },
+
+  { id: "dce-dp-sources",     title: "§1. Sources & acteurs",             group: "ST.1 Ch.1 — Données personnelles (RGPD)",     level: 2 },
+  { id: "dce-dp-champ-a",     title: "A. Notion de donnée personnelle",   group: "ST.1 Ch.1 — Données personnelles (RGPD)",     level: 2 },
+  { id: "dce-dp-champ-b",     title: "B. Traitement & responsables",      group: "ST.1 Ch.1 — Données personnelles (RGPD)",     level: 2 },
+  { id: "dce-dp-champ-c",     title: "C. Application territoriale",       group: "ST.1 Ch.1 — Données personnelles (RGPD)",     level: 2 },
+  { id: "dce-dp-oblig-a",     title: "A. Accountability (art. 24-25)",    group: "ST.1 Ch.1 — Données personnelles (RGPD)",     level: 2 },
+  { id: "dce-dp-oblig-b",     title: "B. Principes structurants",         group: "ST.1 Ch.1 — Données personnelles (RGPD)",     level: 2 },
+  { id: "dce-dp-oblig-c",     title: "C. Bases légales (art. 6)",         group: "ST.1 Ch.1 — Données personnelles (RGPD)",     level: 2 },
+  { id: "dce-dp-oblig-d",     title: "D. Obligations concrètes",          group: "ST.1 Ch.1 — Données personnelles (RGPD)",     level: 2 },
+  { id: "dce-dp-droits",      title: "Droits des personnes physiques",    group: "ST.1 Ch.1 — Données personnelles (RGPD)",     level: 2 },
+  { id: "dce-dp-sanctions",   title: "Sanctions",                         group: "ST.1 Ch.1 — Données personnelles (RGPD)",     level: 2 },
+
+  { id: "dce-dnp",            title: "Données non personnelles & Data Act", group: "ST.1 Ch.2 — Données non personnelles",      level: 2 },
+
+  { id: "dce-ia-presentation", title: "§1. Présentation générale",        group: "ST.2 — IA & AI Act",                          level: 2 },
+  { id: "dce-ia-principes",    title: "§2. Principes et sources",         group: "ST.2 — IA & AI Act",                          level: 2 },
+  { id: "dce-ia-organes",      title: "§3. Organes & codes",              group: "ST.2 — IA & AI Act",                          level: 2 },
+  { id: "dce-ia-approche",     title: "Approche par les risques",         group: "ST.2 — IA & AI Act",                          level: 2 },
+  { id: "dce-ia-acteurs",      title: "Fournisseur & déployeur",          group: "ST.2 — IA & AI Act",                          level: 2 },
+  { id: "dce-ia-interdits",    title: "SIA interdits",                    group: "ST.2 — IA & AI Act",                          level: 2 },
+  { id: "dce-ia-siahr",        title: "SIA à haut risque",                group: "ST.2 — IA & AI Act",                          level: 2 },
+  { id: "dce-ia-repartition",  title: "Répartition des obligations",      group: "ST.2 — IA & AI Act",                          level: 2 },
+  { id: "dce-ia-miaug",        title: "Modèles à usage général (MIAUG)",  group: "ST.2 — IA & AI Act",                          level: 2 },
+
+  { id: "dce-conclusion",      title: "Synthèse — tensions clés",         group: "Conclusion",                                  level: 1 },
+];
+
+const SECTIONS_DCE = {
+  "dce-intro": ({ sectionId }) => (
+    <>
+      <H level={1}>Rappels liminaires — Introduction & Titre 1</H>
+
+      <Pepites sectionId={sectionId} variant="boussole" items={[
+        <>Le commerce électronique (<Art>art. 14 LCEN</Art>) = activité économique de fourniture <Mask>à distance et par voie électronique</Mask> de biens ou services.</>,
+        <>Droit éclaté (consommation, PI, données) et largement <Mask>européanisé</Mask> : directive e-commerce 2000, DSA et DMA (2022), RGPD, P2B.</>,
+        <>Logique générale : régulation <Mask>par les risques et par la taille</Mask>. Obligations renforcées pour les <Term>VLOP</Term> (≥ 45M d'utilisateurs).</>,
+        <>3 prestataires de services intermédiaires (PSI) du DSA : <Mask>simple transport, caching, hébergement</Mask> — irresponsabilité de principe sauf connaissance d'un contenu illicite non retiré.</>,
+        <>Marketplaces : oscillation entre rôle <Mask>passif (hébergeur)</Mask> et rôle <Mask>actif (co-auteur)</Mask>. Injonctions <Art>art. 6-3 LCEN</Art> décorrélées de la responsabilité (<Cas>Shein, TJ Paris 17 déc. 2025</Cas>).</>,
+      ]} />
+
+      <P drop="L">e <Term>commerce électronique</Term> est défini par l'<Art>article 14 LCEN</Art> comme l'activité économique par laquelle une personne propose ou assure à distance et par voie électronique la fourniture de biens ou de services. Le droit applicable est éclaté entre plusieurs branches (consommation, propriété intellectuelle, données) et largement <Term>européanisé</Term> : directive e-commerce 2000, DSA et DMA (2022), RGPD, règlement P2B. La logique d'ensemble est celle d'une régulation <Em>par les risques</Em> et <Em>par la taille des acteurs</Em>, avec des obligations renforcées pour les <Term>VLOP</Term>.</P>
+
+      <P><Term>Acteurs et responsabilités.</Term> Le DSA distingue trois prestataires de services intermédiaires (PSI) : le <Em>simple transport</Em> (FAI), le <Em>caching</Em> et l'<Em>hébergement</Em>. Tous bénéficient d'un rôle purement technique et passif qui justifie un régime de responsabilité conditionnée — irresponsabilité de principe sauf connaissance d'un contenu illicite non promptement retiré. Les marketplaces oscillent entre rôle passif (hébergeur) et rôle actif (co-auteur). Les <Term>VLOP</Term> (≥ 45M utilisateurs) font l'objet d'obligations renforcées : évaluation des risques systémiques, mécanismes de crise, transparence. Les injonctions de l'<Art>article 6-3 LCEN</Art> sont décorrélées de la responsabilité mais soumises au contrôle de proportionnalité (<Cas>Shein, TJ Paris, 17 décembre 2025</Cas>).</P>
+
+      <P><Term>Internet marchand (Titre 1).</Term> Le <Em>nom de domaine</Em> est un bien au sens de la CEDH mais n'est pas un objet de propriété intellectuelle : sa protection passe par l'action en concurrence déloyale (responsabilité civile), conditionnée à une exploitation effective et à un risque de confusion. Le contentieux du cybersquatting se règle surtout par les <Term>MARD</Term> (UDRP, Syreli). Le site internet est protégé par le droit d'auteur si original (rare) et la base de données peut bénéficier du droit <Em>sui generis</Em> si l'investissement, distinct de la création des données, est substantiel (<Cas>Leboncoin 2022</Cas>, <Cas>La Centrale 2025</Cas>). FAI et hébergeurs sont tenus d'obligations de résultat à l'égard de leurs clients.</P>
+
+      <Callout kind="tension" title="Ligne directrice">
+        Le commerce électronique est un droit <Em>de coordination</Em> : aucun texte ne le régit seul. Toute question fait jouer plusieurs strates (LCEN + DSA + RGPD + droit de la conso + PI). La méthode consiste à identifier <Term>l'acteur</Term> (PSI ? marketplace ? VLOP ?), <Term>la donnée</Term> (perso ? non perso ? sensible ?) et <Term>le risque</Term> (interdit ? haut ? modéré ?).
+      </Callout>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "L'article 14 LCEN définit le commerce électronique comme :",
+          choices: [
+            "Toute activité économique de fourniture à distance et par voie électronique de biens ou services",
+            "L'exploitation d'un nom de domaine à des fins commerciales",
+            "Tout contrat conclu sur une marketplace entre un professionnel et un consommateur",
+            "Toute prestation utilisant un système d'IA pour traiter des commandes",
+          ],
+          correct: [0],
+          explanation: "Art. 14 LCEN : activité économique par laquelle une personne propose ou assure à distance et par voie électronique la fourniture de biens ou de services.",
+          difficulty: "easy",
+        },
+        {
+          q: "Le DSA distingue combien de catégories de prestataires de services intermédiaires (PSI) ?",
+          choices: [
+            "2 — simple transport et hébergement",
+            "3 — simple transport, caching, hébergement",
+            "4 — transport, caching, hébergement, marketplace",
+            "5 — incluant les VLOP comme catégorie distincte",
+          ],
+          correct: [1],
+          explanation: "Le DSA distingue trois PSI : simple transport (FAI), caching et hébergement. Tous bénéficient d'un régime de responsabilité conditionnée tant que leur rôle est purement technique et passif.",
+          difficulty: "medium",
+        },
+        {
+          q: "Le seuil de qualification VLOP (Very Large Online Platform) est de :",
+          choices: [
+            "10 millions d'utilisateurs",
+            "20 millions d'utilisateurs",
+            "45 millions d'utilisateurs",
+            "100 millions d'utilisateurs",
+          ],
+          correct: [2],
+          explanation: "Le DSA fixe le seuil VLOP à 45 millions d'utilisateurs, ce qui déclenche les obligations renforcées : évaluation des risques systémiques, mécanismes de crise, transparence.",
+          difficulty: "medium",
+        },
+        {
+          q: "Sur quel fondement le juge français a-t-il rendu l'injonction Shein (TJ Paris, 17 décembre 2025) ?",
+          choices: [
+            "Article 14 LCEN",
+            "Article 6-3 LCEN",
+            "Article L. 121-3 du Code de la consommation",
+            "Article 1240 du Code civil",
+          ],
+          correct: [1],
+          explanation: "Les injonctions de l'article 6-3 LCEN sont décorrélées de la responsabilité du PSI mais soumises au contrôle de proportionnalité (Shein, TJ Paris, 17 décembre 2025).",
+          difficulty: "hard",
+        },
+        {
+          q: "Parmi les affirmations suivantes sur le nom de domaine, lesquelles sont exactes ?",
+          choices: [
+            "Le nom de domaine est un objet de propriété intellectuelle",
+            "Il est un bien au sens de la CEDH",
+            "Sa protection passe par l'action en concurrence déloyale, conditionnée à une exploitation effective et un risque de confusion",
+            "Le contentieux du cybersquatting se règle surtout par les MARD (UDRP, Syreli)",
+          ],
+          correct: [1, 2, 3],
+          explanation: "Le nom de domaine est un bien (CEDH) mais n'est PAS un objet de propriété intellectuelle. Sa protection passe par la concurrence déloyale (responsabilité civile) et le contentieux est largement géré par les MARD.",
+          difficulty: "hard",
+        },
+        {
+          q: "Les arrêts Leboncoin (2022) et La Centrale (2025) concernent :",
+          choices: [
+            "La protection du nom de domaine par concurrence déloyale",
+            "Le droit sui generis sur les bases de données",
+            "La responsabilité des hébergeurs au titre du DSA",
+            "L'application territoriale du RGPD",
+          ],
+          correct: [1],
+          explanation: "Ces deux arrêts concernent le droit sui generis sur les bases de données : il bénéficie au producteur si l'investissement, distinct de la création des données, est substantiel.",
+          difficulty: "medium",
+        },
+      ]} />
+    </>
+  ),
+
+  "dce-t2-intro": ({ sectionId }) => (
+    <>
+      <H level={1}>Titre 2 — L'intelligence numérique</H>
+
+      <Pepites sectionId={sectionId} variant="boussole" items={[
+        <>Deux objets indissociables : <Mask>les données (matière première)</Mask> et <Mask>l'IA (outil de traitement)</Mask>.</>,
+        <>Logique du droit positif : régulation <Mask>par les risques</Mask>. Protection forte des personnes (RGPD), libre circulation pour les non-perso (Data Act), encadrement gradué de l'IA (AI Act).</>,
+        <>Tension fondamentale : concilier <Mask>innovation économique</Mask> et <Mask>souveraineté européenne</Mask> avec la <Mask>protection des droits fondamentaux</Mask>.</>,
+        <>Articulation systématique : RGPD + Data Act + AI Act + DSA + DMA forment un <Mask>écosystème cohérent</Mask>, pas des régimes concurrents.</>,
+      ]} />
+
+      <P drop="L">e Titre 2 articule deux objets indissociables du commerce électronique : les <Term>données</Term> (matière première) et l'<Term>intelligence artificielle</Term> (outil de traitement). La logique générale du droit positif est celle d'une régulation des risques : protection forte de la personne physique pour les données personnelles (<Term>RGPD</Term>), libre circulation pour les données non personnelles (<Term>Data Act</Term>), encadrement gradué de l'IA selon le niveau de risque (<Term>AI Act</Term>). La tension fondamentale traverse toute la matière : il faut concilier l'innovation économique et la souveraineté européenne avec la protection des droits fondamentaux.</P>
+
+      <Callout kind="info" title="Méthode de dissertation">
+        Pour toute question relative à l'intelligence numérique, posez-vous trois questions en cascade : <Em>(i) la donnée est-elle personnelle ?</Em> (sinon : Data Act, libre circulation) ; <Em>(ii) l'IA traite-t-elle des données ?</Em> (alors : RGPD + AI Act se cumulent) ; <Em>(iii) quel niveau de risque ?</Em> (interdit / haut / modéré / minimal — la pyramide AI Act commande les obligations).
+      </Callout>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Quels sont les deux objets indissociables articulés par le Titre 2 ?",
+          choices: [
+            "Les données et les algorithmes",
+            "Les données (matière première) et l'IA (outil de traitement)",
+            "Le commerce et la consommation",
+            "La propriété intellectuelle et la concurrence déloyale",
+          ],
+          correct: [1],
+          explanation: "Le Titre 2 articule deux objets indissociables : les données comme matière première et l'IA comme outil de traitement.",
+          difficulty: "easy",
+        },
+        {
+          q: "Quelle est la logique du droit positif appliquée à chacun des trois textes principaux du Titre 2 ?",
+          choices: [
+            "RGPD — protection forte ; Data Act — libre circulation ; AI Act — encadrement gradué selon le niveau de risque",
+            "RGPD — libre circulation ; Data Act — protection forte ; AI Act — interdiction de principe",
+            "RGPD — autorisation préalable ; Data Act — déclaration ; AI Act — autorisation",
+            "RGPD — encadrement gradué ; Data Act — protection forte ; AI Act — libre circulation",
+          ],
+          correct: [0],
+          explanation: "Logique du droit positif : RGPD = protection forte de la personne physique ; Data Act = libre circulation pour les non-perso ; AI Act = régulation graduée selon le risque.",
+          difficulty: "medium",
+        },
+      ]} />
+    </>
+  ),
+
+  "dce-dp-sources": ({ sectionId }) => (
+    <>
+      <H level={2}>Chapitre 1 — Le traitement des données personnelles</H>
+      <H level={3}>§1. Sources et acteurs</H>
+
+      <Pepites sectionId={sectionId} items={[
+        <>Texte central : <Mask>RGPD (Règlement 2016/679)</Mask>, complété par la <Mask>LIL de 1978</Mask> modifiée — siège résiduel (cookies, art. 82 LIL).</>,
+        <>Le DPO est le <Mask>chef d'orchestre interne</Mask> : informe, conseille, contrôle, coopère avec la CNIL.</>,
+        <>La CNIL est l'<Mask>AAI française</Mask> : contrôle, met en demeure, sanctionne.</>,
+        <>Le CEPD (ex-G29) <Mask>harmonise</Mask> l'application du RGPD entre EM, rend des avis et décisions contraignantes.</>,
+        <>Guichet unique : pour les traitements transfrontaliers, désigne une <Mask>autorité chef de file</Mask> comme interlocuteur unique. Réservé aux entreprises établies dans l'UE.</>,
+      ]} />
+
+      <P><Term>Sources.</Term> La matière est très dense et en mouvement permanent. Le texte central est le <Art>RGPD (Règlement 2016/679)</Art>, complété en droit français par la <Term>loi Informatique et Libertés (1978)</Term> modifiée à la suite du RGPD. La LIL n'est plus le siège principal de la matière mais vient en contrepoint, notamment pour les traceurs et cookies (<Art>article 82 LIL</Art>). À ces strates s'ajoutent l'<Term>AI Act</Term>, des projets en cours (proposition <Em>e-privacy</Em>, omnibus numérique) et de nombreuses interactions avec les autres règlements numériques.</P>
+
+      <Callout kind="info" title="Idée à retenir">
+        Le législateur européen a un <Em>train de retard</Em> sur les pratiques numériques. L'omnibus numérique évoque ainsi le paramétrage du navigateur pour les cookies (éviter les bandeaux répétés) et la création facultative de comptes utilisateurs en mode invité — mais ces réflexions arrivent <Em>après</Em> que les pratiques se soient ancrées.
+      </Callout>
+
+      <P><Term>Acteurs.</Term> Le <Term>DPO</Term> (Data Protection Officer) est le chef d'orchestre interne de la conformité : il informe, conseille, contrôle et coopère avec la CNIL. La <Term>CNIL</Term> est l'autorité administrative indépendante française : elle contrôle, met en demeure et sanctionne. Le <Term>CEPD</Term> (Comité européen à la protection des données), anciennement <Em>groupe de l'article 29</Em> (de la directive 95/46 abrogée), harmonise l'application du RGPD entre États membres et rend des avis et décisions contraignantes.</P>
+
+      <P><Term>Guichet unique.</Term> Pour les traitements transfrontaliers au sein de l'UE, un mécanisme de guichet unique désigne une <Em>autorité chef de file</Em> comme interlocuteur unique du responsable de traitement. Une seule décision est rendue, valable dans toute l'UE. Réservé aux entreprises établies dans l'UE.</P>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Quel est le texte central de la matière des données personnelles ?",
+          choices: [
+            "La LIL de 1978 modifiée",
+            "Le RGPD (Règlement 2016/679)",
+            "L'AI Act (Règlement 2024/1689)",
+            "Le règlement P2B",
+          ],
+          correct: [1],
+          explanation: "Le RGPD (Règlement 2016/679) est le texte central. La LIL de 1978 modifiée vient en contrepoint (notamment art. 82 LIL pour les traceurs et cookies).",
+          difficulty: "easy",
+        },
+        {
+          q: "Quelle disposition de la LIL régit spécifiquement les traceurs et cookies ?",
+          choices: [
+            "Article 1 LIL",
+            "Article 45 LIL",
+            "Article 82 LIL",
+            "Article 226-16 LIL",
+          ],
+          correct: [2],
+          explanation: "L'article 82 LIL régit les traceurs et cookies : c'est le siège résiduel de la matière en France, le RGPD ayant pris le relais pour le reste.",
+          difficulty: "medium",
+        },
+        {
+          q: "Le rôle du DPO (Data Protection Officer) consiste à :",
+          choices: [
+            "Informer, conseiller, contrôler et coopérer avec la CNIL",
+            "Sanctionner les manquements internes en lieu et place de la CNIL",
+            "Rendre des décisions contraignantes pour l'ensemble de l'UE",
+            "Délivrer des autorisations préalables aux traitements",
+          ],
+          correct: [0],
+          explanation: "Le DPO est le chef d'orchestre interne de la conformité : il informe, conseille, contrôle et coopère avec la CNIL. Il ne sanctionne pas et ne délivre pas d'autorisation.",
+          difficulty: "medium",
+        },
+        {
+          q: "Le CEPD (Comité européen à la protection des données) :",
+          choices: [
+            "Est l'autorité administrative indépendante française",
+            "Est l'ancien groupe de l'article 29",
+            "Harmonise l'application du RGPD entre États membres",
+            "Rend des avis et décisions contraignantes",
+          ],
+          correct: [1, 2, 3],
+          explanation: "Le CEPD est anciennement le groupe de l'article 29, harmonise l'application du RGPD entre EM et rend des avis et décisions contraignantes. La CNIL, elle, est l'AAI française.",
+          difficulty: "hard",
+        },
+        {
+          q: "Le mécanisme de guichet unique pour les traitements transfrontaliers :",
+          choices: [
+            "Concerne tous les responsables de traitement, y compris hors UE",
+            "Désigne une autorité chef de file comme interlocuteur unique",
+            "Aboutit à une seule décision valable dans toute l'UE",
+            "Est réservé aux entreprises établies dans l'UE",
+          ],
+          correct: [1, 2, 3],
+          explanation: "Le guichet unique est réservé aux entreprises établies dans l'UE (pas hors UE). Il désigne une autorité chef de file et aboutit à une décision unique valable dans toute l'UE.",
+          difficulty: "hard",
+        },
+      ]} />
+    </>
+  ),
+
+  "dce-dp-champ-a": ({ sectionId }) => (
+    <>
+      <H level={3}>Section 1 — Le champ d'application — A. La notion de donnée personnelle</H>
+
+      <Pepites sectionId={sectionId} items={[
+        <>Définition <Art>art. 4.1 RGPD</Art> : <Mask>toute information se rapportant à une personne physique identifiée ou identifiable</Mask>.</>,
+        <>Le RGPD ne protège que <Mask>les personnes physiques</Mask> — jamais les personnes morales. Le professionnel personne physique est inclus.</>,
+        <>Notion extensive : identification, connexion (<Cas>IP — Scarlet 2011</Cas>), vie privée, professionnelle, mais aussi <Mask>données subjectives</Mask> (avis, opinions).</>,
+        <><Cas>Nowak (CJUE 20 déc. 2017)</Cas> : annotations de correcteur sur copie = donnée personnelle. 3 critères <Mask>non cumulatifs</Mask> : contenu, finalité, effet.</>,
+        <>3 catégories : <Mask>anonymisées</Mask> (hors RGPD), <Mask>pseudonymisées</Mask> (RGPD applicable), <Mask>sensibles</Mask> (interdites par principe — art. 9).</>,
+      ]} />
+
+      <P>Est une donnée personnelle « <Em>toute information se rapportant à une personne physique identifiée ou identifiable</Em> » (<Art>art. 4.1 RGPD</Art>). Le RGPD ne protège que les personnes physiques — jamais les personnes morales. La notion est extensive : données d'identification (nom, adresse), données de connexion (l'adresse IP est une donnée personnelle, <Cas>Scarlet 2011</Cas>), données relatives à la vie privée et familiale, données professionnelles, mais aussi <Term>données subjectives</Term> comme les avis, opinions ou commentaires sur une personne.</P>
+
+      <Callout kind="prof" title="Arrêt Nowak (CJUE, 20 décembre 2017)">
+        Les annotations d'un correcteur sur une copie d'examen sont des données personnelles. La Cour pose <Em>trois critères de rattachement</Em> (<Strong>non cumulatifs</Strong>) : (i) le <Term>contenu</Term> de l'information, (ii) la <Term>finalité</Term> du traitement, (iii) l'<Term>effet</Term> sur la personne concernée. Suffit que l'un soit caractérisé.
+      </Callout>
+
+      <P>Le <Term>professionnel personne physique</Term> bénéficie aussi du RGPD, même pour ses données professionnelles. En revanche, dès lors que les données ne se rapportent qu'à une <Em>personne morale</Em>, le RGPD est écarté.</P>
+
+      <H level={4}>Anonymisation, pseudonymisation, données sensibles</H>
+
+      <DataTable
+        headers={["Catégorie", "Régime"]}
+        rows={[
+          [
+            <Strong>Données anonymes / anonymisées</Strong>,
+            <><Em>Hors champ du RGPD</Em> : la donnée ne peut plus être rattachée à une personne identifiée ou identifiable, en tenant compte des <Em>moyens raisonnablement susceptibles d'être utilisés</Em> (coût, temps, technologies).</>
+          ],
+          [
+            <Strong>Données pseudonymisées</Strong>,
+            <>Restent soumises au RGPD. Conditions cumulatives : (i) conservation séparée des clés de ré-identification ; (ii) mesures techniques empêchant la ré-identification. Garantie utile pour démontrer la <Em>compatibilité d'une finalité</Em> (<Cas>CJUE 4 sept. 2025</Cas>).</>
+          ],
+          [
+            <Strong>Données sensibles (<Art>art. 9</Art>)</Strong>,
+            <>Sous-catégorie spéciale : santé, vie sexuelle, opinions politiques, religion, biométrie. Traitement <Strong>INTERDIT par principe</Strong>, sauf exceptions (<Em>consentement explicite</Em> notamment).</>
+          ],
+        ]}
+      />
+
+      <Callout kind="prof" title="CJUE 2 décembre 2025, C-492/23 (revenge porn)">
+        Une marketplace ayant publié une annonce révélant des données sensibles est <Strong>responsable de traitement</Strong> et soumise au RGPD. <Em>Décision de grande portée :</Em> la responsabilité atténuée du prestataire de service en ligne (DSA) n'empêche pas l'application du RGPD. Le juge n'hésite pas à écarter la qualification d'hébergeur lorsque la plateforme dépasse le rôle purement passif. <Strong>Articulation cruciale : DSA et RGPD se cumulent.</Strong>
+      </Callout>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "L'article 4.1 RGPD définit la donnée personnelle comme :",
+          choices: [
+            "Toute information se rapportant à une personne physique identifiée ou identifiable",
+            "Toute information personnelle, qu'elle concerne une personne physique ou morale",
+            "Toute information confidentielle communiquée par contrat",
+            "Toute information collectée en ligne, quel qu'en soit le support",
+          ],
+          correct: [0],
+          explanation: "Art. 4.1 RGPD : toute information se rapportant à une personne physique identifiée ou identifiable. Le RGPD ne protège QUE les personnes physiques, jamais les personnes morales.",
+          difficulty: "easy",
+        },
+        {
+          q: "Selon l'arrêt Scarlet (2011), l'adresse IP constitue :",
+          choices: [
+            "Une donnée technique non personnelle",
+            "Une donnée personnelle",
+            "Une donnée pseudonymisée par nature",
+            "Une donnée hors champ du RGPD",
+          ],
+          correct: [1],
+          explanation: "L'arrêt Scarlet (2011) consacre l'IP comme donnée personnelle : elle permet d'identifier indirectement une personne physique.",
+          difficulty: "medium",
+        },
+        {
+          q: "L'arrêt Nowak (CJUE 20 décembre 2017) pose trois critères de rattachement d'une information à une personne physique. Lesquels ?",
+          choices: [
+            "Le contenu de l'information",
+            "La finalité du traitement",
+            "L'effet sur la personne concernée",
+            "Le consentement explicite de la personne",
+          ],
+          correct: [0, 1, 2],
+          explanation: "Nowak pose trois critères NON CUMULATIFS : contenu, finalité, effet. Il suffit que l'un soit caractérisé. Le consentement n'est pas un critère de rattachement, mais une base légale (art. 6).",
+          difficulty: "hard",
+        },
+        {
+          q: "Le professionnel personne physique :",
+          choices: [
+            "Est exclu du RGPD pour ses données professionnelles",
+            "Bénéficie du RGPD même pour ses données professionnelles",
+            "N'est protégé que s'il agit hors cadre professionnel",
+            "Est protégé selon le seul droit de la consommation",
+          ],
+          correct: [1],
+          explanation: "Le professionnel personne physique bénéficie du RGPD même pour ses données professionnelles. Seules les données qui ne se rapportent qu'à une personne morale sont exclues.",
+          difficulty: "medium",
+        },
+        {
+          q: "Concernant les données pseudonymisées :",
+          choices: [
+            "Elles sont hors champ du RGPD car la personne n'est plus identifiable",
+            "Elles restent soumises au RGPD",
+            "Elles supposent une conservation séparée des clés de ré-identification",
+            "Elles supposent des mesures techniques empêchant la ré-identification",
+          ],
+          correct: [1, 2, 3],
+          explanation: "Les données pseudonymisées restent dans le champ du RGPD (contrairement aux anonymisées qui en sortent). Conditions cumulatives : conservation séparée des clés + mesures techniques empêchant la ré-identification.",
+          difficulty: "hard",
+        },
+        {
+          q: "Les données sensibles de l'article 9 RGPD font l'objet :",
+          choices: [
+            "D'un régime identique aux autres données",
+            "D'une interdiction de principe, sauf exceptions (consentement explicite notamment)",
+            "D'une autorisation préalable systématique de la CNIL",
+            "D'une autorisation préalable du CEPD",
+          ],
+          correct: [1],
+          explanation: "Les données sensibles (santé, vie sexuelle, opinions politiques, religion, biométrie) sont INTERDITES par principe au titre de l'art. 9, sauf exceptions limitées comme le consentement explicite.",
+          difficulty: "medium",
+        },
+        {
+          q: "Que tranche l'arrêt CJUE 2 décembre 2025, C-492/23 (revenge porn) ?",
+          choices: [
+            "Une marketplace publiant une annonce révélant des données sensibles est responsable de traitement",
+            "Le DSA exclut l'application du RGPD pour les plateformes",
+            "Le RGPD ne s'applique pas aux marketplaces qualifiées d'hébergeurs",
+            "DSA et RGPD se cumulent — la responsabilité atténuée du PSI n'empêche pas l'application du RGPD",
+          ],
+          correct: [0, 3],
+          explanation: "CJUE 2 déc. 2025 (C-492/23) : la marketplace est responsable de traitement et soumise au RGPD ; DSA et RGPD se CUMULENT. Le juge écarte la qualification d'hébergeur lorsque la plateforme dépasse le rôle passif.",
+          difficulty: "hard",
+        },
+      ]} />
+    </>
+  ),
+
+  "dce-dp-champ-b": ({ sectionId }) => (
+    <>
+      <H level={3}>B. La notion de traitement et les responsables</H>
+
+      <Pepites sectionId={sectionId} items={[
+        <>Traitement entendu très largement : <Mask>toute opération sur la donnée</Mask> (collecte, conservation, exploitation, transmission).</>,
+        <>Approche <Mask>fonctionnelle, non organique</Mask> : le responsable est celui qui <Mask>détermine les finalités</Mask>.</>,
+        <>Sous-traitant = traite <Mask>pour le compte du responsable</Mask> et est aussi tenu par le RGPD (ex. agences marketing).</>,
+        <>Responsables conjoints : plusieurs personnes <Mask>déterminent conjointement les finalités</Mask> (ex. site qui intègre un bouton « Like »).</>,
+        <>Débat doctrinal : valeur économique de la donnée elle-même (<Mask>vision propriétariste</Mask>) ou de son traitement ? Le droit UE pousse vers une <Mask>patrimonialité au bénéfice de la personne</Mask>.</>,
+      ]} />
+
+      <P>Le <Term>traitement</Term> est entendu très largement : toute opération sur la donnée (collecte, conservation, exploitation, transmission). Le débat doctrinal est vif : la valeur économique de la donnée naît-elle de la donnée elle-même (<Em>vision propriétariste</Em>, dangereuse pour la personne) ou de son traitement ? Le droit de l'UE pousse vers une certaine <Term>patrimonialité au bénéfice de la personne physique</Term> en assimilant à la vente certains contrats où la contrepartie est l'usage des données.</P>
+
+      <P>L'approche est <Term>fonctionnelle, non organique</Term>. Le <Term>responsable de traitement</Term> est celui qui détermine les finalités du traitement (en général, le e-commerçant). Le <Term>sous-traitant</Term> traite pour le compte du responsable et est lui aussi tenu par le RGPD (ex. agences marketing). Lorsque plusieurs personnes déterminent conjointement les finalités, on parle de <Term>responsables conjoints</Term> (gestionnaire d'un site qui intègre un bouton « Like »).</P>
+
+      <Callout kind="tension" title="Donnée = bien ou service ?">
+        Le RGPD, en assimilant à la vente certains contrats où la contrepartie est l'usage des données, accrédite l'idée d'une <Em>patrimonialité de la donnée</Em>. Mais la <Strong>protection comme droit fondamental</Strong> de la personne refuse une cession pleine et entière. Tension entre <Em>marchandisation</Em> (économie de la donnée) et <Em>indisponibilité</Em> (corollaire de la dignité).
+      </Callout>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Le « traitement » au sens du RGPD se définit comme :",
+          choices: [
+            "La seule collecte des données",
+            "Toute opération sur la donnée (collecte, conservation, exploitation, transmission)",
+            "L'exploitation commerciale des données seulement",
+            "Le seul transfert hors UE",
+          ],
+          correct: [1],
+          explanation: "Le traitement est entendu très largement : toute opération sur la donnée (collecte, conservation, exploitation, transmission).",
+          difficulty: "easy",
+        },
+        {
+          q: "Le RGPD adopte une approche :",
+          choices: [
+            "Organique — fondée sur le statut juridique de l'acteur",
+            "Fonctionnelle — fondée sur la détermination des finalités du traitement",
+            "Subjective — fondée sur l'intention de l'acteur",
+            "Territoriale — fondée sur le lieu de traitement",
+          ],
+          correct: [1],
+          explanation: "L'approche est fonctionnelle (non organique) : le responsable de traitement est celui qui détermine les FINALITÉS du traitement, indépendamment de son statut.",
+          difficulty: "medium",
+        },
+        {
+          q: "Le sous-traitant au sens du RGPD :",
+          choices: [
+            "Détermine les finalités du traitement",
+            "Traite pour le compte du responsable",
+            "Est exonéré de toute obligation au titre du RGPD",
+            "Est lui aussi tenu par le RGPD",
+          ],
+          correct: [1, 3],
+          explanation: "Le sous-traitant traite pour le compte du responsable et est lui aussi tenu par le RGPD (ex. agences marketing). Il ne détermine pas les finalités — sinon il deviendrait responsable conjoint.",
+          difficulty: "medium",
+        },
+        {
+          q: "Le gestionnaire d'un site qui intègre un bouton « Like » Facebook :",
+          choices: [
+            "Est un simple sous-traitant de Facebook",
+            "Est un responsable conjoint avec Facebook (responsabilité conjointe)",
+            "N'est pas concerné par le RGPD car le traitement est invisible",
+            "Est exonéré de toute obligation s'il informe l'utilisateur",
+          ],
+          correct: [1],
+          explanation: "Le gestionnaire d'un site intégrant un bouton « Like » devient responsable conjoint : plusieurs personnes déterminent conjointement les finalités du traitement.",
+          difficulty: "hard",
+        },
+      ]} />
+    </>
+  ),
+
+  "dce-dp-champ-c": ({ sectionId }) => (
+    <>
+      <H level={3}>C. Application territoriale</H>
+
+      <Pepites sectionId={sectionId} items={[
+        <>Deux critères <Mask>alternatifs</Mask> d'application : (i) responsable ou sous-traitant <Mask>établi dans l'UE</Mask> ; (ii) traitement effectué hors UE mais <Mask>visant un résident européen</Mask>.</>,
+        <>Portée <Mask>extraterritoriale large</Mask> — explique la résistance européenne face aux GAFAM.</>,
+      ]} />
+
+      <P>Le RGPD s'applique selon deux critères <Em>alternatifs</Em> : (i) le responsable de traitement ou son sous-traitant est <Term>établi sur le territoire de l'UE</Term> ; (ii) le traitement est effectué depuis l'extérieur de l'UE mais <Term>vise un résident européen</Term>. La <Em>portée extraterritoriale</Em> est large et explique la résistance européenne face aux GAFAM.</P>
+
+      <Callout kind="info" title="Méthode contentieux GAFAM">
+        Quand un acteur extra-européen (Meta, TikTok, OpenAI…) traite des données d'utilisateurs européens, le RGPD s'applique <Em>quel que soit le lieu du serveur</Em>. C'est le critère du <Term>ciblage</Term> (offre de biens/services aux personnes en UE, suivi de leur comportement) qui déclenche l'application — d'où l'omniprésence de la CNIL et du CEPD dans les sanctions des géants du net.
+      </Callout>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Selon quels critères le RGPD s'applique-t-il territorialement ?",
+          choices: [
+            "Deux critères cumulatifs : établissement UE ET ciblage de résidents européens",
+            "Deux critères alternatifs : (i) établissement du responsable/sous-traitant en UE OU (ii) traitement visant un résident européen",
+            "Un seul critère : la nationalité européenne du responsable",
+            "Un seul critère : la localisation du serveur en UE",
+          ],
+          correct: [1],
+          explanation: "Le RGPD prévoit deux critères ALTERNATIFS : (i) établissement en UE ; (ii) traitement effectué hors UE mais visant un résident européen. Cette portée extraterritoriale large explique la résistance face aux GAFAM.",
+          difficulty: "medium",
+        },
+        {
+          q: "Une entreprise américaine sans établissement en UE qui traite des données de clients français pour leur vendre des produits en ligne :",
+          choices: [
+            "Est exclue du RGPD (pas d'établissement UE)",
+            "Est soumise au RGPD car elle vise des résidents européens",
+            "N'est soumise qu'au droit américain",
+            "Est exonérée si son serveur est aux États-Unis",
+          ],
+          correct: [1],
+          explanation: "Critère extraterritorial : un traitement effectué hors UE qui vise un résident européen entre dans le champ du RGPD, indépendamment du lieu du serveur.",
+          difficulty: "medium",
+        },
+      ]} />
+    </>
+  ),
+
+  "dce-dp-oblig-a": ({ sectionId }) => (
+    <>
+      <H level={3}>Section 2 — Obligations relatives au traitement — A. Accountability (art. 24 et 25)</H>
+
+      <Pepites sectionId={sectionId} items={[
+        <>Logique radicalement différente du modèle ancien : <Mask>pas d'autorisation préalable</Mask>, mais responsabilité continue (<Em>compliance</Em>).</>,
+        <>Le responsable doit pouvoir <Mask>démontrer à tout moment</Mask> sa conformité.</>,
+        <><Term>Privacy by design</Term> : intégrer la protection <Mask>dès la conception</Mask> de la technologie.</>,
+        <><Term>Privacy by default</Term> : <Mask>par défaut, les données ne peuvent être utilisées</Mask> — chaque traitement doit être justifié par une base légale.</>,
+      ]} />
+
+      <P>Le <Term>principe d'accountability</Term> est la philosophie d'ensemble du RGPD. Logique <Em>radicalement différente</Em> du modèle ancien d'autorisation administrative préalable : il n'y a pas d'autorisation à obtenir, mais le responsable doit, dans un esprit de <Term>compliance</Term>, mettre en place des <Em>mesures techniques et organisationnelles appropriées</Em> garantissant la conformité du traitement. Il doit pouvoir <Strong>le démontrer à tout moment</Strong>.</P>
+
+      <P>L'<Art>article 25</Art> décline ce principe en deux exigences techniques :</P>
+
+      <DataTable
+        headers={["Principe", "Contenu"]}
+        rows={[
+          [
+            <Strong>Privacy by design</Strong>,
+            <>Intégrer la protection des données <Em>dès la conception</Em> de la technologie : outils de recueil de consentement, paramétrage des accès, mécanismes de pseudonymisation préprogrammés, etc.</>
+          ],
+          [
+            <Strong>Privacy by default</Strong>,
+            <>Protection <Em>par défaut</Em>. On part du principe que les données <Strong>ne peuvent pas être utilisées</Strong>, et il faut justifier chaque traitement par une base légale.</>
+          ],
+        ]}
+      />
+
+      <Callout kind="tension" title="Du contrôle ex ante au contrôle ex post">
+        L'accountability marque un <Em>retournement épistémologique</Em> : la régulation ne décide plus à la place de l'entreprise (autorisation), elle <Strong>contrôle qu'elle a bien réfléchi</Strong>. Le risque devient celui d'une responsabilisation <Em>formelle</Em> (paperasse, registre, AIPD) plus que <Em>matérielle</Em>. La sanction administrative (CNIL) et l'effet de réputation jouent comme dissuasion.
+      </Callout>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Le principe d'accountability (art. 24 RGPD) implique :",
+          choices: [
+            "Une autorisation préalable de la CNIL avant tout traitement",
+            "L'absence d'autorisation préalable, mais la mise en place de mesures techniques et organisationnelles appropriées",
+            "Un simple devoir de notifier les traitements à la CNIL",
+            "Une obligation de résultat de protection absolue des données",
+          ],
+          correct: [1],
+          explanation: "L'accountability rompt avec le modèle ancien d'autorisation préalable : pas d'autorisation à obtenir, mais des mesures techniques et organisationnelles appropriées dont le responsable doit pouvoir démontrer la conformité à tout moment.",
+          difficulty: "medium",
+        },
+        {
+          q: "Le principe « privacy by design » impose :",
+          choices: [
+            "L'intégration de la protection des données dès la conception de la technologie",
+            "L'anonymisation systématique des données après collecte",
+            "Une protection seulement par défaut, sans contrainte de conception",
+            "Une certification préalable du DPO",
+          ],
+          correct: [0],
+          explanation: "Privacy by design (art. 25) : intégrer la protection dès la conception de la technologie (outils de recueil de consentement, paramétrage des accès, etc.).",
+          difficulty: "medium",
+        },
+        {
+          q: "Le principe « privacy by default » signifie :",
+          choices: [
+            "Les données peuvent être utilisées par défaut, sauf opposition",
+            "Par défaut, les données ne peuvent pas être utilisées et chaque traitement doit être justifié par une base légale",
+            "Les données sensibles sont traitées par défaut comme des données ordinaires",
+            "Le consentement est présumé en l'absence de refus exprès",
+          ],
+          correct: [1],
+          explanation: "Privacy by default : on part du principe que les données ne peuvent PAS être utilisées et il faut justifier chaque traitement par une base légale. Inversion logique par rapport à un régime d'autorisation tacite.",
+          difficulty: "hard",
+        },
+      ]} />
+    </>
+  ),
+
+  "dce-dp-oblig-b": ({ sectionId }) => (
+    <>
+      <H level={3}>B. Les principes encadrant tout traitement</H>
+
+      <Pepites sectionId={sectionId} items={[
+        <>Licéité, loyauté, transparence : <Mask>fondement juridique</Mask> + information complète.</>,
+        <>Limitation des finalités : interdiction de réutiliser pour une <Mask>finalité incompatible</Mask>.</>,
+        <>Minimisation : <Mask>collecter le moins de données possible</Mask> pour atteindre la finalité.</>,
+        <>Exactitude / limitation de la conservation / sécurité — déclinés en <Mask>obligations concrètes</Mask>.</>,
+      ]} />
+
+      <P>Le RGPD pose plusieurs principes structurants. Le principe de <Term>licéité, loyauté et transparence</Term> impose un fondement juridique parmi ceux limitativement énumérés et une information complète. Le principe de <Term>limitation des finalités</Term> interdit de réutiliser les données pour une finalité incompatible avec celle initialement annoncée. S'y ajoutent les principes de <Term>minimisation</Term>, <Term>exactitude</Term>, <Term>limitation de la conservation</Term> et <Term>sécurité</Term>, déclinés ensuite sous forme d'obligations concrètes.</P>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Le principe de limitation des finalités interdit :",
+          choices: [
+            "Toute réutilisation des données collectées",
+            "La réutilisation pour une finalité incompatible avec celle initialement annoncée",
+            "La transmission de données à un sous-traitant",
+            "Le recueil de plusieurs finalités lors de la même collecte",
+          ],
+          correct: [1],
+          explanation: "La limitation des finalités interdit la réutilisation pour une finalité INCOMPATIBLE. Une réutilisation compatible reste possible (la pseudonymisation peut aider à démontrer la compatibilité — CJUE 4 sept. 2025).",
+          difficulty: "medium",
+        },
+        {
+          q: "Parmi les principes structurants du RGPD, on trouve :",
+          choices: [
+            "Licéité, loyauté et transparence",
+            "Limitation des finalités",
+            "Minimisation et exactitude",
+            "Limitation de la conservation et sécurité",
+          ],
+          correct: [0, 1, 2, 3],
+          explanation: "Toutes ces réponses sont des principes du RGPD : licéité/loyauté/transparence, limitation des finalités, minimisation, exactitude, limitation de la conservation, sécurité.",
+          difficulty: "easy",
+        },
+      ]} />
+    </>
+  ),
+
+  "dce-dp-oblig-c": ({ sectionId }) => (
+    <>
+      <H level={3}>C. Les cas de licéité du traitement (art. 6 RGPD)</H>
+
+      <Pepites sectionId={sectionId} items={[
+        <>6 bases légales énumérées. <Mask>4 essentielles en e-commerce</Mask> : consentement, contrat, obligation légale, intérêts légitimes.</>,
+        <>Le choix de la base est <Mask>lourd de conséquences</Mask> : il détermine les droits dont dispose la personne.</>,
+        <><Term>Consentement</Term> : libre, spécifique, éclairé, univoque, par <Mask>acte positif clair</Mask>. Une finalité = une information.</>,
+        <><Term>Contrat</Term> : 3 conditions cumulatives : (i) relation (pré)contractuelle ; (ii) contrat valable ; (iii) <Mask>véritable nécessité</Mask> appréciée objectivement.</>,
+        <><Term>Intérêts légitimes</Term> : 3 conditions cumulatives — <Mask>légitimité de l'intérêt + nécessité + mise en balance</Mask>.</>,
+      ]} />
+
+      <P>Tout traitement doit reposer sur une <Term>base légale</Term>. Le RGPD en énumère <Strong>six</Strong>. Quatre sont essentielles en e-commerce : consentement, exécution du contrat, obligation légale, intérêts légitimes. Le choix de la base est lourd de conséquences car il détermine les droits dont dispose la personne physique.</P>
+
+      <H level={4}>1. La base « consentement »</H>
+
+      <P>Définition de l'<Art>article 4</Art> : <Em>manifestation de volonté libre, spécifique, éclairée et univoque, par déclaration ou acte positif clair</Em>. Le consentement doit notamment être éclairé sur <Strong>chacune</Strong> des finalités — chaque finalité doit être distinctement portée à la connaissance de la personne. La <Cas>délibération SAN-2025-017 du 30 décembre 2025</Cas> illustre la rigueur de la CNIL : un consentement global au programme de fidélité ne suffit pas.</P>
+
+      <P><Term>Mineurs.</Term> L'<Art>article 45 al. 2 LIL</Art> impose en France le consentement <Em>conjoint</Em> du mineur et de ses représentants légaux.</P>
+
+      <H level={4}>2. La base « contrat » (traitement nécessaire à l'exécution du contrat)</H>
+
+      <P>Le traitement est licite sans consentement s'il est nécessaire à l'exécution d'un contrat ou à des mesures précontractuelles. <Strong>Trois conditions cumulatives</Strong> : (i) une relation contractuelle ou précontractuelle existante (<Em>la simple prospection ne suffit pas</Em>) ; (ii) un contrat valable ; (iii) une <Em>véritable nécessité</Em> du traitement, appréciée au regard de l'objectif principal du contrat et des attentes raisonnables des parties.</P>
+
+      <Callout kind="prof" title="Décisions Facebook / Instagram (5 décembre 2022 et 12 janvier 2023)">
+        Les géants du net invoquaient la base contrat pour justifier la <Em>publicité ciblée</Em>, prétendant qu'elle était inhérente à un service gratuit. <Strong>Rejet</Strong> : le traitement nécessaire est celui qui s'impose <Em>objectivement</Em>, pas celui qui résulte d'un choix économique de l'entreprise. <Cas>Conseil d'État 30 juillet 2024 (SNCF Connect)</Cas> : la collecte systématique de la civilité du client n'est pas nécessaire à l'exécution du contrat de transport.
+      </Callout>
+
+      <P><Strong>Conséquence majeure :</Strong> le <Term>droit d'opposition</Term> ne s'exerce <Em>pas</Em> sur un traitement fondé sur la base contrat. À la fin du contrat, le traitement cesse, sauf pour les obligations qui survivent (garanties, gestion des impayés).</P>
+
+      <H level={4}>3. La base « obligations légales »</H>
+
+      <P>Hypothèse marginale en e-commerce : applicable lorsqu'une loi impose au responsable certains traitements (<Em>lutte anti-blanchiment, KYC, obligations comptables et fiscales</Em>).</P>
+
+      <H level={4}>4. La base « intérêts légitimes »</H>
+
+      <P>Base souple et stratégique pour les entreprises, mais <Em>encadrée par trois conditions cumulatives</Em> et risquée en cas de doute. La CNIL rappelle qu'<Strong>en cas d'incertitude, la base consentement est préférable</Strong>.</P>
+
+      <DataTable
+        headers={["Condition", "Contenu"]}
+        rows={[
+          [
+            <Strong>Légitimité de l'intérêt</Strong>,
+            <>L'intérêt doit être <Em>licite, suffisamment clair et précis</Em>. Exemples admis : sécurité des réseaux, lutte contre la fraude, gestion administrative interne. Exemple souvent écarté : <Em>publicité ciblée comportementale</Em> (atteinte trop forte aux droits).</>
+          ],
+          [
+            <Strong>Nécessité du traitement</Strong>,
+            <>Le traitement doit être <Em>indispensable</Em> à l'intérêt poursuivi. Analyse fine sur les catégories de données utilisées : ne pas en utiliser plus que nécessaire.</>
+          ],
+          [
+            <Strong>Mise en balance</Strong>,
+            <>Comparaison avec les <Em>droits, libertés et intérêts</Em> de la personne, en tenant compte de ses <Em>attentes raisonnables</Em>. Méthode en trois étapes : identification, évaluation des atteintes, mise en balance proportionnée. Des mesures additionnelles (pseudonymisation) peuvent rééquilibrer.</>
+          ],
+        ]}
+      />
+
+      <P><Strong>Conséquences.</Strong> Documentation obligatoire et renforcée. Le <Term>droit à la portabilité</Term> ne joue pas. L'<Em>intérêt légitime poursuivi</Em> doit figurer dans l'information délivrée à la personne. Le <Term>droit d'opposition</Term> s'exerce librement (<Art>article 21</Art>).</P>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Combien de bases légales l'article 6 RGPD énumère-t-il, et combien sont essentielles en e-commerce ?",
+          choices: [
+            "5 bases dont 3 essentielles",
+            "6 bases dont 4 essentielles (consentement, contrat, obligation légale, intérêts légitimes)",
+            "7 bases dont 5 essentielles",
+            "4 bases toutes essentielles",
+          ],
+          correct: [1],
+          explanation: "Art. 6 RGPD : 6 bases légales. 4 sont essentielles en e-commerce : consentement, exécution du contrat, obligation légale, intérêts légitimes.",
+          difficulty: "easy",
+        },
+        {
+          q: "Le consentement au sens de l'article 4 RGPD doit être :",
+          choices: [
+            "Libre, spécifique, éclairé, univoque",
+            "Donné par déclaration ou acte positif clair",
+            "Distinctement recueilli pour chacune des finalités",
+            "Explicite uniquement, sans valeur si tacite",
+          ],
+          correct: [0, 1, 2],
+          explanation: "Art. 4 RGPD : consentement libre, spécifique, éclairé, univoque, par déclaration ou acte positif clair. Chaque finalité doit être distinctement portée à la connaissance de la personne. L'exigence d'« explicite » ne joue que pour les données sensibles (art. 9).",
+          difficulty: "hard",
+        },
+        {
+          q: "La délibération CNIL SAN-2025-017 du 30 décembre 2025 retient que :",
+          choices: [
+            "Un consentement global au programme de fidélité suffit pour toutes les finalités",
+            "Un consentement global au programme de fidélité ne suffit pas — il faut un consentement par finalité",
+            "Le consentement n'est pas requis pour les programmes de fidélité",
+            "Le consentement peut être tacite en l'absence de refus exprès",
+          ],
+          correct: [1],
+          explanation: "SAN-2025-017 du 30 décembre 2025 : un consentement global au programme de fidélité ne suffit pas. Chaque finalité doit faire l'objet d'un consentement spécifique.",
+          difficulty: "medium",
+        },
+        {
+          q: "L'article 45 al. 2 LIL impose en France pour les mineurs :",
+          choices: [
+            "Le consentement du seul mineur",
+            "Le consentement des seuls représentants légaux",
+            "Le consentement conjoint du mineur et de ses représentants légaux",
+            "Aucun consentement (les mineurs sont exclus du RGPD)",
+          ],
+          correct: [2],
+          explanation: "Art. 45 al. 2 LIL : la France impose le consentement CONJOINT du mineur et de ses représentants légaux.",
+          difficulty: "hard",
+        },
+        {
+          q: "Pour fonder un traitement sur la base « contrat », trois conditions cumulatives sont exigées. Lesquelles ?",
+          choices: [
+            "Une relation contractuelle ou précontractuelle existante",
+            "Un contrat valable",
+            "Une véritable nécessité du traitement, appréciée objectivement",
+            "Le consentement explicite du cocontractant",
+          ],
+          correct: [0, 1, 2],
+          explanation: "Trois conditions cumulatives pour la base contrat : (i) relation (pré)contractuelle existante (la simple prospection ne suffit pas) ; (ii) contrat valable ; (iii) véritable nécessité du traitement appréciée objectivement. Le consentement n'est PAS une condition (il s'agit d'une autre base).",
+          difficulty: "hard",
+        },
+        {
+          q: "Quelle est la portée des décisions Facebook / Instagram (5 décembre 2022 et 12 janvier 2023) ?",
+          choices: [
+            "La publicité ciblée est nécessaire à l'exécution du contrat de service gratuit",
+            "Le traitement nécessaire est celui qui s'impose objectivement, pas celui qui résulte d'un choix économique de l'entreprise",
+            "Le rejet de la base contrat pour fonder la publicité ciblée",
+            "L'exigence de fonder la publicité ciblée sur la base intérêts légitimes",
+          ],
+          correct: [1, 2],
+          explanation: "Les décisions Facebook/Instagram rejettent la base contrat pour la pub ciblée : la nécessité doit s'apprécier objectivement, pas selon un choix économique de l'entreprise.",
+          difficulty: "hard",
+        },
+        {
+          q: "Que retient l'arrêt CE 30 juillet 2024 (SNCF Connect) ?",
+          choices: [
+            "La civilité est nécessaire à l'exécution du contrat de transport",
+            "La collecte systématique de la civilité du client n'est pas nécessaire à l'exécution du contrat de transport",
+            "Le traitement de la civilité doit reposer sur le consentement",
+            "Le traitement de la civilité relève de l'obligation légale",
+          ],
+          correct: [1],
+          explanation: "CE 30 juillet 2024 (SNCF Connect) : la civilité du client n'est pas nécessaire à l'exécution du contrat de transport — illustration de l'appréciation objective de la nécessité.",
+          difficulty: "medium",
+        },
+        {
+          q: "Conséquence majeure du choix de la base contrat :",
+          choices: [
+            "Le droit d'opposition s'exerce librement",
+            "Le droit d'opposition NE S'EXERCE PAS sur un traitement fondé sur la base contrat",
+            "Le consentement reste révocable à tout moment",
+            "Le traitement cesse à la fin du contrat, sauf obligations qui survivent",
+          ],
+          correct: [1, 3],
+          explanation: "Conséquences de la base contrat : pas de droit d'opposition ; à la fin du contrat, le traitement cesse, sauf pour les obligations qui survivent (garanties, gestion des impayés).",
+          difficulty: "hard",
+        },
+        {
+          q: "Les trois conditions cumulatives de la base intérêts légitimes sont :",
+          choices: [
+            "Légitimité de l'intérêt, nécessité du traitement, mise en balance",
+            "Consentement, nécessité, contrôle de proportionnalité",
+            "Information, nécessité, autorisation CNIL",
+            "Légitimité, ciblage, transparence",
+          ],
+          correct: [0],
+          explanation: "Trois conditions cumulatives : (i) légitimité de l'intérêt ; (ii) nécessité du traitement ; (iii) mise en balance avec les droits, libertés et intérêts de la personne (test des attentes raisonnables).",
+          difficulty: "medium",
+        },
+        {
+          q: "Conséquences du choix de la base intérêts légitimes :",
+          choices: [
+            "Documentation obligatoire et renforcée",
+            "Le droit à la portabilité ne joue pas",
+            "L'intérêt légitime poursuivi doit figurer dans l'information délivrée à la personne",
+            "Le droit d'opposition s'exerce librement (art. 21)",
+          ],
+          correct: [0, 1, 2, 3],
+          explanation: "Toutes ces conséquences sont exactes : doc renforcée, pas de portabilité, mention de l'intérêt légitime dans l'information, droit d'opposition libre (art. 21).",
+          difficulty: "hard",
+        },
+        {
+          q: "Selon la CNIL, en cas d'incertitude entre la base intérêts légitimes et la base consentement :",
+          choices: [
+            "Préférer la base intérêts légitimes pour plus de souplesse",
+            "Préférer la base consentement",
+            "Cumuler les deux bases",
+            "Saisir la CNIL pour autorisation préalable",
+          ],
+          correct: [1],
+          explanation: "La CNIL rappelle que la base consentement est préférable en cas d'incertitude. La base intérêts légitimes est risquée car elle expose à un contrôle a posteriori sur le test des trois conditions.",
+          difficulty: "medium",
+        },
+      ]} />
+    </>
+  ),
+
+  "dce-dp-oblig-d": ({ sectionId }) => (
+    <>
+      <H level={3}>D. Les obligations concrètes du responsable</H>
+
+      <Pepites sectionId={sectionId} items={[
+        <>Information (<Art>art. 13</Art>) : identifier responsable + DPO, exposer chaque <Mask>finalité avec sa base juridique</Mask>, destinataires, durées, droits. Tableau récapitulatif salué (<Cas>CNIL 30 déc. 2024</Cas>).</>,
+        <>Minimisation : <Cas>Spartoo 2020</Cas> — enregistrement <Mask>systématique des appels</Mask> + captation des coordonnées bancaires par téléphone : manquement.</>,
+        <>Conservation : prospection commerciale = <Mask>2 ans</Mask> à compter du dernier contact (CNIL 28 juill. 2020). L'ouverture d'un courriel <Em>ne fait pas repartir le délai</Em>.</>,
+        <>Sécurité (<Art>art. 32-34</Art>) : pseudonymisation, chiffrement, contrôle d'accès. Notification CNIL en 72h (<Art>art. 33</Art>) si violation, <Mask>personne concernée si risque élevé</Mask>.</>,
+        <>Mots de passe : <Mask>80 bits d'entropie</Mask> (≈ 12 caractères + complexité), stockage sous forme de hash.</>,
+      ]} />
+
+      <P><Term>Obligation d'information (<Art>article 13</Art>).</Term> Le responsable doit identifier (lui-même et le DPO), exposer chaque finalité avec sa base juridique, indiquer les destinataires, les durées de conservation et les droits de la personne. La pratique d'un <Em>tableau récapitulatif finalité / base légale</Em> est saluée par la CNIL (<Cas>délibération du 30 décembre 2024</Cas>).</P>
+
+      <P><Term>Obligation de minimisation.</Term> Le responsable doit faire le minimum : collecter le <Em>moins de données possible</Em> pour atteindre la finalité. <Cas>Délibération Spartoo, 28 juillet 2020</Cas> : manquement caractérisé pour l'enregistrement systématique des appels téléphoniques et la captation des coordonnées bancaires lors de ces appels, sans nécessité au regard de la finalité (formation des salariés). Idem pour la collecte de pièces justificatives excessives en matière de lutte contre la fraude.</P>
+
+      <P><Term>Limitation de la durée de conservation.</Term> Les données ne peuvent être conservées que pour la durée nécessaire à la finalité. Pour la <Em>prospection commerciale auprès d'anciens clients ou prospects inactifs</Em>, la durée raisonnable est de <Strong>deux ans</Strong> à compter du dernier contact (<Cas>délibération du 28 juillet 2020</Cas>). La simple ouverture d'un courriel ne fait pas repartir le délai.</P>
+
+      <P><Term>Sécurité du traitement (<Art>articles 32 à 34</Art>).</Term> Le responsable doit mettre en œuvre des mesures techniques et organisationnelles : pseudonymisation, chiffrement, contrôle d'accès, sauvegardes. En cas de violation, <Em>notification à la CNIL</Em> (<Art>article 33</Art>) et, si risque élevé, à la personne concernée (<Art>article 34</Art>).</P>
+
+      <Callout kind="info" title="Robustesse des mots de passe">
+        Politique d'<Em>entropie forte</Em> : équivalent à <Strong>80 bits</Strong>, soit environ 12 caractères avec majuscules, minuscules, chiffres et caractères spéciaux. Stockage <Em>non en clair</Em> mais sous forme d'<Term>empreintes (hash)</Term>. Un mot de passe de 8 caractères avec une seule contrainte est insuffisant.
+      </Callout>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Selon la délibération CNIL du 30 décembre 2024, l'information de la personne (art. 13 RGPD) est correctement délivrée si le responsable :",
+          choices: [
+            "Renvoie à un tableau récapitulatif finalité / base légale",
+            "Mentionne uniquement l'identité du responsable",
+            "Délivre l'information sous forme orale uniquement",
+            "Diffuse une politique de confidentialité non spécifique au site",
+          ],
+          correct: [0],
+          explanation: "La CNIL salue la pratique d'un tableau récapitulatif finalité / base légale (délibération du 30 décembre 2024) : l'information est claire, lisible, vérifiable.",
+          difficulty: "medium",
+        },
+        {
+          q: "Que retient la délibération CNIL Spartoo du 28 juillet 2020 ?",
+          choices: [
+            "L'enregistrement systématique des appels téléphoniques manque à l'obligation de minimisation",
+            "La captation des coordonnées bancaires lors d'un appel téléphonique est licite si la personne est informée",
+            "L'enregistrement systématique des appels et la captation des coordonnées bancaires sont des manquements à la minimisation",
+            "La collecte de pièces justificatives excessives en lutte contre la fraude est admise",
+          ],
+          correct: [0, 2],
+          explanation: "Spartoo (CNIL, 28 juillet 2020) : manquement à la minimisation pour l'enregistrement systématique des appels et la captation des coordonnées bancaires lors de ces appels — sans nécessité au regard de la finalité (formation des salariés).",
+          difficulty: "hard",
+        },
+        {
+          q: "La durée raisonnable de conservation pour la prospection commerciale auprès d'anciens clients ou prospects inactifs est de :",
+          choices: [
+            "6 mois à compter de la première inscription",
+            "1 an à compter du dernier contact",
+            "2 ans à compter du dernier contact",
+            "5 ans à compter du dernier contact",
+          ],
+          correct: [2],
+          explanation: "CNIL 28 juillet 2020 : durée raisonnable = 2 ans à compter du dernier contact. La simple ouverture d'un courriel ne fait pas repartir le délai.",
+          difficulty: "medium",
+        },
+        {
+          q: "L'ouverture d'un courriel par le destinataire :",
+          choices: [
+            "Fait repartir le délai de conservation pour 2 ans",
+            "Ne fait pas repartir le délai de conservation",
+            "Met fin au délai de conservation",
+            "Permet d'allonger le délai à 5 ans",
+          ],
+          correct: [1],
+          explanation: "L'ouverture d'un courriel ne fait PAS repartir le délai. Seul un véritable contact (achat, demande active du prospect) le réinitialise.",
+          difficulty: "hard",
+        },
+        {
+          q: "En cas de violation de données :",
+          choices: [
+            "Notification à la CNIL (art. 33)",
+            "Notification à la personne concernée si risque élevé (art. 34)",
+            "Notification systématique à toutes les personnes concernées",
+            "Notification au CEPD avant toute autre démarche",
+          ],
+          correct: [0, 1],
+          explanation: "Art. 33 : notification à la CNIL en cas de violation. Art. 34 : notification à la personne concernée seulement si RISQUE ÉLEVÉ. Pas de notification systématique aux personnes ni de notification préalable au CEPD.",
+          difficulty: "medium",
+        },
+        {
+          q: "Robustesse des mots de passe selon la CNIL :",
+          choices: [
+            "8 caractères avec une seule contrainte suffisent",
+            "Entropie d'environ 80 bits — soit environ 12 caractères avec majuscules, minuscules, chiffres, caractères spéciaux",
+            "Stockage en clair admis si l'accès est limité",
+            "Stockage sous forme d'empreintes (hash) requis",
+          ],
+          correct: [1, 3],
+          explanation: "Entropie forte ≈ 80 bits, soit ~12 caractères avec complexité. Stockage non en clair, sous forme de hash. Un mot de passe de 8 caractères avec une seule contrainte est insuffisant.",
+          difficulty: "hard",
+        },
+      ]} />
+    </>
+  ),
+
+  "dce-dp-droits": ({ sectionId }) => (
+    <>
+      <H level={3}>Section 3 — Les droits des personnes physiques</H>
+
+      <Pepites sectionId={sectionId} items={[
+        <>L'exercice des droits dépend largement de la <Mask>base légale</Mask> du traitement.</>,
+        <>Opposition (<Art>art. 21</Art>) : <Mask>jamais sur la base contrat</Mask>. Prospection + profilage = <Mask>opposition de droit</Mask>.</>,
+        <>Accès (<Art>art. 15</Art>) : confirmation + copie + identité des destinataires (<Cas>CJUE 12 janv. 2023</Cas>).</>,
+        <>Effacement (<Art>art. 17</Art>) : <Em>« droit à l'oubli »</Em>, <Mask>non absolu</Mask> — balance avec liberté d'information (<Cas>Google C-460/20, 8 déc. 2022</Cas>) sauf si infos manifestement inexactes.</>,
+        <>Portabilité (<Art>art. 20</Art>) : <Mask>données brutes seulement</Mask>, pas les données enrichies. <Em>Ne joue pas sur la base intérêts légitimes.</Em></>,
+      ]} />
+
+      <P>Le RGPD octroie aux personnes physiques un ensemble de droits. Leur exercice <Strong>dépend largement de la base légale du traitement</Strong>.</P>
+
+      <H level={4}>A. Droit d'opposition (art. 21) et de retrait du consentement</H>
+
+      <P>La personne peut s'opposer à tout moment au traitement fondé sur l'<Em>intérêt légitime</Em> ou la mission d'intérêt public. Le droit d'opposition <Strong>ne s'applique pas à la base contrat</Strong>. En matière de <Em>prospection commerciale</Em> et de <Em>profilage</Em> qui s'y rapporte, l'opposition est de droit. Le retrait du consentement doit être aussi simple à exercer que le consentement initial.</P>
+
+      <H level={4}>B. Droit d'accès (art. 15)</H>
+
+      <P>La personne peut obtenir confirmation que ses données sont traitées et copie de ces données, ainsi que les informations sur les finalités, catégories, destinataires et durées. La <Cas>CJUE 12 janvier 2023</Cas> précise que <Em>l'identité des destinataires</Em> doit être communiquée, sauf impossibilité ou demande manifestement excessive.</P>
+
+      <H level={4}>C. Droits de rectification, d'effacement et de limitation (art. 16 à 18)</H>
+
+      <P>Le <Term>droit à l'effacement</Term> (« <Em>droit à l'oubli</Em> ») est ouvert lorsque les données ne sont plus nécessaires, que le consentement a été retiré ou que le traitement est illicite. <Cas>CJUE 8 décembre 2022 (Google C-460/20)</Cas> : le droit à l'effacement <Strong>n'est pas absolu</Strong> et se met en balance avec la liberté d'information ; mais cette dernière ne peut être invoquée si les informations sont <Em>manifestement inexactes</Em> (charge de la preuve sur le demandeur). Le droit à la limitation permet de <Em>geler le traitement</Em> le temps de vérifier l'exactitude des données. L'<Art>article 19</Art> impose une obligation de notification de ces modifications aux destinataires.</P>
+
+      <H level={4}>D. Droit à la portabilité (art. 20)</H>
+
+      <P>La personne peut récupérer ses données dans un <Em>format structuré et lisible par machine</Em>, et les transmettre à un concurrent. Vise les <Term>données brutes</Term> (fournies volontairement ou collectées à l'insu de la personne — historique, trafic) mais pas les <Em>données enrichies</Em> résultant d'une plus-value de l'opérateur. Le droit <Strong>ne s'applique pas à la base intérêts légitimes</Strong>. Limite pratique : <Em>peu d'utilisateurs en demandent l'exercice</Em>.</P>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "L'exercice des droits du RGPD :",
+          choices: [
+            "Est uniforme quelle que soit la base légale du traitement",
+            "Dépend largement de la base légale du traitement",
+            "Est exclu pour les traitements fondés sur le consentement",
+            "Est limité aux personnes établies en UE",
+          ],
+          correct: [1],
+          explanation: "L'exercice des droits dépend largement de la base légale : opposition exclue sur la base contrat, portabilité exclue sur la base intérêts légitimes, etc.",
+          difficulty: "medium",
+        },
+        {
+          q: "Le droit d'opposition (art. 21 RGPD) :",
+          choices: [
+            "S'applique à toutes les bases légales",
+            "Ne s'applique pas à la base contrat",
+            "S'applique à la base intérêt légitime ou à la mission d'intérêt public",
+            "Est de droit en matière de prospection commerciale et de profilage qui s'y rapporte",
+          ],
+          correct: [1, 2, 3],
+          explanation: "Art. 21 : l'opposition s'applique aux bases intérêt légitime / mission d'intérêt public. Elle NE s'applique PAS à la base contrat. En prospection commerciale et profilage qui s'y rapporte, l'opposition est de droit.",
+          difficulty: "hard",
+        },
+        {
+          q: "Le retrait du consentement :",
+          choices: [
+            "Doit être aussi simple à exercer que le consentement initial",
+            "Doit être motivé pour être recevable",
+            "Nécessite une demande écrite avec justification",
+            "Peut être conditionné à des frais",
+          ],
+          correct: [0],
+          explanation: "Le retrait du consentement doit être aussi simple à exercer que le consentement initial — corollaire du caractère libre du consentement.",
+          difficulty: "easy",
+        },
+        {
+          q: "Que précise l'arrêt CJUE 12 janvier 2023 sur le droit d'accès (art. 15) ?",
+          choices: [
+            "L'identité des destinataires des données doit être communiquée",
+            "Le responsable peut se contenter d'indiquer des catégories de destinataires",
+            "L'identité doit être communiquée sauf impossibilité ou demande manifestement excessive",
+            "Le droit d'accès est limité aux seules données collectées directement",
+          ],
+          correct: [0, 2],
+          explanation: "CJUE 12 janvier 2023 : l'identité des destinataires (et non de simples catégories) doit être communiquée, sauf impossibilité ou demande manifestement excessive.",
+          difficulty: "hard",
+        },
+        {
+          q: "L'arrêt CJUE 8 décembre 2022 (Google C-460/20) sur le droit à l'effacement précise que :",
+          choices: [
+            "Le droit à l'effacement est absolu",
+            "Le droit à l'effacement n'est pas absolu — balance avec la liberté d'information",
+            "La liberté d'information ne peut être invoquée si les informations sont manifestement inexactes",
+            "La charge de la preuve de l'inexactitude pèse sur le demandeur",
+          ],
+          correct: [1, 2, 3],
+          explanation: "CJUE 8 déc. 2022 (Google C-460/20) : effacement non absolu, balance avec liberté d'information ; mais celle-ci ne joue pas si les informations sont manifestement inexactes ; charge de la preuve de l'inexactitude sur le demandeur.",
+          difficulty: "hard",
+        },
+        {
+          q: "Le droit à la portabilité (art. 20 RGPD) :",
+          choices: [
+            "Vise les données enrichies résultant de la plus-value de l'opérateur",
+            "Vise les données brutes (volontairement fournies ou collectées à l'insu — historique, trafic)",
+            "Ne s'applique pas à la base intérêts légitimes",
+            "S'applique à toutes les bases légales sans distinction",
+          ],
+          correct: [1, 2],
+          explanation: "Art. 20 : porte sur les données BRUTES (pas enrichies) ; ne s'applique PAS à la base intérêts légitimes. Les données doivent être restituées dans un format structuré et lisible par machine.",
+          difficulty: "hard",
+        },
+        {
+          q: "Le droit à la limitation (art. 18) permet de :",
+          choices: [
+            "Effacer définitivement les données",
+            "Geler le traitement le temps de vérifier l'exactitude des données",
+            "Limiter le nombre de finalités du traitement",
+            "Restreindre le droit d'accès des tiers",
+          ],
+          correct: [1],
+          explanation: "Le droit à la limitation permet de geler le traitement le temps de vérifier l'exactitude des données. L'art. 19 impose en outre une obligation de notification de ces modifications aux destinataires.",
+          difficulty: "medium",
+        },
+      ]} />
+    </>
+  ),
+
+  "dce-dp-sanctions": ({ sectionId }) => (
+    <>
+      <H level={3}>Section 4 — Les sanctions</H>
+
+      <Pepites sectionId={sectionId} items={[
+        <>Outil dissuasif principal : la <Mask>sanction administrative</Mask> de la CNIL.</>,
+        <>Manquements ordinaires : <Mask>10 M€ ou 2 % du CA mondial</Mask> (sécurité, accountability, registre).</>,
+        <>Manquements graves : <Mask>20 M€ ou 4 % du CA mondial</Mask> (consentement, droits, transferts hors UE).</>,
+        <>Sanctions civiles (<Cas>CJUE 4 mai 2023</Cas>) : violation seule ne suffit pas, <Mask>dommage doit être établi</Mask> — mais tout préjudice, même modeste, est réparable. <Em>Crainte d'usage abusif après piratage = dommage moral</Em>.</>,
+        <>Sanctions pénales : non prévues par le RGPD lui-même, mais <Art>art. 226-16 et s. C. pén.</Art> — proportionnalité et dissuasion.</>,
+      ]} />
+
+      <P>Le RGPD a fait des <Term>sanctions administratives</Term> son outil dissuasif principal. La CNIL peut prononcer mise en demeure, avertissement, rappel à l'ordre, injonction sous astreinte et, surtout, <Strong>amendes administratives</Strong>. Deux plafonds selon la gravité :</P>
+
+      <DataTable
+        headers={["Gravité", "Plafond"]}
+        rows={[
+          [
+            <Strong>Manquements ordinaires</Strong>,
+            <>(sécurité, accountability, registre) : <Strong>10 millions d'euros ou 2 % du chiffre d'affaires mondial</Strong>.</>
+          ],
+          [
+            <Strong>Manquements graves</Strong>,
+            <>(consentement, droits des personnes, transferts hors UE) : <Strong>20 millions d'euros ou 4 % du chiffre d'affaires mondial</Strong>.</>
+          ],
+        ]}
+      />
+
+      <P><Term>Sanctions civiles.</Term> Action en réparation des préjudices subis. <Cas>CJUE 4 mai 2023</Cas> : une <Em>violation du RGPD ne suffit pas à elle seule</Em>, le dommage doit être établi ; mais <Strong>tout préjudice, quelle que soit sa gravité, est réparable</Strong>. La crainte d'un usage abusif des données après piratage peut constituer un <Em>dommage moral réparable</Em>.</P>
+
+      <P><Term>Sanctions pénales.</Term> Non prévues par le RGPD lui-même, mais certains textes nationaux (<Art>article 226-16 et suivants C. pén.</Art>) les prévoient, dans une logique de proportionnalité et de dissuasion.</P>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Le plafond des sanctions administratives RGPD pour les manquements ORDINAIRES (sécurité, accountability, registre) est de :",
+          choices: [
+            "1 % du chiffre d'affaires mondial",
+            "2 % du chiffre d'affaires mondial ou 10 millions d'euros",
+            "4 % du chiffre d'affaires mondial ou 20 millions d'euros",
+            "Aucun plafond",
+          ],
+          correct: [1],
+          explanation: "Manquements ordinaires : 10 M€ ou 2 % du chiffre d'affaires mondial. La somme la plus élevée est retenue.",
+          difficulty: "medium",
+        },
+        {
+          q: "Le plafond des sanctions administratives RGPD pour les manquements GRAVES (consentement, droits des personnes, transferts hors UE) est de :",
+          choices: [
+            "10 millions d'euros ou 2 % du chiffre d'affaires mondial",
+            "20 millions d'euros ou 4 % du chiffre d'affaires mondial",
+            "30 millions d'euros ou 6 % du chiffre d'affaires mondial",
+            "100 millions d'euros forfaitaires",
+          ],
+          correct: [1],
+          explanation: "Manquements graves : 20 M€ ou 4 % du chiffre d'affaires mondial. Concerne notamment le consentement, les droits des personnes et les transferts hors UE.",
+          difficulty: "medium",
+        },
+        {
+          q: "Que retient l'arrêt CJUE 4 mai 2023 sur les sanctions civiles ?",
+          choices: [
+            "Une violation du RGPD suffit à elle seule à ouvrir la réparation",
+            "La violation du RGPD ne suffit pas à elle seule — le dommage doit être établi",
+            "Tout préjudice, quelle que soit sa gravité, est réparable",
+            "Le préjudice doit atteindre un seuil de gravité minimal",
+          ],
+          correct: [1, 2],
+          explanation: "CJUE 4 mai 2023 : violation seule insuffisante (dommage doit être établi) MAIS tout préjudice est réparable (pas de seuil de gravité). La crainte d'un usage abusif après piratage peut être un dommage moral.",
+          difficulty: "hard",
+        },
+        {
+          q: "La crainte d'un usage abusif des données après piratage peut-elle constituer un dommage réparable ?",
+          choices: [
+            "Non, c'est un préjudice purement hypothétique",
+            "Oui, elle peut constituer un dommage moral réparable",
+            "Oui, mais seulement si le préjudice financier est démontré",
+            "Non, sauf preuve d'une utilisation effective",
+          ],
+          correct: [1],
+          explanation: "La CJUE admet que la crainte d'un usage abusif des données après piratage peut constituer un dommage moral réparable, dans la lignée de l'arrêt du 4 mai 2023.",
+          difficulty: "hard",
+        },
+        {
+          q: "Les sanctions pénales en matière de protection des données :",
+          choices: [
+            "Sont prévues directement par le RGPD",
+            "Ne sont pas prévues par le RGPD lui-même",
+            "Sont prévues par les textes nationaux (art. 226-16 et s. C. pén. en France)",
+            "Sont exclues en matière de données personnelles",
+          ],
+          correct: [1, 2],
+          explanation: "Le RGPD ne prévoit pas lui-même de sanctions pénales. Les États membres peuvent les prévoir : en France, art. 226-16 et s. C. pén. (logique de proportionnalité et dissuasion).",
+          difficulty: "medium",
+        },
+      ]} />
+    </>
+  ),
+
+  "dce-dnp": ({ sectionId }) => (
+    <>
+      <H level={2}>Chapitre 2 — Les données sans caractère personnel</H>
+
+      <Pepites sectionId={sectionId} items={[
+        <>Logique <Mask>inversée</Mask> : principe de <Mask>libre circulation</Mask> érigé en <Em>cinquième liberté</Em> (règlement 14 oct. 2018).</>,
+        <>Empêcher les EM d'imposer des <Mask>obligations de localisation</Mask> des données.</>,
+        <><Term>Data Act</Term> (en vigueur 11 janvier 2025) : droit d'accès aux données <Mask>générées par l'utilisation de produits/services connectés</Mask>.</>,
+        <>Possibilité de partager avec des <Mask>tiers</Mask> (ex. SAV) — briser les silos des fabricants.</>,
+        <>Enjeu : permettre aux <Mask>PME</Mask> de bénéficier des données issues d'équipements industriels sans dépendre du fabricant.</>,
+      ]} />
+
+      <P>Pour les données <Em>non personnelles</Em>, la logique s'inverse : <Strong>principe de libre circulation</Strong>. Érigée en <Term>cinquième liberté</Term> par le règlement du 14 octobre 2018 (après les biens, services, personnes et capitaux), elle vise à empêcher les États membres d'imposer des <Em>obligations de localisation</Em> des données.</P>
+
+      <P>Le <Term>Data Act</Term>, entré en vigueur le <Strong>11 janvier 2025</Strong>, complète ce dispositif. Il donne aux particuliers et aux entreprises un <Em>droit d'accès</Em> aux données générées par leur utilisation de produits et services connectés, et la possibilité de les partager avec des <Em>tiers</Em> (par exemple un prestataire SAV). Objectif : briser les silos des fabricants et stimuler l'économie des données industrielles.</P>
+
+      <Callout kind="tension" title="Logiques opposées">
+        <Em>Données personnelles</Em> = <Strong>protection forte</Strong> (RGPD), interdiction par défaut, base légale obligatoire. <Em>Données non personnelles</Em> = <Strong>libre circulation</Strong> (Data Act), interdiction des localisations forcées. La <Em>frontière</Em> entre les deux régimes est l'<Term>anonymisation</Term> — mais elle est techniquement fragile (réidentification souvent possible) et juridiquement instable.
+      </Callout>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Pour les données non personnelles, le principe est :",
+          choices: [
+            "L'interdiction par défaut",
+            "L'autorisation préalable de la CNIL",
+            "La libre circulation, érigée en cinquième liberté",
+            "L'obligation de localisation au sein de l'UE",
+          ],
+          correct: [2],
+          explanation: "Pour les données non personnelles, la logique s'inverse : libre circulation érigée en cinquième liberté par le règlement du 14 octobre 2018 (après biens, services, personnes, capitaux).",
+          difficulty: "medium",
+        },
+        {
+          q: "Le règlement du 14 octobre 2018 sur la libre circulation des données non personnelles vise à :",
+          choices: [
+            "Imposer une localisation des données dans l'EM d'origine",
+            "Empêcher les EM d'imposer des obligations de localisation des données",
+            "Renforcer la souveraineté nationale sur les données",
+            "Aligner les règles sur celles du RGPD",
+          ],
+          correct: [1],
+          explanation: "Le règlement du 14 octobre 2018 vise à empêcher les États membres d'imposer des obligations de localisation des données non personnelles — corollaire de la libre circulation comme cinquième liberté.",
+          difficulty: "medium",
+        },
+        {
+          q: "Le Data Act est entré en vigueur :",
+          choices: [
+            "Le 25 mai 2018",
+            "Le 14 octobre 2018",
+            "Le 11 janvier 2025",
+            "Le 2 février 2025",
+          ],
+          correct: [2],
+          explanation: "Le Data Act est entré en vigueur le 11 janvier 2025. (Le 25 mai 2018 = RGPD ; 14 oct. 2018 = règlement libre circulation ; 2 fév. 2025 = pratiques interdites AI Act.)",
+          difficulty: "hard",
+        },
+        {
+          q: "Le Data Act donne aux particuliers et aux entreprises :",
+          choices: [
+            "Un droit d'accès aux données générées par leur utilisation de produits et services connectés",
+            "La possibilité de partager ces données avec des tiers (par exemple un prestataire SAV)",
+            "Une obligation de localisation des données dans l'UE",
+            "Un droit de suppression absolu",
+          ],
+          correct: [0, 1],
+          explanation: "Data Act : droit d'accès aux données générées par produits/services connectés + droit de partage avec des tiers (ex. SAV indépendant). Objectif : briser les silos des fabricants et stimuler l'économie des données industrielles.",
+          difficulty: "hard",
+        },
+        {
+          q: "L'enjeu principal du Data Act est :",
+          choices: [
+            "De renforcer la protection des données personnelles",
+            "De permettre aux PME de bénéficier des données issues d'équipements industriels sans dépendre du fabricant",
+            "D'imposer une localisation forcée des données",
+            "De fusionner le régime des données perso et non perso",
+          ],
+          correct: [1],
+          explanation: "Enjeu : permettre aux PME (et aux particuliers) d'accéder aux données générées par les produits et services connectés sans dépendre du fabricant — briser les silos.",
+          difficulty: "medium",
+        },
+      ]} />
+    </>
+  ),
+
+  "dce-ia-presentation": ({ sectionId }) => (
+    <>
+      <H level={2}>Sous-titre 2 — L'intelligence artificielle</H>
+      <H level={3}>§1. Présentation générale</H>
+
+      <Pepites sectionId={sectionId} items={[
+        <>L'IA contemporaine est essentiellement <Mask>auto-apprenante</Mask> — produit l'<Em>effet boîte noire</Em>.</>,
+        <>Définition AI Act : <Mask>système automatisé fonctionnant à différents niveaux d'autonomie</Mask>, capable de prendre des décisions ou d'influencer son environnement.</>,
+        <>Usages e-commerce : <Mask>commerce vocal, prix dynamiques, recommandations, logistique, enchères, publicité comportementale</Mask>.</>,
+      ]} />
+
+      <P>L'IA contemporaine est essentiellement <Term>auto-apprenante</Term>, ce qui produit le fameux <Em>« effet boîte noire »</Em> : il devient impossible de retracer comment l'IA a produit tel résultat. Cet effet est au cœur des difficultés juridiques (responsabilité, transparence, contrôle).</P>
+
+      <P>L'<Term>AI Act</Term> définit le <Term>système d'IA (SIA)</Term> comme <Em>un système automatisé fonctionnant à différents niveaux d'autonomie, capable de prendre des décisions ou d'influencer son environnement</Em>. En e-commerce, les usages sont multiples : commerce vocal, optimisation dynamique des prix, recherche intelligente, recommandations personnalisées, logistique intelligente, enchères automatisées, publicité comportementale.</P>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "L'« effet boîte noire » des IA contemporaines tient à :",
+          choices: [
+            "Leur secret commercial protégé",
+            "Le fait qu'elles soient essentiellement auto-apprenantes — il devient impossible de retracer comment elles produisent un résultat",
+            "Leur localisation hors UE",
+            "L'absence de documentation technique",
+          ],
+          correct: [1],
+          explanation: "L'IA contemporaine est essentiellement auto-apprenante : impossibilité de retracer comment elle a produit tel résultat. C'est l'aporie centrale qui justifie le contrôle humain (art. 14 AI Act).",
+          difficulty: "medium",
+        },
+        {
+          q: "L'AI Act définit le système d'IA (SIA) comme :",
+          choices: [
+            "Tout logiciel utilisant un algorithme",
+            "Un système automatisé fonctionnant à différents niveaux d'autonomie, capable de prendre des décisions ou d'influencer son environnement",
+            "Un système exclusivement fondé sur des réseaux de neurones profonds",
+            "Tout outil de traitement automatique de données personnelles",
+          ],
+          correct: [1],
+          explanation: "Définition AI Act du SIA : système automatisé fonctionnant à différents niveaux d'autonomie, capable de prendre des décisions ou d'influencer son environnement.",
+          difficulty: "medium",
+        },
+        {
+          q: "Parmi les usages de l'IA en e-commerce identifiés par la fiche, on trouve :",
+          choices: [
+            "Commerce vocal",
+            "Optimisation dynamique des prix",
+            "Recommandations personnalisées et publicité comportementale",
+            "Logistique intelligente et enchères automatisées",
+          ],
+          correct: [0, 1, 2, 3],
+          explanation: "Tous ces usages sont visés en e-commerce : commerce vocal, prix dynamiques, recherche, recommandations, logistique, enchères, publicité comportementale.",
+          difficulty: "easy",
+        },
+      ]} />
+    </>
+  ),
+
+  "dce-ia-principes": ({ sectionId }) => (
+    <>
+      <H level={3}>§2. Principes et sources</H>
+
+      <Pepites sectionId={sectionId} items={[
+        <>Principes éthiques : <Mask>bienfaisance, non-malfaisance</Mask>.</>,
+        <>Principes juridiques : <Mask>autonomie, non-discrimination, transparence</Mask>.</>,
+        <><Term>Règlement IA (UE) 2024/1689 du 13 juin 2024</Term> = AI Act / RIA. Pratiques interdites depuis le <Mask>2 février 2025</Mask>.</>,
+        <>Compléments : directive produits défectueux (COM 2022/495), directive resp. civ. extracontractuelle IA (COM 2022/496).</>,
+        <>Application transversale du <Mask>RGPD</Mask> pour les traitements de DP par IA.</>,
+      ]} />
+
+      <P><Term>Principes éthiques.</Term> <Em>Bienfaisance et non-malfaisance</Em> : l'IA doit produire le bien, jamais le mal. <Term>Principes juridiques :</Term> autonomie, non-discrimination, transparence.</P>
+
+      <P><Term>Sources principales.</Term> Le <Art>Règlement IA (UE) 2024/1689 du 13 juin 2024</Art>, dit <Term>AI Act</Term> ou <Term>RIA</Term>, est entré en vigueur progressivement (les pratiques interdites s'appliquent depuis le <Strong>2 février 2025</Strong>). Deux propositions de directives complètent l'édifice : <Em>directive produits défectueux</Em> (COM 2022/495) et <Em>directive responsabilité civile extracontractuelle pour l'IA</Em> (COM 2022/496). À ces textes s'ajoute l'application transversale du <Term>RGPD</Term> pour les traitements de données personnelles par l'IA.</P>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Les principes éthiques fondateurs de l'encadrement de l'IA sont :",
+          choices: [
+            "Bienfaisance et non-malfaisance",
+            "Autonomie absolue de la machine",
+            "Maximisation des bénéfices économiques",
+            "Bienfaisance, non-malfaisance, autonomie, non-discrimination, transparence",
+          ],
+          correct: [3],
+          explanation: "Principes éthiques : bienfaisance, non-malfaisance. Principes juridiques : autonomie, non-discrimination, transparence. L'ensemble structure l'encadrement de l'IA.",
+          difficulty: "medium",
+        },
+        {
+          q: "Le règlement IA (UE) 2024/1689 du 13 juin 2024 :",
+          choices: [
+            "Est dénommé AI Act ou RIA",
+            "Est entré en vigueur intégralement à sa publication",
+            "Est entré en vigueur progressivement",
+            "Voit ses dispositions sur les pratiques interdites s'appliquer depuis le 2 février 2025",
+          ],
+          correct: [0, 2, 3],
+          explanation: "Règlement 2024/1689 du 13 juin 2024 = AI Act / RIA, en vigueur PROGRESSIVE. Les pratiques interdites s'appliquent depuis le 2 février 2025.",
+          difficulty: "hard",
+        },
+        {
+          q: "Les deux propositions de directives qui complètent l'AI Act portent sur :",
+          choices: [
+            "Les produits défectueux (COM 2022/495)",
+            "La responsabilité civile extracontractuelle pour l'IA (COM 2022/496)",
+            "Le droit d'auteur des œuvres générées par IA",
+            "La protection des consommateurs face à l'IA",
+          ],
+          correct: [0, 1],
+          explanation: "Deux propositions de directives : produits défectueux (COM 2022/495) et responsabilité civile extracontractuelle IA (COM 2022/496). À ces textes s'ajoute l'application transversale du RGPD.",
+          difficulty: "hard",
+        },
+      ]} />
+    </>
+  ),
+
+  "dce-ia-organes": ({ sectionId }) => (
+    <>
+      <H level={3}>§3. Organes & codes de bonnes pratiques</H>
+
+      <Pepites sectionId={sectionId} items={[
+        <><Term>Bureau européen de l'IA</Term> (Commission) : supervise la mise en œuvre, notamment <Mask>MIAUG</Mask>.</>,
+        <><Mask>Comité de l'IA</Mask> (1 représentant par EM) + <Mask>Forum consultatif</Mask> (entreprises) + <Mask>groupe scientifique</Mask> indépendant.</>,
+        <>France : <Mask>CNIL + ARCOM</Mask> (CSA + Hadopi fusionnés) + <Mask>DGCCRF</Mask>.</>,
+        <>Codes de bonnes pratiques spécifiques aux <Mask>IA à usage général</Mask> éclairent les obligations.</>,
+      ]} />
+
+      <P>Architecture institutionnelle européenne : le <Term>Bureau européen de l'IA</Term> (intégré à la Commission) supervise la mise en œuvre, notamment pour les modèles d'IA à usage général. Il est secondé par le <Term>Comité de l'IA</Term> (un représentant par État membre), un <Term>Forum consultatif</Term> (entreprises, start-ups) et un <Term>groupe scientifique</Term> d'experts indépendants. En droit français, la <Term>CNIL</Term> et l'<Term>ARCOM</Term> (issue de la fusion CSA / Hadopi) jouent un rôle majeur, complétées par la <Term>DGCCRF</Term>. Des <Em>codes de bonnes pratiques</Em> spécifiques aux IA à usage général viennent éclairer les obligations.</P>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Le Bureau européen de l'IA :",
+          choices: [
+            "Est une autorité indépendante des États membres",
+            "Est intégré à la Commission européenne",
+            "Supervise la mise en œuvre, notamment pour les modèles d'IA à usage général",
+            "Délivre des autorisations préalables aux fournisseurs",
+          ],
+          correct: [1, 2],
+          explanation: "Le Bureau européen de l'IA est intégré à la Commission et supervise la mise en œuvre, notamment pour les MIAUG. Il est secondé par le Comité de l'IA, le Forum consultatif et le groupe scientifique.",
+          difficulty: "medium",
+        },
+        {
+          q: "Le Comité de l'IA est composé de :",
+          choices: [
+            "Représentants des entreprises et start-ups",
+            "Un représentant par État membre",
+            "Experts scientifiques indépendants",
+            "Membres de la Commission",
+          ],
+          correct: [1],
+          explanation: "Comité de l'IA = un représentant par EM. Forum consultatif = entreprises et start-ups. Groupe scientifique = experts indépendants.",
+          difficulty: "hard",
+        },
+        {
+          q: "En droit français, l'ARCOM :",
+          choices: [
+            "Est issue de la fusion du CSA et d'Hadopi",
+            "Joue un rôle majeur dans l'encadrement de l'IA, aux côtés de la CNIL",
+            "Remplace la CNIL pour l'IA",
+            "Est complétée par la DGCCRF",
+          ],
+          correct: [0, 1, 3],
+          explanation: "ARCOM = fusion CSA + Hadopi. Aux côtés de la CNIL, complétées par la DGCCRF. Elle ne remplace PAS la CNIL — elles jouent toutes deux un rôle.",
+          difficulty: "hard",
+        },
+      ]} />
+    </>
+  ),
+
+  "dce-ia-approche": ({ sectionId }) => (
+    <>
+      <H level={3}>L'esprit de la loi — l'approche par les risques</H>
+
+      <Pepites sectionId={sectionId} items={[
+        <>Approche <Mask>graduée par les risques</Mask>, structurée en pyramide.</>,
+        <>Plus le risque est élevé, <Mask>plus les obligations sont lourdes</Mask>.</>,
+        <>4 niveaux : <Mask>interdits / haut risque (SIAHR) / risque modéré / risque minimal</Mask>.</>,
+        <>Approche secondaire transversale : les <Mask>MIAUG</Mask> (modèles d'IA à usage général).</>,
+      ]} />
+
+      <P>L'AI Act repose sur une <Term>approche graduée par les risques</Term>, structurée en pyramide. Plus le risque est élevé, plus les obligations sont lourdes. À cette approche principale s'ajoute une approche secondaire propre aux <Term>modèles d'IA à usage général</Term>.</P>
+
+      <H level={4}>La pyramide des risques</H>
+
+      <DataTable
+        headers={["Niveau", "Catégorie", "Régime"]}
+        rows={[
+          [
+            <Strong>1. Sommet</Strong>,
+            <Strong>SIA INTERDITS</Strong>,
+            <>Pratiques jugées <Em>inacceptables</Em> au regard des droits fondamentaux : techniques subliminales, exploitation des vulnérabilités, scoring social généralisé. Application depuis le <Strong>2 février 2025</Strong>.</>
+          ],
+          [
+            <Strong>2. Étage haut</Strong>,
+            <Strong>SIA À HAUT RISQUE (SIAHR)</Strong>,
+            <>Régime <Em>le plus lourd</Em> : exigences essentielles, conformité, documentation. Catégorie centrale du règlement.</>
+          ],
+          [
+            <Strong>3. Étage médian</Strong>,
+            <Strong>SIA À RISQUE MODÉRÉ (<Art>art. 50</Art>)</Strong>,
+            <>Obligations de <Em>transparence</Em> : informer l'utilisateur qu'il interagit avec une IA ou que le contenu est généré (<Em>deepfakes</Em>).</>
+          ],
+          [
+            <Strong>4. Base</Strong>,
+            <Strong>RISQUE NUL OU MINIMAL (<Art>art. 95</Art>)</Strong>,
+            <>Catégorie par défaut. Application du droit existant + <Em>mesures éthiques volontaires</Em> (codes de conduite).</>
+          ],
+        ]}
+      />
+
+      <Callout kind="info" title="Les MIAUG (modèles à usage général, art. 53)">
+        Catégorie <Strong>transversale</Strong> visant les <Em>modèles de fondation</Em> (large language models par exemple). Obligations spécifiques notamment au regard du <Em>respect du droit d'auteur</Em>, qui pose une difficulté majeure (entraînement sur des œuvres protégées). Obligations <Em>renforcées</Em> si le modèle présente un <Term>risque systémique</Term>.
+      </Callout>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "L'AI Act repose sur :",
+          choices: [
+            "Une approche graduée par les risques, structurée en pyramide",
+            "Une approche uniforme par catégorie de SIA",
+            "Une autorisation préalable systématique",
+            "Une simple transparence en cas d'utilisation",
+          ],
+          correct: [0],
+          explanation: "L'AI Act repose sur une approche graduée par les risques, structurée en pyramide. Plus le risque est élevé, plus les obligations sont lourdes.",
+          difficulty: "easy",
+        },
+        {
+          q: "La pyramide des risques de l'AI Act distingue :",
+          choices: [
+            "SIA interdits, SIA à haut risque, SIA à risque modéré, SIA à risque nul ou minimal",
+            "Trois niveaux : interdits, autorisés, libres",
+            "Les SIA selon leur secteur d'activité",
+            "Les SIA selon leur puissance de calcul",
+          ],
+          correct: [0],
+          explanation: "Quatre niveaux : (1) Interdits ; (2) À haut risque (SIAHR) ; (3) À risque modéré (art. 50) ; (4) À risque nul ou minimal (art. 95).",
+          difficulty: "medium",
+        },
+        {
+          q: "Les SIA à risque modéré (art. 50 AI Act) impliquent :",
+          choices: [
+            "Une interdiction de principe",
+            "Des obligations de transparence : informer l'utilisateur qu'il interagit avec une IA ou que le contenu est généré (deepfakes)",
+            "Une autorisation préalable",
+            "Une évaluation de conformité renforcée",
+          ],
+          correct: [1],
+          explanation: "Art. 50 : obligations de transparence — informer l'utilisateur qu'il interagit avec une IA, ou que le contenu est généré (deepfakes).",
+          difficulty: "medium",
+        },
+        {
+          q: "Les SIA à risque nul ou minimal (art. 95 AI Act) :",
+          choices: [
+            "Sont interdits",
+            "Sont la catégorie par défaut",
+            "Doivent respecter le droit existant + des mesures éthiques volontaires (codes de conduite)",
+            "Doivent obtenir un marquage CE",
+          ],
+          correct: [1, 2],
+          explanation: "Art. 95 : catégorie par défaut. Application du droit existant + mesures éthiques volontaires (codes de conduite). Pas de marquage CE.",
+          difficulty: "hard",
+        },
+        {
+          q: "Les MIAUG (modèles d'IA à usage général, art. 53) :",
+          choices: [
+            "Sont une catégorie autonome de la pyramide",
+            "Sont une catégorie transversale qui s'ajoute à la pyramide",
+            "Visent notamment les modèles de fondation (large language models)",
+            "Voient leurs obligations renforcées s'ils présentent un risque systémique",
+          ],
+          correct: [1, 2, 3],
+          explanation: "MIAUG = catégorie TRANSVERSALE (et non autonome dans la pyramide), visant les modèles de fondation. Obligations renforcées si risque systémique (puissance de calcul élevée, capacités à fort impact).",
+          difficulty: "hard",
+        },
+      ]} />
+    </>
+  ),
+
+  "dce-ia-acteurs": ({ sectionId }) => (
+    <>
+      <H level={3}>Les acteurs concernés et leurs obligations</H>
+
+      <Pepites sectionId={sectionId} items={[
+        <>Le <Term>fournisseur</Term> <Mask>développe le SIA et le met sur le marché</Mask>.</>,
+        <>Le <Term>déployeur</Term> = personne physique ou morale qui <Mask>utilise un SIA sous sa propre autorité</Mask> (sauf usage strictement personnel).</>,
+        <>Idée à retenir : le e-commerçant qui utilise une IA est un <Mask>déployeur</Mask> et porte donc des obligations <Em>propres</Em>, <Mask>indépendamment du fournisseur</Mask>.</>,
+        <><Art>Art. 4</Art> : tous les acteurs doivent garantir un <Mask>niveau suffisant de maîtrise</Mask> de l'IA (<Em>AI literacy</Em>).</>,
+      ]} />
+
+      <P>L'AI Act distingue principalement deux acteurs. Le <Term>fournisseur</Term> développe le SIA et le met sur le marché. Le <Term>déployeur</Term> est la personne physique ou morale qui utilise un SIA sous sa propre autorité (sauf usage strictement personnel).</P>
+
+      <Callout kind="warn" title="Idée centrale">
+        Le e-commerçant qui utilise une IA est un <Strong>déployeur</Strong> et porte donc des obligations propres, <Em>indépendamment du fournisseur</Em>. L'<Art>article 4</Art> impose à tous les acteurs des mesures pour garantir un <Em>niveau suffisant de maîtrise de l'IA</Em> (<Term>AI literacy</Term>).
+      </Callout>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "L'AI Act distingue principalement deux acteurs :",
+          choices: [
+            "Le créateur et le distributeur",
+            "Le fournisseur et le déployeur",
+            "Le programmeur et le client final",
+            "Le concepteur et le mandataire",
+          ],
+          correct: [1],
+          explanation: "Deux acteurs principaux : le fournisseur (développe et met sur le marché) et le déployeur (utilise sous sa propre autorité, sauf usage strictement personnel).",
+          difficulty: "easy",
+        },
+        {
+          q: "Le déployeur au sens de l'AI Act est :",
+          choices: [
+            "Toute personne physique ou morale qui utilise un SIA sous sa propre autorité, sauf usage strictement personnel",
+            "Le fabricant du système",
+            "L'utilisateur final, peu importe le contexte",
+            "Le distributeur du SIA",
+          ],
+          correct: [0],
+          explanation: "Le déployeur = personne physique ou morale qui utilise un SIA sous sa propre autorité, sauf usage strictement personnel. Notion fonctionnelle qui inclut le e-commerçant utilisant une IA.",
+          difficulty: "medium",
+        },
+        {
+          q: "Un e-commerçant qui utilise une IA pour optimiser ses prix :",
+          choices: [
+            "N'est pas concerné par l'AI Act",
+            "Est un fournisseur",
+            "Est un déployeur et porte des obligations propres, indépendamment du fournisseur",
+            "Est exonéré tant qu'il s'appuie sur un système certifié",
+          ],
+          correct: [2],
+          explanation: "Le e-commerçant utilisant une IA est un DÉPLOYEUR. Il porte des obligations propres, indépendamment du fournisseur. C'est l'idée centrale de l'AI Act.",
+          difficulty: "hard",
+        },
+        {
+          q: "L'article 4 de l'AI Act impose :",
+          choices: [
+            "Une autorisation préalable de la Commission",
+            "Aux acteurs des mesures pour garantir un niveau suffisant de maîtrise de l'IA (AI literacy)",
+            "Une certification ISO obligatoire",
+            "Une notification systématique à l'autorité nationale",
+          ],
+          correct: [1],
+          explanation: "Art. 4 AI Act : tous les acteurs (fournisseur ET déployeur) doivent garantir un niveau suffisant de maîtrise de l'IA (AI literacy).",
+          difficulty: "medium",
+        },
+      ]} />
+    </>
+  ),
+
+  "dce-ia-interdits": ({ sectionId }) => (
+    <>
+      <H level={3}>Les SIA interdits</H>
+
+      <Pepites sectionId={sectionId} items={[
+        <>Pratiques jugées <Mask>inacceptables</Mask> au regard des droits fondamentaux.</>,
+        <>Techniques <Mask>subliminales</Mask> ; exploitation des vulnérabilités (âge, handicap, situation sociale).</>,
+        <><Mask>Scoring social généralisé</Mask> par les pouvoirs publics.</>,
+        <>Reconnaissance biométrique en temps réel dans <Mask>l'espace public</Mask> (sauf exceptions strictes).</>,
+        <>Justification : <Em>aucun bénéfice économique</Em> ne saurait justifier de tels traitements.</>,
+      ]} />
+
+      <P>Pratiques jugées <Em>inacceptables</Em> car portant atteinte de manière disproportionnée aux droits fondamentaux. Sont notamment prohibés : les SIA recourant à des <Em>techniques subliminales</Em>, ceux exploitant les vulnérabilités liées à l'<Em>âge, au handicap ou à la situation sociale</Em>, le <Term>scoring social généralisé</Term> par les pouvoirs publics, la <Em>reconnaissance biométrique en temps réel</Em> dans l'espace public (sauf exceptions strictes). L'interdiction se justifie par l'idée qu'<Strong>aucun bénéfice économique ne saurait justifier de tels traitements</Strong>.</P>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Parmi les pratiques d'IA INTERDITES par l'AI Act, on trouve :",
+          choices: [
+            "Les SIA recourant à des techniques subliminales",
+            "Les SIA exploitant les vulnérabilités liées à l'âge, au handicap ou à la situation sociale",
+            "Le scoring social généralisé par les pouvoirs publics",
+            "La reconnaissance biométrique en temps réel dans l'espace public (sauf exceptions strictes)",
+          ],
+          correct: [0, 1, 2, 3],
+          explanation: "Toutes ces pratiques sont prohibées : elles portent atteinte de manière disproportionnée aux droits fondamentaux. Aucun bénéfice économique ne saurait justifier de tels traitements.",
+          difficulty: "medium",
+        },
+        {
+          q: "Depuis quelle date les pratiques d'IA interdites s'appliquent-elles ?",
+          choices: [
+            "Le 13 juin 2024 (date du règlement)",
+            "Le 25 mai 2018",
+            "Le 2 février 2025",
+            "Le 11 janvier 2025",
+          ],
+          correct: [2],
+          explanation: "Les pratiques interdites de l'AI Act s'appliquent depuis le 2 février 2025. (13 juin 2024 = date du règlement ; 11 janv. 2025 = Data Act ; 25 mai 2018 = RGPD.)",
+          difficulty: "hard",
+        },
+        {
+          q: "La justification de l'interdiction des SIA inacceptables repose sur l'idée que :",
+          choices: [
+            "Le coût économique est trop élevé",
+            "Aucun bénéfice économique ne saurait justifier de tels traitements",
+            "La technologie n'est pas encore mature",
+            "Les pouvoirs publics doivent les développer eux-mêmes",
+          ],
+          correct: [1],
+          explanation: "L'interdiction se justifie par l'idée qu'aucun bénéfice économique ne saurait justifier des traitements portant atteinte de manière disproportionnée aux droits fondamentaux.",
+          difficulty: "medium",
+        },
+      ]} />
+    </>
+  ),
+
+  "dce-ia-siahr": ({ sectionId }) => (
+    <>
+      <H level={3}>La régulation des SIA à haut risque (SIAHR)</H>
+
+      <Pepites sectionId={sectionId} items={[
+        <>Classification <Mask>duale (art. 6)</Mask> : 2 portes d'entrée alternatives.</>,
+        <>1ère porte (<Art>art. 6 §1, annexe I</Art>) : SIA déjà soumis à une <Mask>législation harmonisée d'évaluation de la conformité</Mask> (sécurité produits, dispositifs médicaux, jouets, machines).</>,
+        <>2nde porte (<Art>art. 6 §2, annexe III</Art>) : <Mask>8 catégories</Mask> à haut risque par nature (biométrie, infrastructures critiques, éducation, emploi, services essentiels, application de la loi, migration, justice/démocratie).</>,
+        <>Conformité : <Mask>exigences essentielles + normes techniques harmonisées</Mask> → présomption de conformité.</>,
+        <>7 exigences essentielles cumulatives : <Mask>gestion des risques, gouvernance des données, documentation, logs, transparence, contrôle humain, exactitude/robustesse</Mask>.</>,
+      ]} />
+
+      <H level={4}>1. La classification duale (art. 6)</H>
+
+      <P>Deux <Em>portes d'entrée alternatives</Em> à la qualification de haut risque. <Strong>Première porte</Strong> (<Art>art. 6 §1, annexe I</Art>) : les SIA déjà soumis à une <Em>législation harmonisée d'évaluation de la conformité</Em> (sécurité des produits, dispositifs médicaux, jouets, machines). <Strong>Seconde porte</Strong> (<Art>art. 6 §2, annexe III</Art>) : les SIA destinés à des <Em>activités à haut risque par nature</Em>, listées dans <Strong>huit catégories</Strong> (biométrie, infrastructures critiques, éducation et formation professionnelle, emploi et gestion des travailleurs, accès aux services essentiels, application de la loi, migration et frontières, justice et processus démocratiques).</P>
+
+      <H level={4}>2. La conformité</H>
+
+      <P>Le mécanisme repose sur deux niveaux articulés : des <Term>exigences essentielles</Term> posées par l'AI Act (principes généraux à respecter) et des <Term>normes techniques harmonisées</Term> qui les précisent. <Strong>Le respect de ces normes harmonisées emporte une présomption de conformité</Strong>, très précieuse pour les fournisseurs. Une <Em>procédure d'évaluation de la conformité</Em> est requise et doit être renouvelée en cas de <Em>modification substantielle</Em> du système.</P>
+
+      <H level={4}>3. Les sept exigences essentielles</H>
+
+      <DataTable
+        headers={["#", "Exigence"]}
+        rows={[
+          [<Strong>(i)</Strong>, <>Système de <Strong>gestion des risques</Strong>.</>],
+          [<Strong>(ii)</Strong>, <><Strong>Gouvernance des données</Strong> (entraînement, validation, test).</>],
+          [<Strong>(iii)</Strong>, <><Strong>Documentation technique</Strong> complète.</>],
+          [<Strong>(iv)</Strong>, <>Système d'<Strong>enregistrement des événements</Strong> (logs).</>],
+          [<Strong>(v)</Strong>, <><Strong>Transparence</Strong> suffisante envers les utilisateurs.</>],
+          [<Strong>(vi)</Strong>, <>Garantie d'un <Strong>contrôle humain</Strong> (<Em>human oversight</Em>).</>],
+          [<Strong>(vii)</Strong>, <>Niveau adéquat d'<Strong>exactitude, robustesse et cybersécurité</Strong>.</>],
+        ]}
+      />
+
+      <P>Ces exigences sont précisées par les <Em>normes techniques harmonisées</Em> en cours d'élaboration (10 domaines clés, processus dans le cadre du <Term>JTC 21</Term>).</P>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "L'article 6 de l'AI Act prévoit deux portes d'entrée à la qualification de SIA à haut risque (SIAHR). Lesquelles ?",
+          choices: [
+            "Les SIA déjà soumis à une législation harmonisée d'évaluation de la conformité (annexe I)",
+            "Les SIA destinés à des activités à haut risque par nature (annexe III)",
+            "Les SIA présentant un risque systémique (annexe II)",
+            "Les SIA utilisés par des opérateurs publics",
+          ],
+          correct: [0, 1],
+          explanation: "Deux portes ALTERNATIVES : (i) art. 6 §1, annexe I = SIA déjà soumis à législation harmonisée (sécurité produits, dispositifs médicaux, jouets, machines) ; (ii) art. 6 §2, annexe III = activités à haut risque par nature.",
+          difficulty: "hard",
+        },
+        {
+          q: "L'annexe III de l'AI Act liste combien de catégories d'activités à haut risque par nature ?",
+          choices: [
+            "5",
+            "6",
+            "8",
+            "10",
+          ],
+          correct: [2],
+          explanation: "Annexe III : 8 catégories à haut risque par nature : biométrie, infrastructures critiques, éducation et formation professionnelle, emploi et gestion des travailleurs, accès aux services essentiels, application de la loi, migration et frontières, justice et processus démocratiques.",
+          difficulty: "hard",
+        },
+        {
+          q: "Parmi les 8 catégories d'activités à haut risque par nature (annexe III), figurent :",
+          choices: [
+            "Biométrie et infrastructures critiques",
+            "Éducation et formation professionnelle, emploi et gestion des travailleurs",
+            "Accès aux services essentiels, application de la loi",
+            "Migration et frontières, justice et processus démocratiques",
+          ],
+          correct: [0, 1, 2, 3],
+          explanation: "Les 8 catégories de l'annexe III : biométrie, infrastructures critiques, éducation, emploi, services essentiels, application de la loi, migration/frontières, justice/démocratie.",
+          difficulty: "medium",
+        },
+        {
+          q: "La conformité des SIAHR repose sur :",
+          choices: [
+            "Des exigences essentielles posées par l'AI Act + des normes techniques harmonisées qui les précisent",
+            "Une autorisation préalable systématique de la Commission",
+            "Le respect du seul RGPD",
+            "Des exigences essentielles uniquement, sans normes techniques",
+          ],
+          correct: [0],
+          explanation: "Mécanisme à deux niveaux : exigences essentielles (AI Act) + normes techniques harmonisées qui les précisent. Le respect des normes harmonisées emporte une PRÉSOMPTION DE CONFORMITÉ très précieuse pour les fournisseurs.",
+          difficulty: "medium",
+        },
+        {
+          q: "Le respect des normes techniques harmonisées :",
+          choices: [
+            "Emporte une présomption de conformité",
+            "Constitue une obligation absolue",
+            "Doit être renouvelé en cas de modification substantielle du système",
+            "Est sans effet sur la procédure d'évaluation de conformité",
+          ],
+          correct: [0, 2],
+          explanation: "Le respect des normes harmonisées emporte une présomption de conformité. La procédure d'évaluation de conformité doit être renouvelée en cas de modification substantielle du système.",
+          difficulty: "hard",
+        },
+        {
+          q: "Les sept exigences essentielles cumulatives applicables aux SIAHR sont :",
+          choices: [
+            "Système de gestion des risques + gouvernance des données + documentation technique",
+            "Système d'enregistrement des événements (logs) + transparence",
+            "Garantie d'un contrôle humain (human oversight)",
+            "Niveau adéquat d'exactitude, robustesse et cybersécurité",
+          ],
+          correct: [0, 1, 2, 3],
+          explanation: "7 exigences essentielles cumulatives : (i) gestion des risques ; (ii) gouvernance des données ; (iii) documentation technique ; (iv) logs ; (v) transparence ; (vi) contrôle humain ; (vii) exactitude/robustesse/cybersécurité.",
+          difficulty: "hard",
+        },
+        {
+          q: "Le processus d'élaboration des normes techniques harmonisées s'effectue notamment dans le cadre :",
+          choices: [
+            "Du JTC 21",
+            "Du Bureau européen de l'IA seul",
+            "De la CNIL",
+            "De l'ARCOM",
+          ],
+          correct: [0],
+          explanation: "Les normes techniques harmonisées sont élaborées dans le cadre du JTC 21 (10 domaines clés).",
+          difficulty: "hard",
+        },
+      ]} />
+    </>
+  ),
+
+  "dce-ia-repartition": ({ sectionId }) => (
+    <>
+      <H level={3}>La répartition des obligations entre les acteurs</H>
+
+      <Pepites sectionId={sectionId} items={[
+        <>Schéma <Mask>hiérarchisé</Mask> tout au long de la chaîne de valeur.</>,
+        <><Term>Fournisseur</Term> : charge la plus lourde — <Mask>conception conforme, documentation, marquage CE, évaluation, surveillance après mise sur le marché</Mask>.</>,
+        <>Mandataires, importateurs, distributeurs : <Mask>relais</Mask> — vérifier la conformité avant mise sur le marché.</>,
+        <><Term>Déployeur</Term> : obligations <Mask>plus légères</Mask> mais non négligeables — utilisation conforme aux instructions, surveillance, conservation des journaux, information des personnes affectées.</>,
+        <>Synthèse : régulation <Mask>partagée</Mask> tout au long de la chaîne de valeur de l'IA.</>,
+      ]} />
+
+      <P>Les obligations se répartissent selon un schéma hiérarchisé. Le <Term>fournisseur</Term> supporte la charge la plus lourde : conception conforme, documentation, marquage CE, évaluation de la conformité, <Em>surveillance après commercialisation</Em>. Les <Term>mandataires, importateurs et distributeurs</Term> sont relais de cette obligation et doivent vérifier la conformité avant mise sur le marché. Le <Term>déployeur</Term> a des obligations plus légères mais non négligeables : utilisation conforme aux instructions, surveillance du fonctionnement, conservation des journaux, information des personnes affectées dans certains cas.</P>
+
+      <Callout kind="info" title="Synthèse">
+        La régulation est <Strong>partagée tout au long de la chaîne de valeur</Strong> de l'IA. Aucun acteur n'est entièrement déchargé : même le déployeur — un simple commerçant qui utilise une IA — porte des obligations propres.
+      </Callout>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Le fournisseur d'un SIAHR supporte notamment :",
+          choices: [
+            "La conception conforme et la documentation",
+            "Le marquage CE et l'évaluation de la conformité",
+            "La surveillance après commercialisation",
+            "L'utilisation conforme aux instructions",
+          ],
+          correct: [0, 1, 2],
+          explanation: "Le fournisseur supporte la charge la plus lourde : conception conforme, documentation, marquage CE, évaluation de la conformité, surveillance après commercialisation. L'utilisation conforme aux instructions est une obligation du DÉPLOYEUR.",
+          difficulty: "hard",
+        },
+        {
+          q: "Les mandataires, importateurs et distributeurs :",
+          choices: [
+            "Supportent les mêmes obligations que le fournisseur",
+            "Sont des relais : ils doivent vérifier la conformité avant la mise sur le marché",
+            "Sont totalement exonérés",
+            "Ne sont pas concernés par l'AI Act",
+          ],
+          correct: [1],
+          explanation: "Les mandataires, importateurs et distributeurs sont des relais : ils doivent vérifier la conformité avant la mise sur le marché.",
+          difficulty: "medium",
+        },
+        {
+          q: "Le déployeur d'un SIAHR doit notamment :",
+          choices: [
+            "Utiliser le système conformément aux instructions",
+            "Surveiller le fonctionnement",
+            "Conserver les journaux (logs)",
+            "Informer les personnes affectées dans certains cas",
+          ],
+          correct: [0, 1, 2, 3],
+          explanation: "Obligations du déployeur : utilisation conforme aux instructions, surveillance, conservation des journaux, information des personnes affectées dans certains cas. Obligations « plus légères mais non négligeables ».",
+          difficulty: "medium",
+        },
+        {
+          q: "L'idée de synthèse de la répartition des obligations dans l'AI Act est :",
+          choices: [
+            "La régulation pèse uniquement sur le fournisseur",
+            "La régulation est partagée tout au long de la chaîne de valeur de l'IA",
+            "Le déployeur est entièrement déchargé",
+            "Le distributeur supporte la charge la plus lourde",
+          ],
+          correct: [1],
+          explanation: "Synthèse : la régulation est partagée tout au long de la chaîne de valeur. Aucun acteur n'est entièrement déchargé — même le déployeur (e-commerçant) porte des obligations propres.",
+          difficulty: "easy",
+        },
+      ]} />
+    </>
+  ),
+
+  "dce-ia-miaug": ({ sectionId }) => (
+    <>
+      <H level={3}>Les SIA à usage général (MIAUG)</H>
+
+      <Pepites sectionId={sectionId} items={[
+        <>Catégorie <Mask>autonome et transversale</Mask> à la pyramide.</>,
+        <>Régime spécifique <Art>art. 53</Art> : <Mask>transparence (documentation, résumé du contenu d'entraînement)</Mask>, respect du droit d'auteur, coopération avec la Commission.</>,
+        <>Régime <Mask>renforcé</Mask> pour les modèles à <Em>risque systémique</Em> (puissance de calcul élevée, capacités à fort impact).</>,
+        <>Difficulté majeure : entraînement sur <Mask>œuvres protégées</Mask> par le droit d'auteur.</>,
+      ]} />
+
+      <P>Catégorie <Em>autonome</Em> des MIAUG, <Strong>transversale à la pyramide</Strong>. Régime spécifique fondé sur l'<Art>article 53</Art> : obligations de <Em>transparence</Em> (documentation technique, résumé du contenu d'entraînement), <Em>respect du droit d'auteur</Em> (politique de conformité au droit de l'UE), coopération avec la Commission. Régime <Strong>renforcé</Strong> pour les modèles présentant un <Term>risque systémique</Term> (puissance de calcul élevée, capacités à fort impact).</P>
+
+      <Callout kind="tension" title="Effet boîte noire vs transparence">
+        L'AI Act exige la <Em>traçabilité</Em> d'un système qui, par construction, est auto-apprenant et opaque. C'est l'<Term>aporie centrale</Term> du règlement. Le <Strong>contrôle humain</Strong> (<Art>art. 14</Art>) tente d'y répondre : à défaut d'expliquer pleinement le résultat, on garantit qu'un humain peut intervenir et désactiver. Compromis pragmatique entre transparence et faisabilité technique.
+      </Callout>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Les MIAUG (modèles d'IA à usage général) constituent :",
+          choices: [
+            "Une catégorie autonome qui remplace la pyramide",
+            "Une catégorie autonome et transversale à la pyramide",
+            "Un sous-ensemble des SIAHR",
+            "Une catégorie réservée aux modèles publics",
+          ],
+          correct: [1],
+          explanation: "MIAUG = catégorie autonome et TRANSVERSALE à la pyramide. Elle vise les modèles de fondation (LLM par exemple).",
+          difficulty: "medium",
+        },
+        {
+          q: "Selon l'article 53 de l'AI Act, les MIAUG sont soumis à des obligations de :",
+          choices: [
+            "Transparence (documentation technique, résumé du contenu d'entraînement)",
+            "Respect du droit d'auteur (politique de conformité au droit de l'UE)",
+            "Coopération avec la Commission",
+            "Marquage CE systématique",
+          ],
+          correct: [0, 1, 2],
+          explanation: "Art. 53 : transparence (doc + résumé entraînement), respect du droit d'auteur, coopération avec la Commission. Le marquage CE n'est pas une obligation propre des MIAUG (il concerne les SIAHR).",
+          difficulty: "hard",
+        },
+        {
+          q: "Les MIAUG voient leurs obligations renforcées s'ils :",
+          choices: [
+            "Sont entraînés en UE",
+            "Présentent un risque systémique (puissance de calcul élevée, capacités à fort impact)",
+            "Sont commercialisés à grande échelle",
+            "Reposent sur des modèles open-source",
+          ],
+          correct: [1],
+          explanation: "Régime renforcé pour les modèles à RISQUE SYSTÉMIQUE : puissance de calcul élevée, capacités à fort impact. Le caractère open-source ou la zone d'entraînement ne déclenchent pas le régime renforcé.",
+          difficulty: "hard",
+        },
+        {
+          q: "La difficulté majeure soulevée par les MIAUG concerne :",
+          choices: [
+            "La protection des données personnelles",
+            "Le respect du droit d'auteur (entraînement sur des œuvres protégées)",
+            "La concurrence déloyale entre modèles",
+            "La sécurité des serveurs",
+          ],
+          correct: [1],
+          explanation: "Le respect du droit d'auteur pose une difficulté majeure pour les MIAUG : entraînement sur des œuvres protégées sans consentement explicite des auteurs.",
+          difficulty: "medium",
+        },
+      ]} />
+    </>
+  ),
+
+  "dce-conclusion": ({ sectionId }) => (
+    <>
+      <H level={1}>Synthèse — Tensions clés pour la dissertation</H>
+
+      <Pepites sectionId={sectionId} variant="boussole" items={[
+        <><Mask>Innovation</Mask> vs <Mask>droits fondamentaux</Mask> — toute la matière est structurée autour de cette mise en balance.</>,
+        <><Mask>Souveraineté européenne</Mask> vs <Mask>domination GAFAM</Mask> — extraterritorialité du RGPD, jurisprudence offensive.</>,
+        <><Mask>Régulation par les risques</Mask> vs autorisation préalable — choix philosophique majeur (accountability + pyramide).</>,
+        <>DSA / RGPD : <Mask>cumulatifs</Mask> (CJUE 2 déc. 2025).</>,
+        <>Données perso vs non perso : <Mask>logiques opposées</Mask> ; frontière (anonymisation) <Em>mouvante</Em>.</>,
+        <>Effet boîte noire IA vs transparence : aporie résolue par le <Mask>contrôle humain</Mask> (art. 14 AI Act).</>,
+      ]} />
+
+      <DataTable
+        headers={["Tension", "Manifestation"]}
+        rows={[
+          [
+            <Strong>Innovation économique vs droits fondamentaux</Strong>,
+            <>Tout le RGPD et l'AI Act sont structurés autour de cette mise en balance : intérêts légitimes des entreprises confrontés à la vie privée et à l'<Em>autodétermination informationnelle</Em>.</>
+          ],
+          [
+            <Strong>Souveraineté européenne vs domination GAFAM</Strong>,
+            <>Le droit européen (RGPD, AI Act, Data Act) tente de reprendre la main sur des acteurs extra-européens. Les affaires <Em>Facebook/Instagram, SNCF Connect, revenge porn</Em> témoignent d'une jurisprudence offensive.</>
+          ],
+          [
+            <Strong>Régulation par les risques vs autorisation préalable</Strong>,
+            <>Choix philosophique majeur : le législateur européen a opté pour l'<Em>accountability</Em> (<Art>art. 24</Art>) et la pyramide AI Act, <Strong>pas</Strong> pour un régime d'autorisation administrative.</>
+          ],
+          [
+            <Strong>DSA / RGPD : régimes parallèles ou cumulatifs ?</Strong>,
+            <>La <Cas>CJUE 2 décembre 2025</Cas> tranche en faveur du <Em>cumul</Em> : la responsabilité atténuée des PSI (DSA) n'écarte pas l'application du RGPD si la plateforme est responsable de traitement.</>
+          ],
+          [
+            <Strong>Données personnelles vs non personnelles</Strong>,
+            <>Logiques <Em>opposées</Em> : protection forte (RGPD) contre libre circulation (Data Act). La frontière (anonymisation) est <Em>mouvante</Em> et techniquement fragile.</>
+          ],
+          [
+            <Strong>Effet boîte noire vs transparence</Strong>,
+            <>Difficulté centrale de l'AI Act : exiger la traçabilité d'un système auto-apprenant. Le <Em>contrôle humain</Em> (<Art>art. 14</Art>) tente de répondre à cette aporie.</>
+          ],
+        ]}
+      />
+
+      <Callout kind="prof" title="Conclusion à retenir">
+        Le Titre 2 illustre un mouvement général du droit numérique vers une <Strong>régulation graduée et coordonnée</Strong>. La donnée (matière première) et l'IA (outil) ne sont <Em>pas pensées séparément</Em> mais comme un écosystème, ce qui justifie l'articulation systématique entre <Term>RGPD, Data Act, AI Act, DSA et DMA</Term>. Pour une dissertation, montrer que ces textes ne se concurrencent pas mais se <Strong>complètent dans une logique de protection multi-niveaux</Strong>.
+      </Callout>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Selon la fiche, la tension structurante entre innovation économique et droits fondamentaux se manifeste :",
+          choices: [
+            "Uniquement dans le RGPD",
+            "Uniquement dans l'AI Act",
+            "Tout le RGPD et l'AI Act sont structurés autour de cette mise en balance",
+            "Uniquement dans le Data Act",
+          ],
+          correct: [2],
+          explanation: "Tout le RGPD et l'AI Act sont structurés autour de la mise en balance entre intérêts légitimes des entreprises et vie privée / autodétermination informationnelle.",
+          difficulty: "medium",
+        },
+        {
+          q: "Quelle jurisprudence tranche en faveur du CUMUL des régimes DSA et RGPD ?",
+          choices: [
+            "CJUE 12 janvier 2023",
+            "CJUE 4 mai 2023",
+            "CJUE 4 septembre 2025",
+            "CJUE 2 décembre 2025",
+          ],
+          correct: [3],
+          explanation: "CJUE 2 décembre 2025 (revenge porn, C-492/23) : la responsabilité atténuée des PSI (DSA) n'écarte pas l'application du RGPD si la plateforme est responsable de traitement. DSA et RGPD se cumulent.",
+          difficulty: "hard",
+        },
+        {
+          q: "La frontière entre données personnelles (RGPD, protection forte) et données non personnelles (Data Act, libre circulation) est :",
+          choices: [
+            "Étanche et stable",
+            "L'anonymisation, mais elle est techniquement fragile et juridiquement instable",
+            "Le consentement de la personne",
+            "La nature de l'acteur traitant",
+          ],
+          correct: [1],
+          explanation: "La frontière est l'anonymisation, mais elle est techniquement fragile (réidentification souvent possible) et juridiquement instable.",
+          difficulty: "hard",
+        },
+        {
+          q: "Face à l'effet boîte noire de l'IA, l'AI Act répond par :",
+          choices: [
+            "Une interdiction de toute IA auto-apprenante",
+            "Le contrôle humain (art. 14) — à défaut d'expliquer pleinement le résultat, on garantit qu'un humain peut intervenir",
+            "Un système d'autorisation préalable",
+            "Une obligation d'explicabilité absolue",
+          ],
+          correct: [1],
+          explanation: "Le contrôle humain (art. 14 AI Act) est la réponse pragmatique à l'effet boîte noire : à défaut d'expliquer pleinement, on garantit qu'un humain peut intervenir et désactiver.",
+          difficulty: "hard",
+        },
+        {
+          q: "La conclusion à retenir pour la dissertation est que :",
+          choices: [
+            "RGPD, Data Act, AI Act, DSA et DMA se concurrencent",
+            "Ces textes se complètent dans une logique de protection multi-niveaux",
+            "La donnée et l'IA sont pensées séparément",
+            "La régulation européenne reste un patchwork incohérent",
+          ],
+          correct: [1],
+          explanation: "Conclusion : ces textes ne se concurrencent pas mais se complètent dans une logique de protection multi-niveaux. La donnée et l'IA sont pensées comme un écosystème, ce qui justifie leur articulation systématique.",
+          difficulty: "medium",
+        },
+        {
+          q: "Le choix philosophique structurant du droit européen du numérique est :",
+          choices: [
+            "L'autorisation préalable systématique",
+            "La régulation par les risques et l'accountability (art. 24 RGPD, pyramide AI Act)",
+            "L'autorégulation industrielle pure",
+            "La sanction pénale comme outil principal",
+          ],
+          correct: [1],
+          explanation: "Le législateur européen a opté pour l'accountability (art. 24 RGPD) et la pyramide AI Act, c'est-à-dire la régulation par les risques — pas pour un régime d'autorisation administrative préalable.",
+          difficulty: "medium",
+        },
+      ]} />
+    </>
+  ),
+};
+
+// ============================================================
+// REGISTRE DES FICHES
+// ============================================================
+const FICHES = {
+  bancaire: {
+    name: "Droit bancaire",
+    subtitle: "Fiche d'apprentissage — mimi hater",
+    TOC,
+    SECTIONS,
+    defaultId: "intro",
+  },
+  dce: {
+    name: "Droit du commerce électronique",
+    subtitle: "Titre 2 — Données & IA",
+    TOC: TOC_DCE,
+    SECTIONS: SECTIONS_DCE,
+    defaultId: "dce-intro",
+  },
+};
+
+// ============================================================
 // COMPOSANT PRINCIPAL
 // ============================================================
 export default function App() {
-  const [currentId, setCurrentId] = useState("intro");
+  const [activeFiche, setActiveFiche] = useState("bancaire");
+  const fiche = FICHES[activeFiche];
+  const [currentId, setCurrentId] = useState(fiche.defaultId);
   const [progress, setProgress] = useState({}); // {sectionId: { confidence, lastReviewed, nextDue, reviewCount } | null}
   const [bookmarks, setBookmarks] = useState({});
   const [notes, setNotes] = useState({});
@@ -4203,6 +6249,7 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(() => typeof window === "undefined" || window.innerWidth >= 720);
   const [sidebarHover, setSidebarHover] = useState(false);
   const [notesOpen, setNotesOpen] = useState(false);
+  const [ficheMenuOpen, setFicheMenuOpen] = useState(false);
   const [draftNote, setDraftNote] = useState("");
   const [maskedMode, setMaskedMode] = useState({ pepites: false, cas: false });
   const [reviewMode, setReviewMode] = useState(false);
@@ -4211,6 +6258,10 @@ export default function App() {
   const [examPool, setExamPool] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const contentRef = useRef(null);
+  // Garde-fou : indique à quelle fiche les données en mémoire appartiennent.
+  // Empêche un effet de sauvegarde de persister les données de l'ancienne fiche
+  // dans le storage de la nouvelle juste après un changement de fiche.
+  const loadedFicheRef = useRef(null);
 
   // === Synchroniser isMobile avec la taille de fenêtre ===
   useEffect(() => {
@@ -4247,11 +6298,48 @@ export default function App() {
     };
   }, []);
 
-  // === Charger état depuis storage ===
+  // === Charger la fiche active (une seule fois) ===
   useEffect(() => {
     (async () => {
       try {
-        const p = await window.storage.get("progress");
+        const f = await window.storage.get("activeFiche");
+        if (f && f.value && FICHES[f.value]) setActiveFiche(f.value);
+      } catch (e) {}
+    })();
+  }, []);
+
+  // === Migration unique des clés legacy → bancaire ===
+  useEffect(() => {
+    (async () => {
+      try {
+        const migrated = await window.storage.get("legacy_migrated_v1");
+        if (migrated && migrated.value === "1") return;
+        const keys = ["progress", "bookmarks", "notes", "currentId"];
+        for (const k of keys) {
+          const old = await window.storage.get(k);
+          const newer = await window.storage.get(`${k}_bancaire`);
+          if (old && old.value && (!newer || !newer.value)) {
+            await window.storage.set(`${k}_bancaire`, old.value);
+          }
+        }
+        await window.storage.set("legacy_migrated_v1", "1");
+      } catch (e) {}
+    })();
+  }, []);
+
+  // === Charger état (par fiche) depuis storage ===
+  useEffect(() => {
+    setLoaded(false);
+    loadedFicheRef.current = null;
+    (async () => {
+      // Reset state pour la nouvelle fiche
+      setProgress({});
+      setBookmarks({});
+      setNotes({});
+      setCurrentId(fiche.defaultId);
+
+      try {
+        const p = await window.storage.get(`progress_${activeFiche}`);
         if (p && p.value) {
           const raw = JSON.parse(p.value);
           const migrated = {};
@@ -4270,16 +6358,16 @@ export default function App() {
         }
       } catch (e) {}
       try {
-        const b = await window.storage.get("bookmarks");
+        const b = await window.storage.get(`bookmarks_${activeFiche}`);
         if (b && b.value) setBookmarks(JSON.parse(b.value));
       } catch (e) {}
       try {
-        const n = await window.storage.get("notes");
+        const n = await window.storage.get(`notes_${activeFiche}`);
         if (n && n.value) setNotes(JSON.parse(n.value));
       } catch (e) {}
       try {
-        const c = await window.storage.get("currentId");
-        if (c && c.value) setCurrentId(c.value);
+        const c = await window.storage.get(`currentId_${activeFiche}`);
+        if (c && c.value && fiche.SECTIONS[c.value]) setCurrentId(c.value);
       } catch (e) {}
       try {
         const m = await window.storage.get("maskedMode");
@@ -4295,32 +6383,43 @@ export default function App() {
           }
         }
       } catch (e) {}
+
       // ouvrir tous les groupes par défaut
       const groups = {};
-      TOC.forEach(s => { groups[s.group] = true; });
+      fiche.TOC.forEach(s => { groups[s.group] = true; });
       setOpenGroups(groups);
+      loadedFicheRef.current = activeFiche;
       setLoaded(true);
     })();
-  }, []);
+  }, [activeFiche]);
 
-  // === Sauvegarder dans storage ===
+  // === Sauvegarder dans storage (par fiche) — garde-fou contre fiche désynchronisée ===
   useEffect(() => {
-    if (loaded) {
-      window.storage.set("progress", JSON.stringify(progress)).catch(() => {});
+    if (loaded && loadedFicheRef.current === activeFiche) {
+      window.storage.set(`progress_${activeFiche}`, JSON.stringify(progress)).catch(() => {});
     }
-  }, [progress, loaded]);
+  }, [progress, loaded, activeFiche]);
   useEffect(() => {
-    if (loaded) window.storage.set("bookmarks", JSON.stringify(bookmarks)).catch(() => {});
-  }, [bookmarks, loaded]);
+    if (loaded && loadedFicheRef.current === activeFiche) {
+      window.storage.set(`bookmarks_${activeFiche}`, JSON.stringify(bookmarks)).catch(() => {});
+    }
+  }, [bookmarks, loaded, activeFiche]);
   useEffect(() => {
-    if (loaded) window.storage.set("notes", JSON.stringify(notes)).catch(() => {});
-  }, [notes, loaded]);
+    if (loaded && loadedFicheRef.current === activeFiche) {
+      window.storage.set(`notes_${activeFiche}`, JSON.stringify(notes)).catch(() => {});
+    }
+  }, [notes, loaded, activeFiche]);
   useEffect(() => {
-    if (loaded) window.storage.set("currentId", currentId).catch(() => {});
-  }, [currentId, loaded]);
+    if (loaded && loadedFicheRef.current === activeFiche) {
+      window.storage.set(`currentId_${activeFiche}`, currentId).catch(() => {});
+    }
+  }, [currentId, loaded, activeFiche]);
   useEffect(() => {
     if (loaded) window.storage.set("maskedMode", JSON.stringify(maskedMode)).catch(() => {});
   }, [maskedMode, loaded]);
+  useEffect(() => {
+    window.storage.set("activeFiche", activeFiche).catch(() => {});
+  }, [activeFiche]);
 
   // === Charger draft note quand on change de section ===
   useEffect(() => {
@@ -4379,7 +6478,7 @@ export default function App() {
   const toggleBookmark = (id) => setBookmarks(b => ({ ...b, [id]: !b[id] }));
   const saveNote = () => setNotes(n => ({ ...n, [currentId]: draftNote }));
 
-  const flatTOC = TOC;
+  const flatTOC = fiche.TOC;
   const currentIdx = flatTOC.findIndex(s => s.id === currentId);
 
   const dueCount = useMemo(
@@ -4454,7 +6553,7 @@ export default function App() {
   const totalSections = flatTOC.length;
   const percentage = Math.round((totalGreen / totalSections) * 100);
 
-  const Current = SECTIONS[currentId] || (() => <div>Section introuvable</div>);
+  const Current = fiche.SECTIONS[currentId] || (() => <div>Section introuvable</div>);
 
   return (
     <ProgressContext.Provider value={{ setConfidence, getConfidence }}>
@@ -4493,7 +6592,7 @@ export default function App() {
       {/* === Pré-rendu caché : peuple QUESTION_REGISTRY pour l'examen blanc === */}
       {loaded && (
         <div style={{ position: "absolute", width: 0, height: 0, overflow: "hidden", pointerEvents: "none", opacity: 0 }} aria-hidden="true">
-          {Object.entries(SECTIONS).map(([id, Section]) => (
+          {Object.entries(fiche.SECTIONS).map(([id, Section]) => (
             <Section key={id} sectionId={id} />
           ))}
         </div>
@@ -4543,7 +6642,7 @@ export default function App() {
               whiteSpace: "nowrap",
               overflow: "hidden",
               textOverflow: "ellipsis",
-            }}>Droit bancaire</div>
+            }}>{fiche.name}</div>
             <div style={{
               fontSize: 11,
               color: C.inkSoft,
@@ -4551,7 +6650,7 @@ export default function App() {
               textTransform: "uppercase",
               fontWeight: 500,
               display: isMobile ? "none" : "block",
-            }}>Fiche d'apprentissage — mimi hater</div>
+            }}>{fiche.subtitle}</div>
           </div>
         </div>
 
@@ -4666,7 +6765,9 @@ export default function App() {
 
           <button
             onClick={() => {
+              const ficheSectionIds = new Set(fiche.TOC.map(t => t.id));
               const allQuestions = Object.entries(QUESTION_REGISTRY)
+                .filter(([sId]) => ficheSectionIds.has(sId))
                 .flatMap(([sId, qs]) => qs.map(q => ({ ...q, _sectionId: sId })));
               const weighted = allQuestions.map(q => {
                 const conf = progress[q._sectionId]?.confidence;
@@ -4732,6 +6833,23 @@ export default function App() {
               <div style={{ flex: totalGreen,  backgroundColor: CONFIDENCE.green.color }}/>
             </div>
           </div>
+          {isMobile && (
+            <button onClick={() => setFicheMenuOpen(o => !o)} style={{
+              background: ficheMenuOpen ? C.burgundy : "transparent",
+              color: ficheMenuOpen ? C.paper : C.ink,
+              border: `1px solid ${C.rule}`,
+              borderRadius: 4,
+              padding: "6px 10px",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+              fontSize: 12,
+              fontWeight: 500,
+            }} title="Changer de fiche">
+              <BookOpen size={14}/>
+            </button>
+          )}
           {isMobile && (
             <button onClick={() => setNotesOpen(o => !o)} style={{
               background: notesOpen ? C.navy : "transparent",
@@ -5317,6 +7435,133 @@ export default function App() {
             </div>
           </div>
         </main>
+
+        {/* === FICHE SWITCHER (ball + popup) — au-dessus du panneau de notes === */}
+        {!isMobile && (
+          <div style={{
+            position: "fixed",
+            right: 12,
+            top: "calc(50vh - 96px)",
+            width: 56,
+            height: 56,
+            zIndex: 31,
+          }}>
+            <button
+              onClick={() => setFicheMenuOpen(o => !o)}
+              style={{
+                width: 56,
+                height: 56,
+                borderRadius: 28,
+                background: "rgba(255, 255, 255, 0.08)",
+                backdropFilter: "url(#liquid-glass) blur(10px) saturate(160%)",
+                WebkitBackdropFilter: "blur(10px) saturate(160%)",
+                border: "1px solid rgba(255, 255, 255, 0.16)",
+                boxShadow: "inset 0 0 20px -5px rgba(255, 255, 255, 0.7), 0 8px 32px rgba(0, 0, 0, 0.25)",
+                cursor: "pointer",
+                color: C.ink,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: 0,
+                transition: "transform 0.2s ease",
+              }}
+              onMouseEnter={e => e.currentTarget.style.transform = "scale(1.05)"}
+              onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
+              title="Changer de fiche"
+            >
+              <BookOpen size={22} color={C.burgundy}/>
+            </button>
+          </div>
+        )}
+
+        {/* === FICHE MENU (popup, desktop + mobile) === */}
+        {ficheMenuOpen && (
+          <>
+            <div
+              onClick={() => setFicheMenuOpen(false)}
+              style={{
+                position: "fixed",
+                inset: 0,
+                zIndex: 39,
+                cursor: "default",
+              }}
+            />
+            <div style={{
+              position: "fixed",
+              right: isMobile ? 12 : 80,
+              top: isMobile ? 70 : "calc(50vh - 96px)",
+              minWidth: 260,
+              backgroundColor: "rgba(22, 34, 65, 0.92)",
+              backdropFilter: "url(#liquid-glass) blur(14px) saturate(170%)",
+              WebkitBackdropFilter: "blur(14px) saturate(170%)",
+              border: "1px solid rgba(255, 255, 255, 0.16)",
+              borderRadius: 12,
+              boxShadow: "inset 0 0 20px -5px rgba(255, 255, 255, 0.7), 0 8px 32px rgba(0, 0, 0, 0.45)",
+              padding: 6,
+              zIndex: 40,
+            }}>
+              <div style={{
+                fontSize: 10,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                color: C.inkSoft,
+                fontWeight: 700,
+                padding: "8px 10px 6px",
+              }}>Mes fiches</div>
+              {Object.entries(FICHES).map(([id, f]) => {
+                const isActive = id === activeFiche;
+                return (
+                  <button
+                    key={id}
+                    onClick={() => {
+                      setActiveFiche(id);
+                      setFicheMenuOpen(false);
+                    }}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 10,
+                      width: "100%",
+                      padding: "10px 10px",
+                      background: isActive ? "rgba(157, 135, 224, 0.18)" : "transparent",
+                      border: "none",
+                      borderRadius: 8,
+                      cursor: "pointer",
+                      color: C.ink,
+                      fontFamily: "inherit",
+                      textAlign: "left",
+                      transition: "background 0.15s",
+                    }}
+                    onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = "rgba(255, 255, 255, 0.06)"; }}
+                    onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = "transparent"; }}
+                  >
+                    <BookOpen size={16} color={isActive ? C.burgundy : C.inkSoft}/>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{
+                        fontFamily: "'Fraunces', serif",
+                        fontSize: 14,
+                        fontWeight: 600,
+                        color: isActive ? C.navy : C.ink,
+                        lineHeight: 1.2,
+                      }}>{f.name}</div>
+                      <div style={{
+                        fontSize: 10,
+                        color: C.inkSoft,
+                        marginTop: 3,
+                        letterSpacing: "0.05em",
+                        textTransform: "uppercase",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}>{f.subtitle}</div>
+                    </div>
+                    {isActive && <Check size={14} color={C.burgundy}/>}
+                  </button>
+                );
+              })}
+            </div>
+          </>
+        )}
 
         {/* === NOTES PANEL (Liquid Glass + ball -> panel) === */}
         {(!isMobile || notesOpen) && (() => {
