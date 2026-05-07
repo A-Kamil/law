@@ -2,24 +2,24 @@ import React, { useState, useEffect, useMemo, useRef, useContext, createContext 
 import { BookOpen, ChevronRight, ChevronDown, Check, Circle, Search, Menu, X, ArrowLeft, ArrowRight, Bookmark, BookmarkCheck, FileText, Edit3, Save, Eye, EyeOff, Target, Scale } from "lucide-react";
 
 // ============================================================
-// PALETTE — Bibliothèque de droit numérique
+// PALETTE — Night Court (Velaris) — inspirée d'ACOTAR
 // ============================================================
 const C = {
-  bg:        "#F5EFE2",   // parchemin
-  paper:     "#FBF7EB",   // page
-  ink:       "#2A1F15",   // encre brune
-  inkSoft:   "#5C4A38",
-  navy:      "#1F3864",   // titres
-  navyDark:  "#162540",
-  burgundy:  "#7B2C2C",   // accents principaux
-  gold:      "#806019",   // jurisprudences
-  forest:    "#2E5236",   // position du prof
-  rule:      "#C9BFA9",   // filets
-  ruleSoft:  "#E2D9C2",
-  highlight: "#F0E5C7",   // surlignage doux
-  encadre:   "#F4ECD8",
-  encadrePos:"#E9EFDF",
-  encadreInfo:"#E8EBF2",
+  bg:        "#0E1730",   // ciel de minuit
+  paper:     "#162241",   // surface page
+  ink:       "#E8DDC9",   // parchemin lumineux
+  inkSoft:   "#A8A7B8",   // lavande sourdine
+  navy:      "#9D87E0",   // améthyste — titres
+  navyDark:  "#7B5BAB",
+  burgundy:  "#D77295",   // rose féerique — accents
+  gold:      "#F4D88C",   // étoile — jurisprudences
+  forest:    "#7BC4A8",   // écaille de dragon — position du prof
+  rule:      "#3A4870",   // filets
+  ruleSoft:  "#26314F",
+  highlight: "#1F2C50",   // pépites — surface relevée
+  encadre:   "#1A2542",
+  encadrePos:"#1B3A2E",
+  encadreInfo:"#1F2D55",
 };
 
 // ============================================================
@@ -31,7 +31,7 @@ const CONFIDENCE = {
     short: "Pas acquis",
     description: "Je ne saurais pas le restituer à l'oral.",
     color: C.burgundy,
-    bg: "#F4DCDC",
+    bg: "#3D1F2A",
     emoji: "🔴",
   },
   yellow: {
@@ -39,7 +39,7 @@ const CONFIDENCE = {
     short: "À revoir",
     description: "Je connais l'idée, mais sans solidité.",
     color: C.gold,
-    bg: "#F4ECD8",
+    bg: "#3A2E1F",
     emoji: "🟡",
   },
   green: {
@@ -47,7 +47,7 @@ const CONFIDENCE = {
     short: "Maîtrisé",
     description: "Je peux le restituer à l'oral, sans hésiter.",
     color: C.forest,
-    bg: "#E9EFDF",
+    bg: "#1F3530",
     emoji: "🟢",
   },
 };
@@ -94,6 +94,10 @@ const Cas = ({ children }) => {
   const { cas: masked } = useContext(MaskedModeContext);
   const [revealed, setRevealed] = useState(false);
 
+  useEffect(() => {
+    if (!masked) setRevealed(false);
+  }, [masked]);
+
   if (!masked || revealed) {
     return (
       <em
@@ -126,7 +130,7 @@ const Cas = ({ children }) => {
         textAlign: "center",
         fontStyle: "italic",
       }}
-      onMouseEnter={e => e.currentTarget.style.backgroundColor = "#A37D2A"}
+      onMouseEnter={e => e.currentTarget.style.backgroundColor = "#FFEAB8"}
       onMouseLeave={e => e.currentTarget.style.backgroundColor = C.gold}
       title="Cliquer pour révéler l'arrêt"
     >
@@ -187,7 +191,7 @@ const Callout = ({ children, kind = "prof", title }) => {
     prof: { bg: C.encadrePos, border: C.forest, badge: "Position du professeur", badgeColor: C.forest },
     info: { bg: C.encadreInfo, border: C.navy, badge: title || "À retenir", badgeColor: C.navy },
     warn: { bg: C.encadre, border: C.burgundy, badge: title || "Attention", badgeColor: C.burgundy },
-    tension: { bg: "#F7EFE0", border: C.gold, badge: title || "Tension fondamentale", badgeColor: C.gold },
+    tension: { bg: "#2A2645", border: C.gold, badge: title || "Tension fondamentale", badgeColor: C.gold },
   };
   const p = palette[kind];
   return (
@@ -222,6 +226,10 @@ const Callout = ({ children, kind = "prof", title }) => {
 const Mask = ({ children }) => {
   const { pepites: masked } = useContext(MaskedModeContext);
   const [revealed, setRevealed] = useState(false);
+
+  useEffect(() => {
+    if (!masked) setRevealed(false);
+  }, [masked]);
 
   if (!masked || revealed) {
     return (
@@ -1796,7 +1804,9 @@ export default function App() {
   const [notes, setNotes] = useState({});
   const [search, setSearch] = useState("");
   const [openGroups, setOpenGroups] = useState({});
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== "undefined" && window.innerWidth < 720);
+  const [sidebarOpen, setSidebarOpen] = useState(() => typeof window === "undefined" || window.innerWidth >= 720);
+  const [sidebarHover, setSidebarHover] = useState(false);
   const [notesOpen, setNotesOpen] = useState(false);
   const [draftNote, setDraftNote] = useState("");
   const [maskedMode, setMaskedMode] = useState({ pepites: false, cas: false });
@@ -1804,6 +1814,13 @@ export default function App() {
   const [reviewIndex, setReviewIndex] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const contentRef = useRef(null);
+
+  // === Synchroniser isMobile avec la taille de fenêtre ===
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < 720);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
   // === Charger fonts + keyframes pulse ===
   useEffect(() => {
@@ -1818,6 +1835,12 @@ export default function App() {
         0%, 100% { opacity: 0.6; transform: scale(1); }
         50% { opacity: 0.2; transform: scale(1.4); }
       }
+      .toc-nav { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.18) transparent; }
+      .toc-nav::-webkit-scrollbar { width: 6px; }
+      .toc-nav::-webkit-scrollbar-track { background: transparent; }
+      .toc-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
+      .toc-nav::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }
+      .toc-nav::-webkit-scrollbar-button { display: none; }
     `;
     document.head.appendChild(style);
 
@@ -2052,33 +2075,51 @@ export default function App() {
       {/* === Texture de fond === */}
       <div style={{
         position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0,
-        backgroundImage: `radial-gradient(circle at 20% 30%, rgba(122, 100, 24, 0.04) 0%, transparent 50%),
-                          radial-gradient(circle at 80% 70%, rgba(123, 44, 44, 0.03) 0%, transparent 50%)`,
+        backgroundImage: `radial-gradient(circle at 20% 25%, rgba(157, 135, 224, 0.10) 0%, transparent 55%),
+                          radial-gradient(circle at 85% 75%, rgba(244, 216, 140, 0.06) 0%, transparent 50%),
+                          radial-gradient(circle at 50% 100%, rgba(215, 114, 149, 0.05) 0%, transparent 60%)`,
       }}/>
+
+      {/* === Filtre SVG Liquid Glass (réfraction non-uniforme) === */}
+      <svg
+        aria-hidden="true"
+        style={{ position: "absolute", width: 0, height: 0, overflow: "hidden", pointerEvents: "none" }}
+      >
+        <defs>
+          <filter id="liquid-glass" x="0%" y="0%" width="100%" height="100%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.008" numOctaves="2" seed="92" result="noise"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="77"/>
+          </filter>
+        </defs>
+      </svg>
 
       {/* === HEADER === */}
       <header style={{
         backgroundColor: C.paper,
         borderBottom: `1px solid ${C.rule}`,
-        padding: "14px 24px",
+        padding: isMobile ? "10px 14px" : "14px 24px",
         display: "flex",
         alignItems: "center",
-        gap: 16,
+        gap: isMobile ? 8 : 16,
+        flexWrap: "wrap",
+        rowGap: 8,
         position: "relative",
         zIndex: 10,
         flexShrink: 0,
       }}>
-        <button onClick={() => setSidebarOpen(s => !s)} style={{
-          background: "transparent",
-          border: `1px solid ${C.rule}`,
-          borderRadius: 4,
-          padding: 6,
-          cursor: "pointer",
-          color: C.ink,
-          display: "flex",
-        }}>
-          {sidebarOpen ? <X size={18}/> : <Menu size={18}/>}
-        </button>
+        {isMobile && (
+          <button onClick={() => setSidebarOpen(s => !s)} style={{
+            background: "transparent",
+            border: `1px solid ${C.rule}`,
+            borderRadius: 4,
+            padding: 6,
+            cursor: "pointer",
+            color: C.ink,
+            display: "flex",
+          }}>
+            {sidebarOpen ? <X size={18}/> : <Menu size={18}/>}
+          </button>
+        )}
 
         <div style={{ display: "flex", alignItems: "center", gap: 12, flex: 1, minWidth: 0 }}>
           <BookOpen size={22} color={C.burgundy}/>
@@ -2100,13 +2141,14 @@ export default function App() {
               letterSpacing: "0.08em",
               textTransform: "uppercase",
               fontWeight: 500,
-            }}>Fiche d'apprentissage — Titre 2</div>
+              display: isMobile ? "none" : "block",
+            }}>Fiche d'apprentissage — mimi hater</div>
           </div>
         </div>
 
         {/* badges révision */}
         <div style={{ display: "flex", gap: 8, alignItems: "center", marginLeft: "auto" }}>
-          {dueCount > 0 && !reviewMode && (
+          {loaded && dueCount > 0 && !reviewMode && (
             <button
               onClick={() => {
                 if (reviewQueue.length === 0) return;
@@ -2131,7 +2173,7 @@ export default function App() {
                 fontFamily: "'Manrope', sans-serif",
                 transition: "all 0.15s",
               }}
-              onMouseEnter={e => e.currentTarget.style.backgroundColor = "#5C1F1F"}
+              onMouseEnter={e => e.currentTarget.style.backgroundColor = "#A33F60"}
               onMouseLeave={e => e.currentTarget.style.backgroundColor = C.burgundy}
             >
               <span style={{
@@ -2188,7 +2230,7 @@ export default function App() {
             title={maskedMode.pepites ? "Pépites masquées — clic pour révéler" : "Masquer les pépites (rappel actif sur les mots-clés)"}
           >
             {maskedMode.pepites ? <EyeOff size={14}/> : <Target size={14}/>}
-            <span>Pépites</span>
+            {!isMobile && <span>Pépites</span>}
           </button>
 
           <button
@@ -2213,7 +2255,7 @@ export default function App() {
             title={maskedMode.cas ? "Arrêts masqués — clic pour révéler" : "Masquer les arrêts (drill jurisprudentiel)"}
           >
             <Scale size={14}/>
-            <span>Arrêts</span>
+            {!isMobile && <span>Arrêts</span>}
           </button>
         </div>
 
@@ -2245,39 +2287,87 @@ export default function App() {
               transition: "width 0.4s ease"
             }}/>
           </div>
-          <button onClick={() => setNotesOpen(o => !o)} style={{
-            background: notesOpen ? C.navy : "transparent",
-            color: notesOpen ? C.paper : C.ink,
-            border: `1px solid ${C.rule}`,
-            borderRadius: 4,
-            padding: "6px 10px",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            gap: 6,
-            fontSize: 12,
-            fontWeight: 500,
-          }}>
-            <Edit3 size={14}/> Notes
-          </button>
+          {isMobile && (
+            <button onClick={() => setNotesOpen(o => !o)} style={{
+              background: notesOpen ? C.navy : "transparent",
+              color: notesOpen ? C.paper : C.ink,
+              border: `1px solid ${C.rule}`,
+              borderRadius: 4,
+              padding: "6px 10px",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+              fontSize: 12,
+              fontWeight: 500,
+            }}>
+              <Edit3 size={14}/>
+            </button>
+          )}
         </div>
       </header>
 
       {/* === MAIN === */}
       <div style={{ display: "flex", flex: 1, overflow: "hidden", position: "relative" }}>
-        {/* === SIDEBAR === */}
-        {sidebarOpen && (
-          <aside style={{
-            width: 320,
-            backgroundColor: C.paper,
-            borderRight: `1px solid ${C.rule}`,
+        {/* === BACKDROP MOBILE === */}
+        {isMobile && (sidebarOpen || notesOpen) && (
+          <div
+            onClick={() => { setSidebarOpen(false); setNotesOpen(false); }}
+            style={{
+              position: "absolute",
+              inset: 0,
+              backgroundColor: "rgba(8, 12, 28, 0.45)",
+              backdropFilter: "blur(2px)",
+              WebkitBackdropFilter: "blur(2px)",
+              zIndex: 15,
+              cursor: "pointer",
+            }}
+          />
+        )}
+
+        {/* === SIDEBAR (Liquid Glass + auto-hide rail) === */}
+        {(!isMobile || sidebarOpen) && (
+          <aside
+            onMouseEnter={() => { if (!isMobile) setSidebarHover(true); }}
+            onMouseLeave={() => { if (!isMobile) setSidebarHover(false); }}
+            style={{
+            position: "absolute",
+            left: isMobile ? 0 : 8,
+            width: isMobile ? "min(85vw, 320px)" : (sidebarHover ? 304 : 22),
+            top: isMobile ? 0 : 8,
+            bottom: isMobile ? 0 : 8,
+            zIndex: isMobile ? 20 : 10,
+            backgroundColor: "rgba(255, 255, 255, 0.08)",
+            backdropFilter: "url(#liquid-glass) blur(10px) saturate(160%)",
+            WebkitBackdropFilter: "blur(10px) saturate(160%)",
+            borderRadius: isMobile ? "0 20px 20px 0" : 28,
+            border: "1px solid rgba(255, 255, 255, 0.16)",
             display: "flex",
             flexDirection: "column",
             flexShrink: 0,
             overflow: "hidden",
+            transition: isMobile
+              ? "none"
+              : "width 0.55s cubic-bezier(0.32, 0.72, 0, 1)",
+            cursor: !isMobile && !sidebarHover ? "pointer" : "default",
+            boxShadow: isMobile
+              ? "2px 0 32px rgba(0, 0, 0, 0.45), inset 0 0 20px -5px rgba(255, 255, 255, 0.7)"
+              : "inset 0 0 20px -5px rgba(255, 255, 255, 0.7), 0 8px 32px rgba(0, 0, 0, 0.25)",
           }}>
+            <div style={{
+              width: isMobile ? "100%" : 304,
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              opacity: isMobile || sidebarHover ? 1 : 0,
+              pointerEvents: isMobile || sidebarHover ? "auto" : "none",
+              transition: isMobile || sidebarHover
+                ? "opacity 0.3s ease 0.25s"
+                : "opacity 0.18s ease",
+              flexShrink: 0,
+            }}>
             {/* search */}
-            <div style={{ padding: "14px 16px", borderBottom: `1px solid ${C.ruleSoft}` }}>
+            <div style={{ padding: "14px 16px", borderBottom: "1px solid rgba(232, 221, 201, 0.06)" }}>
               <div style={{
                 position: "relative", display: "flex", alignItems: "center"
               }}>
@@ -2288,11 +2378,13 @@ export default function App() {
                   placeholder="Rechercher dans la fiche..."
                   style={{
                     width: "100%", padding: "8px 10px 8px 32px",
-                    border: `1px solid ${C.rule}`,
-                    borderRadius: 4,
+                    border: "1px solid rgba(232, 221, 201, 0.1)",
+                    borderRadius: 8,
                     fontSize: 13,
                     fontFamily: "inherit",
-                    backgroundColor: C.bg,
+                    backgroundColor: "rgba(14, 23, 48, 0.5)",
+                    backdropFilter: "blur(12px)",
+                    WebkitBackdropFilter: "blur(12px)",
                     color: C.ink,
                     outline: "none",
                   }}
@@ -2301,7 +2393,7 @@ export default function App() {
             </div>
 
             {/* TOC */}
-            <nav style={{ overflowY: "auto", flex: 1, padding: "8px 0" }}>
+            <nav className="toc-nav" style={{ overflowY: "auto", flex: 1, padding: "8px 0" }}>
               {groups.map(group => (
                 <div key={group.name}>
                   <div
@@ -2333,14 +2425,17 @@ export default function App() {
                     return (
                       <div
                         key={item.id}
-                        onClick={() => setCurrentId(item.id)}
+                        onClick={() => {
+                          setCurrentId(item.id);
+                          if (isMobile) setSidebarOpen(false);
+                        }}
                         style={{
                           padding: "7px 16px 7px 32px",
                           fontSize: 13.5,
                           fontFamily: "'EB Garamond', serif",
                           fontWeight: isActive ? 600 : 400,
                           color: isActive ? C.burgundy : C.ink,
-                          backgroundColor: isActive ? C.encadre : "transparent",
+                          backgroundColor: isActive ? "rgba(232, 221, 201, 0.08)" : "transparent",
                           cursor: "pointer",
                           borderLeft: isActive ? `3px solid ${C.burgundy}` : `3px solid transparent`,
                           display: "flex",
@@ -2349,7 +2444,7 @@ export default function App() {
                           lineHeight: 1.3,
                           transition: "background 0.15s",
                         }}
-                        onMouseEnter={e => { if (!isActive) e.currentTarget.style.backgroundColor = C.encadre; }}
+                        onMouseEnter={e => { if (!isActive) e.currentTarget.style.backgroundColor = "rgba(232, 221, 201, 0.05)"; }}
                         onMouseLeave={e => { if (!isActive) e.currentTarget.style.backgroundColor = "transparent"; }}
                       >
                         <div style={{ position: "relative", flexShrink: 0, width: 10, height: 10 }}>
@@ -2383,13 +2478,14 @@ export default function App() {
             {/* footer sidebar */}
             <div style={{
               padding: "10px 16px",
-              borderTop: `1px solid ${C.ruleSoft}`,
+              borderTop: "1px solid rgba(232, 221, 201, 0.06)",
               fontSize: 11,
               color: C.inkSoft,
               fontStyle: "italic",
               fontFamily: "'EB Garamond', serif",
             }}>
               Fiche personnelle pour partiel de dissertation. Vos progrès, marque-pages et notes sont sauvegardés.
+            </div>
             </div>
           </aside>
         )}
@@ -2405,7 +2501,7 @@ export default function App() {
           <div style={{
             maxWidth: 760,
             margin: "0 auto",
-            padding: "48px 40px 100px",
+            padding: isMobile ? "20px 16px 80px" : "48px 40px 100px",
           }}>
             {(maskedMode.pepites || maskedMode.cas) && (
               <div style={{
@@ -2777,83 +2873,136 @@ export default function App() {
           </div>
         </main>
 
-        {/* === NOTES PANEL === */}
-        {notesOpen && (
-          <aside style={{
-            width: 320,
-            backgroundColor: C.paper,
-            borderLeft: `1px solid ${C.rule}`,
-            display: "flex",
-            flexDirection: "column",
-            flexShrink: 0,
-          }}>
-            <div style={{ padding: "14px 16px", borderBottom: `1px solid ${C.ruleSoft}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <div>
-                <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: C.inkSoft, fontWeight: 600 }}>Mes notes</div>
-                <div style={{ fontFamily: "'Fraunces', serif", fontSize: 16, color: C.navy, fontWeight: 600, marginTop: 2 }}>
-                  {flatTOC[currentIdx]?.title}
-                </div>
-              </div>
-              <button onClick={() => setNotesOpen(false)} style={{
-                background: "transparent", border: "none", cursor: "pointer", color: C.inkSoft,
-              }}>
-                <X size={16}/>
-              </button>
-            </div>
-
-            <textarea
-              value={draftNote}
-              onChange={e => setDraftNote(e.target.value)}
-              placeholder="Vos remarques personnelles, mnémotechniques, références à approfondir..."
-              style={{
-                flex: 1,
-                padding: 16,
-                border: "none",
-                outline: "none",
-                resize: "none",
-                fontFamily: "'EB Garamond', Georgia, serif",
-                fontSize: 16,
-                lineHeight: 1.6,
-                color: C.ink,
-                backgroundColor: C.paper,
-              }}
-            />
-
-            <div style={{ padding: 12, borderTop: `1px solid ${C.ruleSoft}`, display: "flex", gap: 8 }}>
-              <button onClick={saveNote} style={{
-                flex: 1,
-                padding: "10px",
-                background: C.navy,
-                color: C.paper,
-                border: "none",
-                borderRadius: 4,
-                cursor: "pointer",
-                fontSize: 12,
-                fontWeight: 600,
-                letterSpacing: "0.05em",
-                textTransform: "uppercase",
+        {/* === NOTES PANEL (Liquid Glass + ball -> panel) === */}
+        {(!isMobile || notesOpen) && (() => {
+          const expanded = notesOpen;
+          return (
+          <aside
+            onClick={() => { if (!isMobile && !expanded) setNotesOpen(true); }}
+            style={{
+              position: "fixed",
+              right: isMobile ? 0 : 12,
+              width: isMobile ? "min(90vw, 360px)" : (expanded ? 320 : 56),
+              top: isMobile ? 0 : (expanded ? 74 : "calc(50vh - 28px)"),
+              bottom: isMobile ? 0 : (expanded ? 8 : "calc(50vh - 28px)"),
+              zIndex: isMobile ? 20 : 30,
+              backgroundColor: "rgba(255, 255, 255, 0.08)",
+              backdropFilter: "url(#liquid-glass) blur(10px) saturate(160%)",
+              WebkitBackdropFilter: "blur(10px) saturate(160%)",
+              borderRadius: isMobile ? "20px 0 0 20px" : 28,
+              border: "1px solid rgba(255, 255, 255, 0.16)",
+              display: "flex",
+              flexDirection: "column",
+              flexShrink: 0,
+              overflow: "hidden",
+              transition: isMobile
+                ? "none"
+                : "width 0.55s cubic-bezier(0.32, 0.72, 0, 1), top 0.55s cubic-bezier(0.32, 0.72, 0, 1), bottom 0.55s cubic-bezier(0.32, 0.72, 0, 1)",
+              cursor: !isMobile && !expanded ? "pointer" : "default",
+              boxShadow: isMobile
+                ? "-2px 0 32px rgba(0, 0, 0, 0.45), inset 0 0 20px -5px rgba(255, 255, 255, 0.7)"
+                : "inset 0 0 20px -5px rgba(255, 255, 255, 0.7), 0 8px 32px rgba(0, 0, 0, 0.25)",
+            }}
+          >
+            {/* Icône repos (desktop seulement) */}
+            {!isMobile && (
+              <div style={{
+                position: "absolute",
+                inset: 0,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                gap: 6,
-                fontFamily: "inherit",
+                color: C.ink,
+                opacity: expanded ? 0 : 0.9,
+                pointerEvents: "none",
+                transition: "opacity 0.18s ease",
               }}>
-                <Save size={14}/> Sauvegarder
-              </button>
-              {notes[currentId] && (
-                <span style={{
-                  padding: "10px 12px",
-                  fontSize: 11,
-                  color: C.forest,
-                  fontStyle: "italic",
-                  fontFamily: "'EB Garamond', serif",
+                <Edit3 size={22}/>
+              </div>
+            )}
+
+            {/* Contenu complet */}
+            <div style={{
+              width: isMobile ? "100%" : 320,
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              opacity: expanded ? 1 : 0,
+              pointerEvents: expanded ? "auto" : "none",
+              transition: expanded
+                ? "opacity 0.3s ease 0.25s"
+                : "opacity 0.18s ease",
+              flexShrink: 0,
+            }}>
+              <div style={{ padding: "14px 16px", borderBottom: "1px solid rgba(232, 221, 201, 0.06)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <div>
+                  <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: C.inkSoft, fontWeight: 600 }}>Mes notes</div>
+                  <div style={{ fontFamily: "'Fraunces', serif", fontSize: 16, color: C.navy, fontWeight: 600, marginTop: 2 }}>
+                    {flatTOC[currentIdx]?.title}
+                  </div>
+                </div>
+                <button onClick={(e) => { e.stopPropagation(); setNotesOpen(false); }} style={{
+                  background: "transparent", border: "none", cursor: "pointer", color: C.inkSoft,
                 }}>
-                  ✓ enregistrée
-                </span>
-              )}
+                  <X size={16}/>
+                </button>
+              </div>
+
+              <textarea
+                value={draftNote}
+                onChange={e => setDraftNote(e.target.value)}
+                placeholder="Vos remarques personnelles, mnémotechniques, références à approfondir..."
+                style={{
+                  flex: 1,
+                  padding: 16,
+                  border: "none",
+                  outline: "none",
+                  resize: "none",
+                  fontFamily: "'EB Garamond', Georgia, serif",
+                  fontSize: 16,
+                  lineHeight: 1.6,
+                  color: C.ink,
+                  backgroundColor: "transparent",
+                }}
+              />
+
+              <div style={{ padding: 12, borderTop: "1px solid rgba(232, 221, 201, 0.06)", display: "flex", gap: 8 }}>
+                <button onClick={saveNote} style={{
+                  flex: 1,
+                  padding: "10px",
+                  background: C.navy,
+                  color: C.paper,
+                  border: "none",
+                  borderRadius: 999,
+                  cursor: "pointer",
+                  fontSize: 12,
+                  fontWeight: 600,
+                  letterSpacing: "0.05em",
+                  textTransform: "uppercase",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 6,
+                  fontFamily: "inherit",
+                }}>
+                  <Save size={14}/> Sauvegarder
+                </button>
+                {notes[currentId] && (
+                  <span style={{
+                    padding: "10px 12px",
+                    fontSize: 11,
+                    color: C.forest,
+                    fontStyle: "italic",
+                    fontFamily: "'EB Garamond', serif",
+                  }}>
+                    ✓ enregistrée
+                  </span>
+                )}
+              </div>
             </div>
           </aside>
-        )}
+          );
+        })()}
       </div>
     </div>
     </MaskedModeContext.Provider>
