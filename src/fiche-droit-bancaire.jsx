@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef, useContext, createContext } from "react";
-import { BookOpen, ChevronRight, ChevronDown, Check, Circle, Search, Menu, X, ArrowLeft, ArrowRight, Bookmark, BookmarkCheck, FileText, Edit3, Save, Eye, EyeOff, Target, Scale } from "lucide-react";
+import { BookOpen, ChevronRight, ChevronDown, Check, Circle, Search, Menu, X, ArrowLeft, ArrowRight, Bookmark, BookmarkCheck, FileText, Edit3, Save, Eye, EyeOff, Target, Scale, ListChecks } from "lucide-react";
 
 // ============================================================
 // PALETTE — Night Court (Velaris) — inspirée d'ACOTAR
@@ -64,6 +64,11 @@ const ProgressContext = createContext({
   setConfidence: () => {},
   getConfidence: () => null,
 });
+
+// ============================================================
+// REGISTRY — Questions QCM par section (peuplé au montage)
+// ============================================================
+const QUESTION_REGISTRY = {};
 
 // ============================================================
 // RÉPÉTITION ESPACÉE — algorithme additif simple (Leitner-light)
@@ -456,6 +461,480 @@ const Pepites = ({ items, variant = "default", sectionId }) => {
   );
 };
 
+const QCM = ({ sectionId, questions, mode = "inline" }) => {
+  const { setConfidence } = useContext(ProgressContext);
+  const [deployed, setDeployed] = useState(mode === "exam");
+  const [shuffledQs, setShuffledQs] = useState(null);
+  const [selected, setSelected] = useState({});
+  const [submitted, setSubmitted] = useState(false);
+  const [calibrationApplied, setCalibrationApplied] = useState(null);
+  const [showRollback, setShowRollback] = useState(false);
+
+  useEffect(() => {
+    if (sectionId && questions) {
+      QUESTION_REGISTRY[sectionId] = questions;
+    }
+  }, [sectionId, questions]);
+
+  useEffect(() => {
+    if (!deployed || shuffledQs) return;
+    const shuffled = questions.map(q => {
+      const indices = q.choices.map((_, i) => i);
+      for (let i = indices.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [indices[i], indices[j]] = [indices[j], indices[i]];
+      }
+      return {
+        ...q,
+        shuffledChoices: indices.map(i => q.choices[i]),
+        correctShuffled: q.correct.map(c => indices.indexOf(c)),
+      };
+    });
+    setShuffledQs(shuffled);
+  }, [deployed, questions, shuffledQs]);
+
+  const score = useMemo(() => {
+    if (!submitted || !shuffledQs) return null;
+    let correct = 0;
+    shuffledQs.forEach((q, i) => {
+      const userAnswer = selected[i] || [];
+      const expected = q.correctShuffled;
+      const isMulti = expected.length > 1;
+      if (isMulti) {
+        if (userAnswer.length === expected.length && userAnswer.every(a => expected.includes(a))) correct++;
+      } else {
+        if (userAnswer.length === 1 && userAnswer[0] === expected[0]) correct++;
+      }
+    });
+    return { correct, total: shuffledQs.length, pct: Math.round((correct / shuffledQs.length) * 100) };
+  }, [submitted, shuffledQs, selected]);
+
+  const handleSubmit = () => {
+    if (!shuffledQs) return;
+    if (mode === "inline" && sectionId) {
+      let correct = 0;
+      shuffledQs.forEach((q, i) => {
+        const userAnswer = selected[i] || [];
+        const expected = q.correctShuffled;
+        if (expected.length > 1) {
+          if (userAnswer.length === expected.length && userAnswer.every(a => expected.includes(a))) correct++;
+        } else {
+          if (userAnswer.length === 1 && userAnswer[0] === expected[0]) correct++;
+        }
+      });
+      const computedPct = Math.round((correct / shuffledQs.length) * 100);
+      let level;
+      if (computedPct >= 80) level = "green";
+      else if (computedPct >= 50) level = "yellow";
+      else level = "red";
+      setConfidence(sectionId, level);
+      setCalibrationApplied(level);
+      setShowRollback(true);
+      setTimeout(() => setShowRollback(false), 8000);
+    }
+    setSubmitted(true);
+  };
+
+  const handleReset = () => {
+    setSelected({});
+    setSubmitted(false);
+    setShuffledQs(null);
+    setCalibrationApplied(null);
+    setShowRollback(false);
+  };
+
+  const handleRollback = () => {
+    setShowRollback(false);
+    setCalibrationApplied(null);
+  };
+
+  const toggleChoice = (qIdx, choiceIdx, isMulti) => {
+    if (submitted) return;
+    setSelected(prev => {
+      const current = prev[qIdx] || [];
+      if (isMulti) {
+        return {
+          ...prev,
+          [qIdx]: current.includes(choiceIdx)
+            ? current.filter(c => c !== choiceIdx)
+            : [...current, choiceIdx],
+        };
+      } else {
+        return { ...prev, [qIdx]: [choiceIdx] };
+      }
+    });
+  };
+
+  if (mode === "inline" && !deployed) {
+    return (
+      <div style={{ marginTop: 24, marginBottom: 16 }}>
+        <button
+          onClick={() => setDeployed(true)}
+          style={{
+            padding: "12px 18px",
+            background: "transparent",
+            color: C.navy,
+            border: `1px solid ${C.navy}`,
+            borderRadius: 4,
+            cursor: "pointer",
+            fontSize: 12,
+            fontWeight: 600,
+            letterSpacing: "0.05em",
+            textTransform: "uppercase",
+            fontFamily: "inherit",
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            width: "100%",
+            justifyContent: "center",
+          }}
+        >
+          <ListChecks size={14}/> Vérifier ta maîtrise — QCM final ({questions.length} questions)
+        </button>
+      </div>
+    );
+  }
+
+  if (!shuffledQs) return null;
+
+  return (
+    <div style={{
+      backgroundColor: C.paper,
+      border: `1px solid ${C.rule}`,
+      borderRadius: 4,
+      padding: "20px 24px",
+      marginTop: 24,
+      marginBottom: 16,
+    }}>
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        marginBottom: 18,
+        paddingBottom: 12,
+        borderBottom: `1px solid ${C.ruleSoft}`,
+      }}>
+        <div style={{
+          fontFamily: "'Manrope', sans-serif",
+          fontSize: 11,
+          textTransform: "uppercase",
+          letterSpacing: "0.12em",
+          color: C.navy,
+          fontWeight: 700,
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+        }}>
+          <ListChecks size={14}/>
+          {mode === "exam" ? "Examen blanc" : "QCM final"}
+          {submitted && score && (
+            <span style={{ marginLeft: 12, color: C.inkSoft }}>
+              · {score.correct}/{score.total} ({score.pct}%)
+            </span>
+          )}
+        </div>
+        {mode === "inline" && !submitted && (
+          <button
+            onClick={() => setDeployed(false)}
+            style={{
+              background: "transparent",
+              border: "none",
+              color: C.inkSoft,
+              cursor: "pointer",
+              fontSize: 11,
+              textTransform: "uppercase",
+              letterSpacing: "0.05em",
+              fontFamily: "inherit",
+            }}
+          >
+            ← Refermer
+          </button>
+        )}
+      </div>
+
+      {shuffledQs.map((q, qIdx) => {
+        const userAnswer = selected[qIdx] || [];
+        const expected = q.correctShuffled;
+        const isMulti = expected.length > 1;
+        const isCorrect = submitted && (
+          isMulti
+            ? userAnswer.length === expected.length && userAnswer.every(a => expected.includes(a))
+            : userAnswer.length === 1 && userAnswer[0] === expected[0]
+        );
+
+        return (
+          <div key={qIdx} style={{
+            marginBottom: 24,
+            paddingBottom: 18,
+            borderBottom: qIdx < shuffledQs.length - 1 ? `1px solid ${C.ruleSoft}` : "none",
+          }}>
+            <div style={{
+              fontFamily: "'EB Garamond', serif",
+              fontSize: 17,
+              lineHeight: 1.5,
+              color: C.ink,
+              marginBottom: 12,
+              display: "flex",
+              alignItems: "flex-start",
+              gap: 8,
+            }}>
+              <span style={{
+                fontFamily: "'Manrope', sans-serif",
+                fontSize: 12,
+                fontWeight: 700,
+                color: C.navy,
+                paddingTop: 3,
+                minWidth: 24,
+              }}>
+                Q{qIdx + 1}.
+              </span>
+              <span>
+                {q.q}
+                {isMulti && !submitted && (
+                  <em style={{ color: C.inkSoft, fontSize: 13 }}> (plusieurs réponses)</em>
+                )}
+                {submitted && (
+                  isCorrect
+                    ? <span style={{ color: C.forest, marginLeft: 8 }}>✓</span>
+                    : <span style={{ color: C.burgundy, marginLeft: 8 }}>✗</span>
+                )}
+              </span>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 6, marginLeft: 32 }}>
+              {q.shuffledChoices.map((choice, choiceIdx) => {
+                const isSelected = userAnswer.includes(choiceIdx);
+                const isExpected = expected.includes(choiceIdx);
+                let bg = "transparent";
+                let borderColor = C.rule;
+                let textColor = C.ink;
+
+                if (submitted) {
+                  if (isExpected) {
+                    bg = CONFIDENCE.green.bg;
+                    borderColor = C.forest;
+                    textColor = C.forest;
+                  } else if (isSelected && !isExpected) {
+                    bg = CONFIDENCE.red.bg;
+                    borderColor = C.burgundy;
+                    textColor = C.burgundy;
+                  }
+                } else if (isSelected) {
+                  bg = C.highlight;
+                  borderColor = C.navy;
+                }
+
+                return (
+                  <label
+                    key={choiceIdx}
+                    onClick={() => toggleChoice(qIdx, choiceIdx, isMulti)}
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: 10,
+                      padding: "10px 12px",
+                      background: bg,
+                      border: `1px solid ${borderColor}`,
+                      borderRadius: 3,
+                      cursor: submitted ? "default" : "pointer",
+                      fontFamily: "'EB Garamond', serif",
+                      fontSize: 16,
+                      color: textColor,
+                      lineHeight: 1.4,
+                      transition: "all 0.1s",
+                    }}
+                  >
+                    <span style={{
+                      width: 16, height: 16,
+                      borderRadius: isMulti ? 2 : "50%",
+                      border: `2px solid ${isSelected ? borderColor : C.rule}`,
+                      backgroundColor: isSelected ? borderColor : "transparent",
+                      flexShrink: 0,
+                      marginTop: 2,
+                      position: "relative",
+                    }}>
+                      {isSelected && (
+                        <span style={{
+                          position: "absolute",
+                          inset: 0,
+                          color: C.paper,
+                          fontSize: 11,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontWeight: 700,
+                        }}>{isMulti ? "✓" : "●"}</span>
+                      )}
+                    </span>
+                    <span>{choice}</span>
+                  </label>
+                );
+              })}
+            </div>
+
+            {submitted && (
+              <div style={{
+                marginTop: 12,
+                marginLeft: 32,
+                padding: "10px 14px",
+                backgroundColor: C.highlight,
+                borderLeft: `3px solid ${C.navy}`,
+                fontFamily: "'EB Garamond', serif",
+                fontSize: 14,
+                lineHeight: 1.5,
+                color: C.ink,
+                fontStyle: "italic",
+              }}>
+                <strong style={{ color: C.navy, fontStyle: "normal" }}>→ </strong>
+                {q.explanation}
+              </div>
+            )}
+          </div>
+        );
+      })}
+
+      {!submitted ? (
+        <button
+          onClick={handleSubmit}
+          disabled={Object.keys(selected).length < shuffledQs.length}
+          style={{
+            width: "100%",
+            padding: "14px",
+            background: Object.keys(selected).length < shuffledQs.length ? C.rule : C.navy,
+            color: C.paper,
+            border: "none",
+            borderRadius: 4,
+            cursor: Object.keys(selected).length < shuffledQs.length ? "not-allowed" : "pointer",
+            fontSize: 13,
+            fontWeight: 700,
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            fontFamily: "'Manrope', sans-serif",
+            marginTop: 12,
+          }}
+        >
+          {Object.keys(selected).length < shuffledQs.length
+            ? `Réponds aux ${shuffledQs.length - Object.keys(selected).length} questions restantes`
+            : "Valider mes réponses"}
+        </button>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 16 }}>
+          <div style={{
+            padding: "16px",
+            backgroundColor: score.pct >= 80 ? CONFIDENCE.green.bg : score.pct >= 50 ? CONFIDENCE.yellow.bg : CONFIDENCE.red.bg,
+            borderRadius: 4,
+            textAlign: "center",
+            fontFamily: "'EB Garamond', serif",
+          }}>
+            <div style={{ fontSize: 32, fontWeight: 700, color: score.pct >= 80 ? C.forest : score.pct >= 50 ? C.gold : C.burgundy }}>
+              {score.correct} / {score.total}
+            </div>
+            <div style={{ fontSize: 14, color: C.inkSoft, marginTop: 4 }}>
+              {score.pct >= 80 ? "Excellente maîtrise."
+                : score.pct >= 50 ? "Maîtrise partielle, à consolider."
+                : "Cette section nécessite une nouvelle révision."}
+            </div>
+            {calibrationApplied && (
+              <div style={{
+                marginTop: 12,
+                fontSize: 12,
+                color: CONFIDENCE[calibrationApplied].color,
+                fontWeight: 600,
+                letterSpacing: "0.05em",
+                textTransform: "uppercase",
+                fontFamily: "'Manrope', sans-serif",
+              }}>
+                ✓ Confidence mise à jour : {CONFIDENCE[calibrationApplied].emoji} {CONFIDENCE[calibrationApplied].label}
+              </div>
+            )}
+          </div>
+
+          {showRollback && (
+            <div style={{
+              padding: "8px 14px",
+              background: C.ink,
+              color: C.paper,
+              borderRadius: 3,
+              fontSize: 11,
+              letterSpacing: "0.05em",
+              textTransform: "uppercase",
+              fontFamily: "'Manrope', sans-serif",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 12,
+            }}>
+              <span>Calibration automatique appliquée. Pas d'accord&nbsp;?</span>
+              <button
+                onClick={handleRollback}
+                style={{
+                  background: "transparent",
+                  border: `1px solid ${C.paper}`,
+                  color: C.paper,
+                  padding: "3px 10px",
+                  borderRadius: 2,
+                  cursor: "pointer",
+                  fontSize: 10,
+                  fontWeight: 600,
+                  letterSpacing: "0.05em",
+                  textTransform: "uppercase",
+                  fontFamily: "inherit",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                Corriger manuellement
+              </button>
+            </div>
+          )}
+
+          <div style={{ display: "flex", gap: 8 }}>
+            <button
+              onClick={handleReset}
+              style={{
+                flex: 1,
+                padding: "10px",
+                background: "transparent",
+                color: C.navy,
+                border: `1px solid ${C.navy}`,
+                borderRadius: 3,
+                cursor: "pointer",
+                fontSize: 11,
+                fontWeight: 600,
+                letterSpacing: "0.05em",
+                textTransform: "uppercase",
+                fontFamily: "inherit",
+              }}
+            >
+              ↻ Refaire le QCM
+            </button>
+            {mode === "inline" && (
+              <button
+                onClick={() => { handleReset(); setDeployed(false); }}
+                style={{
+                  flex: 1,
+                  padding: "10px",
+                  background: C.ink,
+                  color: C.bg,
+                  border: `1px solid ${C.ink}`,
+                  borderRadius: 3,
+                  cursor: "pointer",
+                  fontSize: 11,
+                  fontWeight: 600,
+                  letterSpacing: "0.05em",
+                  textTransform: "uppercase",
+                  fontFamily: "inherit",
+                }}
+              >
+                Fermer
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const DataTable = ({ headers, rows }) => (
   <div style={{ marginTop: 8, marginBottom: 20, overflowX: "auto" }}>
     <table style={{
@@ -638,6 +1117,58 @@ const SECTIONS = {
       <Callout kind="info" title="Connexion droit pénal">
         La chambre criminelle (2011) a affirmé que refuser l'accès au compte ou empêcher la mobilité bancaire peut caractériser une escroquerie ou un abus de confiance imputable au directeur d'agence <Em>personnellement</Em>. La sanction monte d'un cran.
       </Callout>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Sur quel fondement la Banque de France peut-elle désigner d'office un établissement teneur de compte ?",
+          choices: [
+            "L.312-1 CMF, après un second refus opposé au client",
+            "L.511-5 CMF, par application directe du monopole bancaire",
+            "L.312-1 CMF, dès le premier refus de la banque sollicitée",
+            "Article 1240 du Code civil, sur le terrain de la responsabilité",
+          ],
+          correct: [0],
+          explanation: "L.312-1 CMF organise un mécanisme en deux temps : la banque peut refuser une première ouverture, mais après un second refus, le client saisit la Banque de France qui désigne d'office.",
+          difficulty: "medium",
+        },
+        {
+          q: "Une banque peut-elle clôturer immédiatement un compte ouvert au titre du droit au compte ?",
+          choices: [
+            "Non, jamais — préavis de 2 mois obligatoire",
+            "Oui, en cas d'usage illégal du compte (Cass. com. 30 juin 2021)",
+            "Oui, mais uniquement avec autorisation préalable de l'ACPR",
+            "Non, sauf accord du Procureur de la République",
+          ],
+          correct: [1],
+          explanation: "Cass. com. 30 juin 2021 admet la clôture immédiate sans préavis lorsque le compte fait l'objet d'un usage illégal. Le préavis de 2 mois ne joue que pour les SBM/SBB en l'absence d'usage illégal.",
+          difficulty: "hard",
+        },
+        // REVIEW: confirmer que la loi du 22 décembre 2016 distingue bien SBM (10 services) et SBB (8 services) — l'inverse pourrait être vrai
+        {
+          q: "Parmi les affirmations suivantes sur la loi du 22 décembre 2016, lesquelles sont exactes ?",
+          choices: [
+            "Elle distingue les Services Bancaires Minimums (SBM) et les Services Bancaires de Base (SBB)",
+            "Elle impose un préavis de 2 mois en cas de résiliation par la banque",
+            "Elle abolit le droit au compte instauré en 2008",
+            "Elle exige une motivation de la résiliation par la banque",
+          ],
+          correct: [0, 1, 3],
+          explanation: "La loi de 2016 renforce le droit au compte (elle ne l'abolit pas) : distinction SBM/SBB, préavis de 2 mois, obligation de motivation pour la résiliation par la banque.",
+          difficulty: "hard",
+        },
+        {
+          q: "Le droit à l'oubli bancaire renforcé par la loi du 28 février 2022 fixe un délai de :",
+          choices: [
+            "5 ans, applicable à tous (convention AERAS)",
+            "10 ans, sauf pour les prêts inférieurs à 200 000 €",
+            "2 ans, pour les antécédents psychiatriques uniquement",
+            "Aucun délai légal, c'est laissé à l'appréciation de l'assureur",
+          ],
+          correct: [0],
+          explanation: "La loi du 28 février 2022 a ramené le délai du droit à l'oubli à 5 ans pour tous, et supprimé les questionnaires de santé pour les prêts < 200 000 € remboursés avant 60 ans.",
+          difficulty: "easy",
+        },
+      ]} />
     </>
   ),
 
@@ -674,6 +1205,70 @@ const SECTIONS = {
 
       <H level={4}>Le mineur</H>
       <P>Articles <Art>382-1 et 388-1-1 CC</Art> : le mineur est capable pour les actes d'administration, incapable pour les actes de disposition. La jurisprudence a longtemps oscillé. <Cas>Cass. 1ère civ. 11 oct. 2017</Cas> refusait toute obligation générale de vigilance. <Cas>Cass. 12 juin 2025</Cas> opère un revirement protecteur : la banque est responsable lorsqu'un parent agit seul sur le compte de l'enfant sans autorisation — alignement avec la jurisprudence sur les majeurs protégés.</P>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "À l'ouverture du compte, la banque peut-elle légalement contrôler la légalité du séjour du client étranger ?",
+          choices: [
+            "Oui, c'est même une obligation au titre de la LCB-FT",
+            "Non, Cass. com. 18 décembre 2007 le lui interdit",
+            "Oui, mais uniquement pour les ressortissants hors UE",
+            "Non, sauf si la banque est sollicitée par l'autorité préfectorale",
+          ],
+          correct: [1],
+          explanation: "Cass. com. 18 décembre 2007 interdit à la banque de contrôler la légalité du séjour. La LCB-FT impose la vérification d'identité, pas du statut migratoire.",
+          difficulty: "medium",
+        },
+        {
+          q: "Le régime du CMF en matière de paiement frauduleux (L.133-18 et s.) est :",
+          choices: [
+            "Supplétif : le client peut opter pour le droit commun s'il est plus favorable",
+            "Exclusif : il écarte le droit commun (Cass. 15 janv. 2025)",
+            "Limité aux paiements supérieurs à 1000 €",
+            "Réservé aux personnes physiques non-professionnelles",
+          ],
+          correct: [1],
+          explanation: "Cass. 15 janv. 2025 confirme que le régime CMF est exclusif et écarte le droit commun, fermant la porte aux actions en responsabilité civile classiques.",
+          difficulty: "hard",
+        },
+        // REVIEW: les 4 arrêts du 12 juin 2025 sont récents — vérifier que le spoofing engage bien la banque et la fraude au président non
+        {
+          q: "Selon les quatre arrêts du 12 juin 2025, dans quels cas la banque est-elle engagée ?",
+          choices: [
+            "Spoofing du numéro de la banque",
+            "Parent agissant seul sur le compte de son enfant mineur",
+            "Fraude au président sans anomalie apparente",
+            "Tout virement supérieur à 5 000 €",
+          ],
+          correct: [0, 1],
+          explanation: "Spoofing → CMF, banque engagée. Parent seul sur compte enfant → revirement protecteur, banque responsable. Fraude au président SANS anomalie → banque non engagée.",
+          difficulty: "hard",
+        },
+        {
+          q: "Cass. civ. 9 nov. 2011 sanctionne quel manquement de la banque envers un majeur sous curatelle ?",
+          choices: [
+            "L'absence d'information du tuteur sur le solde mensuel",
+            "L'envoi des informations légales au majeur protégé au lieu du curateur",
+            "Le refus d'ouvrir un compte au majeur protégé",
+            "L'application de frais bancaires standard sans avis du curateur",
+          ],
+          correct: [1],
+          explanation: "L'arrêt sanctionne la banque qui adresse les informations légales au majeur protégé directement. Sanction : crédit gratuit et restitution des intérêts.",
+          difficulty: "medium",
+        },
+        {
+          q: "Quel article du Code civil pose le devoir de vigilance et d'alerte de la banque envers le majeur protégé ?",
+          choices: [
+            "Article 414 CC",
+            "Article 499 CC",
+            "Article 1240 CC",
+            "Article L.312-1 CMF",
+          ],
+          correct: [1],
+          explanation: "L'article 499 CC impose à la banque un devoir de vigilance et d'alerte en cas d'opération manifestement suspecte sur le compte d'un majeur protégé.",
+          difficulty: "easy",
+        },
+      ]} />
     </>
   ),
 
@@ -701,6 +1296,46 @@ const SECTIONS = {
           ]]}
         />
       </Callout>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "La loi MURCEF du 11 décembre 2001 sur la convention de compte est-elle d'ordre public ?",
+          choices: [
+            "Oui, ses dispositions s'imposent et la convention doit être écrite",
+            "Non, elle n'a qu'une valeur supplétive",
+            "Oui, mais uniquement pour les comptes professionnels",
+            "Non, elle a été abrogée par la DSP1",
+          ],
+          correct: [0],
+          explanation: "La loi MURCEF impose une convention de compte écrite et d'ordre public, effective en 2005 après quatre années de blocage par le lobby bancaire.",
+          difficulty: "easy",
+        },
+        {
+          q: "Depuis la DSP1 (2007), comment la banque peut-elle modifier les clauses du contrat ?",
+          choices: [
+            "Seules les clauses secondaires peuvent être modifiées par silence",
+            "Le silence du client pendant 2 mois vaut acceptation pour toutes les clauses",
+            "Toute modification exige un nouvel accord exprès écrit",
+            "Le silence pendant 6 mois vaut acceptation, opposable même aux clauses essentielles",
+          ],
+          correct: [1],
+          explanation: "La DSP1 a unifié le régime : le silence du client pendant 2 mois vaut acceptation, même pour les clauses essentielles. L'opposition expresse bloque l'augmentation.",
+          difficulty: "medium",
+        },
+        // REVIEW: vérifier que le client peut effectivement bloquer la hausse tarifaire par opposition expresse, sans rupture du contrat
+        {
+          q: "Quel effet produit l'opposition expresse du client à une modification tarifaire annoncée ?",
+          choices: [
+            "Elle entraîne la résiliation automatique du compte",
+            "Elle bloque la hausse tarifaire pour ce client",
+            "Elle est sans effet : la modification s'applique malgré tout",
+            "Elle suspend la modification 30 jours puis l'applique automatiquement",
+          ],
+          correct: [1],
+          explanation: "L'opposition expresse du client bloque la hausse tarifaire pour lui — seul rempart face au déséquilibre du contrat d'adhésion sans rompre le contrat.",
+          difficulty: "medium",
+        },
+      ]} />
     </>
   ),
 
@@ -734,6 +1369,58 @@ const SECTIONS = {
           ["Avis de tiers détenteurs", "10 % de la créance, plafond 100 € (loi 2019)"],
         ]}
       />
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Cass. 1ère civ. 30 juin 2004 (coffre-fort BNP) a posé quel principe sur la modification tarifaire unilatérale ?",
+          choices: [
+            "Elle est admise dans les contrats de longue durée",
+            "Elle est interdite par principe en droit bancaire",
+            "Elle exige une autorisation préalable de l'ACPR",
+            "Elle n'est admise que pour les clients professionnels",
+          ],
+          correct: [0],
+          explanation: "L'arrêt valide la modification unilatérale dans les contrats de longue durée (triplement du prix d'un coffre du jour au lendemain), provoquant une cascade législative protectrice en réaction.",
+          difficulty: "medium",
+        },
+        {
+          q: "Quel est le plafond de la commission d'intervention pour un client fragile ?",
+          choices: [
+            "8 € par opération, 80 € par mois",
+            "4 € par opération, 20 € par mois",
+            "10 € par opération, 100 € par mois",
+            "Aucun plafond légal pour cette catégorie",
+          ],
+          correct: [1],
+          explanation: "Les clients fragiles bénéficient d'un plafond divisé par deux : 4 € / opération et 20 € / mois (vs 8 € / 80 € pour les clients ordinaires).",
+          difficulty: "easy",
+        },
+        // REVIEW: confirmer le plafond exact ATD à 10% / 100€ et l'année de la loi (2019)
+        {
+          q: "Le plafond appliqué aux frais sur avis de tiers détenteurs est :",
+          choices: [
+            "5 % de la créance, plafond 50 €",
+            "10 % de la créance, plafond 100 €",
+            "Aucun plafond, c'est de la liberté tarifaire",
+            "Forfait fixe de 30 € par avis",
+          ],
+          correct: [1],
+          explanation: "La loi de 2019 a plafonné ces frais à 10 % de la créance avec un maximum de 100 €, suite aux pratiques abusives de cumul.",
+          difficulty: "medium",
+        },
+        {
+          q: "La logique générale du système tarifaire bancaire en France est :",
+          choices: [
+            "Liberté tarifaire totale, sous contrôle judiciaire a posteriori",
+            "Encadrement systématique de tous les frais par décret",
+            "Encadrement légal là où la loi le prévoit, liberté tarifaire ailleurs",
+            "Tarification unique imposée par la Banque de France",
+          ],
+          correct: [2],
+          explanation: "Le législateur encadre certains frais (commission d'intervention, ATD, compte inactif), mais la liberté tarifaire prévaut ailleurs — ce qui pousse les banques à transférer la charge.",
+          difficulty: "hard",
+        },
+      ]} />
     </>
   ),
 
@@ -757,6 +1444,46 @@ const SECTIONS = {
       <Callout kind="prof">
         Là où n'importe quel professionnel (médecin, avocat, expert-comptable) doit conseiller positivement son client, la banque conserve un statut singulier d'intermédiaire neutre. Cette singularité est-elle encore justifiable à l'heure du conseil patrimonial intégré et de la concurrence des fintech ?
       </Callout>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Que retiennent les quatre arrêts du 12 juillet 2005 sur le devoir d'information du banquier ?",
+          choices: [
+            "La banque doit conseiller positivement son client comme tout professionnel",
+            "La banque doit prouver qu'elle a mis en garde contre l'opération risquée",
+            "Le minimum légal d'information suffit, pas de devoir prétorien",
+            "Le devoir d'information est limité aux clients profanes uniquement",
+          ],
+          correct: [1],
+          explanation: "Les arrêts du 12 juillet 2005 imposent un devoir de mise en garde (conseil négatif) : la banque doit prouver avoir déconseillé l'opération risquée. Ils n'imposent pas un conseil positif.",
+          difficulty: "medium",
+        },
+        {
+          q: "Quelle est la différence entre devoir de mise en garde et devoir de conseil positif ?",
+          choices: [
+            "Aucune, les termes sont synonymes en droit bancaire",
+            "Le devoir de mise en garde alerte sur le risque ; le conseil positif recommande la meilleure solution",
+            "Le devoir de mise en garde est écrit, le conseil positif est oral",
+            "Le conseil positif est dû à tous, la mise en garde aux seuls profanes",
+          ],
+          correct: [1],
+          explanation: "Mise en garde = signaler le risque (conseil négatif). Conseil positif = recommander la solution la plus adaptée. La banque n'est tenue qu'à la première (≠ médecin, avocat).",
+          difficulty: "hard",
+        },
+        // REVIEW: confirmer que le devoir de non-ingérence est régulièrement invoqué pour exonérer la banque, en parallèle du devoir de mise en garde
+        {
+          q: "Quelle évolution récente affecte le devoir d'information du banquier ?",
+          choices: [
+            "Le devoir de mise en garde a été aboli par la directive MIF 2",
+            "Le devoir de non-ingérence est invoqué pour exonérer la banque, ce qui constitue une régression",
+            "Le devoir de conseil positif a été étendu à toute la profession",
+            "La Cass impose désormais un devoir d'audit annuel des comptes clients",
+          ],
+          correct: [1],
+          explanation: "La Cass invoque régulièrement le devoir de non-ingérence pour exonérer la banque, ce qui constitue une régression au regard du droit commun de la responsabilité professionnelle.",
+          difficulty: "medium",
+        },
+      ]} />
     </>
   ),
 
@@ -820,6 +1547,46 @@ const SECTIONS = {
       <Callout kind="info" title="À retenir pour la dissertation">
         La distinction <Em>compte de dépôt / compte courant</Em> est l'une des plus structurantes du droit bancaire. Elle reflète une opposition entre un service grand public protégé (dépôt) et un instrument professionnel à risque (compte courant à découvert).
       </Callout>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Quelles fonctions remplit le compte de dépôt ?",
+          choices: [
+            "Une fonction de paiement uniquement",
+            "Une fonction de paiement et une fonction de crédit",
+            "Une fonction de crédit uniquement",
+            "Une fonction de placement à terme",
+          ],
+          correct: [0],
+          explanation: "Le compte de dépôt n'a qu'une fonction de paiement (≠ compte courant qui combine paiement et crédit). Pas de découvert possible en principe sur un compte de dépôt.",
+          difficulty: "easy",
+        },
+        {
+          q: "Quelles créances peuvent être inscrites en compte de dépôt ?",
+          choices: [
+            "Toute créance, y compris future ou conditionnelle",
+            "Uniquement les créances certaines, liquides et exigibles",
+            "Toute créance issue de contrats à exécution successive",
+            "Uniquement les créances supérieures à 1 000 €",
+          ],
+          correct: [1],
+          explanation: "Le compte de dépôt n'accueille que des créances certaines, liquides et exigibles. Les créances futures ou conditionnelles relèvent du compte courant.",
+          difficulty: "medium",
+        },
+        // REVIEW: vérifier que l'inscription en compte de dépôt vaut paiement définitif et fait perdre l'individualité de la créance
+        {
+          q: "Sur le compte de dépôt, l'inscription d'une créance produit quel effet ?",
+          choices: [
+            "Elle vaut simple inscription comptable, sans effet juridique sur la créance",
+            "Elle vaut paiement et fait perdre à la créance son individualité",
+            "Elle suspend la prescription de la créance",
+            "Elle déclenche la solidarité passive entre titulaires",
+          ],
+          correct: [1],
+          explanation: "L'inscription en compte vaut paiement et fait perdre à la créance son individualité — seul subsiste le solde global. C'est une caractéristique partagée avec le compte courant.",
+          difficulty: "hard",
+        },
+      ]} />
     </>
   ),
 
@@ -852,6 +1619,58 @@ const SECTIONS = {
       />
 
       <P>L'arrêt <Cas>Cass. 1ère civ. 17 janv. 2006</Cas> expose pourquoi un couple marié n'a pas besoin de compte joint : sous le régime primaire, les revenus deviennent biens communs après perception, l'argent est présumé commun, et un créancier ne peut saisir le compte au nom d'un seul époux pour une dette personnelle, faute de solidarité passive.</P>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "En cas d'indivision post-successorale sur un compte, quel est le mécanisme ?",
+          choices: [
+            "Solidarité automatique entre héritiers, comme un compte joint",
+            "Pas de solidarité : toute opération exige l'accord de tous les co-titulaires",
+            "Le notaire devient seul gestionnaire jusqu'au partage",
+            "L'héritier le plus âgé reçoit un mandat de gestion automatique",
+          ],
+          correct: [1],
+          explanation: "L'indivision post-successorale ne crée pas de solidarité : tous les héritiers deviennent co-titulaires et toute opération exige l'accord unanime, sauf aménagement conventionnel.",
+          difficulty: "medium",
+        },
+        {
+          q: "Le compte joint emporte quelles formes de solidarité ?",
+          choices: [
+            "Solidarité active uniquement",
+            "Solidarité passive uniquement",
+            "Double solidarité : active (chacun mouvemente) et passive (la banque réclame à un seul)",
+            "Aucune solidarité, simple cotitularité comptable",
+          ],
+          correct: [2],
+          explanation: "Le compte joint a une double solidarité : active (chacun peut mouvementer le compte seul) et passive (la banque peut réclamer le solde débiteur intégral à n'importe quel cotitulaire).",
+          difficulty: "easy",
+        },
+        // REVIEW: confirmer que Cass. com. 8 mars 2017 exige une stipulation expresse de la solidarité passive
+        {
+          q: "Selon Cass. com. 8 mars 2017, comment naît la solidarité passive entre cotitulaires ?",
+          choices: [
+            "Elle est présumée dès l'ouverture d'un compte joint",
+            "Elle ne se présume jamais (sauf droit commercial), elle doit être stipulée expressément",
+            "Elle exige une autorisation préalable du juge des tutelles",
+            "Elle naît automatiquement après 6 mois de fonctionnement à découvert",
+          ],
+          correct: [1],
+          explanation: "Cass. com. 8 mars 2017 : la solidarité passive ne se présume jamais (sauf en droit commercial). Elle doit être stipulée expressément dans la convention de compte.",
+          difficulty: "hard",
+        },
+        {
+          q: "Cass. 1ère civ. 17 janv. 2006 explique pourquoi un couple marié n'a pas besoin de compte joint :",
+          choices: [
+            "Le code civil interdit en réalité les comptes joints aux époux",
+            "Sous le régime primaire, les revenus sont biens communs et l'argent présumé commun",
+            "Le mariage emporte automatiquement solidarité passive bancaire",
+            "Les époux bénéficient automatiquement du droit au compte unique",
+          ],
+          correct: [1],
+          explanation: "Sous le régime primaire, les revenus deviennent biens communs après perception, et un créancier ne peut saisir le compte d'un seul époux pour une dette personnelle, faute de solidarité passive.",
+          difficulty: "medium",
+        },
+      ]} />
     </>
   ),
 
@@ -873,6 +1692,46 @@ const SECTIONS = {
       <P>Deuxièmement, en l'absence de clause contraire, <Term>chaque compte est autonome</Term> : pas de compensation entre un compte créditeur et un compte débiteur (la banque peut facturer des agios sur le second sans neutralisation par le premier).</P>
 
       <P>Troisièmement, pour qu'il y ait compensation, encore faut-il que les soldes soient <Term>fongibles</Term>. Tel n'est pas le cas entre un compte bancaire et un PEA (<Cas>Cass. com. 16 déc. 2014</Cas>) : même avec une clause de compensation, l'autonomie s'impose.</P>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Si un client est inscrit comme interdit bancaire sur un compte, l'interdit s'étend-il à ses autres comptes ?",
+          choices: [
+            "Oui, l'interdit bancaire est attaché à la personne et contamine tous ses comptes",
+            "Non, le principe du cloisonnement des patrimoines (ord. 2010 EIRL) le limite",
+            "Oui, mais seulement aux comptes d'une autre banque",
+            "Non, l'interdit ne joue qu'au-delà de 3 chèques sans provision",
+          ],
+          correct: [1],
+          explanation: "Depuis l'ordonnance de 2010 favorable à l'EIRL, le principe est le cloisonnement des patrimoines : l'interdit bancaire ne contamine pas les autres comptes.",
+          difficulty: "medium",
+        },
+        {
+          q: "En l'absence de clause contraire, comment fonctionnent plusieurs comptes d'un même titulaire dans une même banque ?",
+          choices: [
+            "Compensation automatique entre créditeur et débiteur",
+            "Chaque compte est autonome : pas de compensation, agios facturés sur le débiteur",
+            "Solidarité globale : le solde net consolidé fait foi",
+            "La banque doit fusionner les comptes après 30 jours de débit",
+          ],
+          correct: [1],
+          explanation: "Sauf clause contraire, chaque compte est autonome : pas de compensation, et la banque peut facturer des agios sur le débiteur sans neutralisation par le créditeur.",
+          difficulty: "medium",
+        },
+        // REVIEW: vérifier que Cass. com. 16 déc. 2014 refuse la compensation entre compte bancaire et PEA pour cause de non-fongibilité
+        {
+          q: "Cass. com. 16 décembre 2014 retient quel principe entre un compte bancaire et un PEA ?",
+          choices: [
+            "Compensation automatique en faveur du PEA",
+            "Pas de compensation : les soldes ne sont pas fongibles, l'autonomie s'impose même avec clause",
+            "Compensation possible si le client en fait la demande écrite",
+            "Le PEA est absorbé dans le solde global du compte bancaire",
+          ],
+          correct: [1],
+          explanation: "Les soldes d'un compte bancaire et d'un PEA ne sont pas fongibles. Même avec une clause de compensation, l'autonomie s'impose — décision protectrice de l'épargne.",
+          difficulty: "hard",
+        },
+      ]} />
     </>
   ),
 
@@ -898,6 +1757,58 @@ const SECTIONS = {
       <Callout kind="info" title="Principe d'affectation">
         À défaut de stipulation contraire, toutes les créances du client sont affectées au profit de la banque ; elles entrent dans le mécanisme global du compte. La neutralisation suppose un accord clair (<Cas>Cass. com. 3 juill. 2012</Cas>). En pratique, l'entreprise s'engage à une <Em>centralisation des paiements</Em>, perdant ainsi sa mobilité bancaire et engageant sa responsabilité contractuelle en cas de violation.
       </Callout>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Quelle est la principale différence fonctionnelle entre compte courant et compte de dépôt ?",
+          choices: [
+            "Le compte courant ne peut être ouvert qu'aux personnes morales",
+            "Le compte courant combine fonction de dépôt et fonction de crédit (fonctionne à découvert)",
+            "Le compte courant impose un dépôt minimal de 10 000 €",
+            "Le compte courant est exonéré de TVA sur les agios",
+          ],
+          correct: [1],
+          explanation: "Le compte courant est dérogatoire (réservé aux pros) et combine dépôt et crédit : il fonctionne à découvert, permettant à l'entreprise de se refinancer en continu.",
+          difficulty: "easy",
+        },
+        {
+          q: "Quelles conditions cumulatives la Cass exige-t-elle pour qualifier un compte courant ?",
+          choices: [
+            "Une condition intentionnelle (volonté claire des parties)",
+            "Une condition matérielle (réciprocité des remises et enchevêtrement)",
+            "Un dépôt minimal initial de 5 000 €",
+            "Une autorisation préalable de l'ACPR",
+          ],
+          correct: [0, 1],
+          explanation: "Deux conditions cumulatives : intentionnelle (volonté claire) et matérielle (réciprocité, enchevêtrement). À défaut, requalification en compte de dépôt.",
+          difficulty: "hard",
+        },
+        // REVIEW: vérifier que les créances futures/conditionnelles sont effectivement admissibles en compte courant via le « différé »
+        {
+          q: "Quelles créances peuvent être inscrites dans un compte courant ?",
+          choices: [
+            "Uniquement les créances certaines, liquides et exigibles",
+            "Les créances futures ou conditionnelles issues de contrats à exécution successive, dans le différé",
+            "Toutes les créances commerciales sans condition",
+            "Uniquement les créances supérieures à 10 000 €",
+          ],
+          correct: [1],
+          explanation: "Le compte courant est plus souple que le dépôt : il accueille les créances futures ou conditionnelles dans le différé. C'est une de ses grandes spécificités.",
+          difficulty: "medium",
+        },
+        {
+          q: "À défaut de stipulation contraire, quel est le sort des créances du client en compte courant ?",
+          choices: [
+            "Elles restent autonomes, pas d'affectation à la banque",
+            "Elles sont affectées au profit de la banque (Cass. com. 3 juill. 2012)",
+            "Elles sont automatiquement transférées au Fonds de Garantie",
+            "Elles sont gelées jusqu'à la clôture du compte",
+          ],
+          correct: [1],
+          explanation: "Principe d'affectation : sauf clause contraire, toutes les créances du client sont affectées à la banque (Cass. com. 3 juill. 2012). La neutralisation suppose un accord clair.",
+          difficulty: "medium",
+        },
+      ]} />
     </>
   ),
 
@@ -920,6 +1831,58 @@ const SECTIONS = {
       <P><Term>Perte d'individualité des créances.</Term> Les créances inscrites se fondent dans le solde global. <Cas>Cass. 2ème civ. 13 nov. 2014</Cas> : un acte notarié vaut titre exécutoire, mais une fois la créance inscrite en compte, la banque ne peut plus s'en prévaloir — elle doit obtenir un nouveau titre exécutoire par jugement.</P>
 
       <P>Sur le terrain des intérêts, <Cas>Cass. com. 13 nov. 2012</Cas> consacre que le silence du client sur les agios vaut acceptation : la banque peut faire varier le taux si le client ne conteste pas.</P>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Le solde d'un compte courant en cours de fonctionnement est-il prescriptible ?",
+          choices: [
+            "Oui, après 5 ans de droit commun depuis la dernière opération",
+            "Non, le solde est imprescriptible tant que le compte n'est pas clos",
+            "Oui, après 10 ans en matière commerciale",
+            "Oui, dès que le solde devient débiteur",
+          ],
+          correct: [1],
+          explanation: "Indivisibilité du solde : il n'est exigible qu'à la clôture. Tant que le compte fonctionne, le solde est imprescriptible. La prescription ne court qu'à compter de la clôture.",
+          difficulty: "medium",
+        },
+        // REVIEW: vérifier la date 18 décembre 2024 et le principe selon lequel la finalité s'apprécie à l'ouverture
+        {
+          q: "Cass. 1ère civ. 18 décembre 2024 a tranché un débat structurant : à quel moment apprécier la finalité d'un compte ?",
+          choices: [
+            "Au moment de chaque opération",
+            "Au moment de l'ouverture, peu importe les opérations ultérieures",
+            "À la date de la clôture, rétroactivement",
+            "Au moment où la banque demande la déchéance du terme",
+          ],
+          correct: [1],
+          explanation: "L'arrêt du 18 décembre 2024 fixe que la finalité du compte s'apprécie au moment de son ouverture, peu importe les opérations ultérieures — important pour les crédits conso virés sur compte pro.",
+          difficulty: "hard",
+        },
+        {
+          q: "Cass. 2ème civ. 13 nov. 2014 retient quel principe sur l'inscription d'une créance constatée par acte notarié ?",
+          choices: [
+            "La banque conserve le titre exécutoire et peut saisir directement",
+            "La créance perd son individualité, la banque doit obtenir un nouveau titre exécutoire par jugement",
+            "L'acte notarié est suspendu jusqu'à la clôture du compte",
+            "La banque ne peut jamais inscrire une créance sous acte notarié",
+          ],
+          correct: [1],
+          explanation: "Une fois inscrite en compte, la créance se fond dans le solde et perd son individualité. La banque doit obtenir un nouveau titre exécutoire par jugement.",
+          difficulty: "hard",
+        },
+        {
+          q: "Le silence du client sur les agios facturés en compte courant produit quel effet ?",
+          choices: [
+            "Aucun, le silence ne vaut jamais accord",
+            "Il vaut acceptation : la banque peut faire varier le taux (Cass. com. 13 nov. 2012)",
+            "Il oblige la banque à émettre une nouvelle convention écrite",
+            "Il déclenche un audit obligatoire de l'ACPR",
+          ],
+          correct: [1],
+          explanation: "Cass. com. 13 nov. 2012 : le silence du client sur les agios vaut acceptation. La banque peut faire varier le taux si le client ne conteste pas dans les délais.",
+          difficulty: "medium",
+        },
+      ]} />
     </>
   ),
 
@@ -949,6 +1912,46 @@ const SECTIONS = {
       />
 
       <P><Cas>Cass. com. 9 fév. 2022</Cas> : le délai de 13 mois ne concerne pas la caution. <Cas>Cass. com. 14 janv. 2026</Cas> : même dans le délai de 13 mois, si le paiement n'a pas été dénoncé sans tarder, la banque est intouchable.</P>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Cass. 26 mars 1996 sur les clauses faisant valoir le silence du client comme accord :",
+          choices: [
+            "Les valide en matière commerciale uniquement",
+            "Les qualifie d'abusives — le silence du client n'a aucune incidence sur ses droits",
+            "Les soumet à l'autorisation préalable du juge des référés",
+            "Les valide dans la limite d'un mois",
+          ],
+          correct: [1],
+          explanation: "Cass. 26 mars 1996 qualifie ces clauses d'abusives. Le silence du client n'a aucune incidence : il peut contester tant qu'il est dans les délais légaux.",
+          difficulty: "medium",
+        },
+        // REVIEW: confirmer 13 mois de forclusion à L.133-24 CMF pour les paiements frauduleux
+        {
+          q: "Quel est le délai pour contester un paiement frauduleux sous le régime du CMF ?",
+          choices: [
+            "5 ans, droit commun de prescription",
+            "13 mois de forclusion (L.133-24 CMF)",
+            "30 jours à compter de la réception du relevé",
+            "10 ans, comme pour les actes authentiques",
+          ],
+          correct: [1],
+          explanation: "L.133-24 CMF impose un délai de 13 mois de forclusion (et non de prescription) pour contester un paiement frauduleux — délai très court qui doit être respecté impérativement.",
+          difficulty: "easy",
+        },
+        {
+          q: "Selon Cass. com. 9 fév. 2022, le délai de 13 mois de forclusion s'applique-t-il à la caution ?",
+          choices: [
+            "Oui, la caution est tenue par le délai au même titre que le débiteur principal",
+            "Non, le délai de 13 mois ne concerne pas la caution",
+            "Oui, mais seulement pour les cautions professionnelles",
+            "Le délai pour la caution est porté à 24 mois",
+          ],
+          correct: [1],
+          explanation: "Cass. com. 9 fév. 2022 : le délai de 13 mois ne concerne pas la caution. Elle bénéficie du droit commun de la prescription.",
+          difficulty: "hard",
+        },
+      ]} />
     </>
   ),
 
@@ -984,6 +1987,70 @@ const SECTIONS = {
       </Callout>
 
       <P><Term>Information et symétrie.</Term> <Cas>Cass. 20 déc. 2007</Cas> (suivi par la loi de janvier 2008 — L.313-25 et s. C. cons.) : pas d'obligation d'avertissement spécifique à chaque variation, simple information annuelle. Sur la symétrie, le contentieux récent (<Cas>Cass. 25 mars 2020 Banque Dexia</Cas> ; <Cas>Cass. 4 nov. 2021</Cas>) admet la validité des <Em>clauses plancher</Em> — la banque peut maintenir des taux élevés malgré l'effondrement du marché. La protection contre les clauses abusives ne profite pas aux personnes morales de droit public, seulement aux consommateurs. Cette solution est pourtant contraire à la jurisprudence européenne (<Cas>CJUE 21 déc. 2016</Cas>).</P>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Sur quel article repose le principe de gratuité du crédit (à défaut de stipulation d'intérêt valable) ?",
+          choices: [
+            "Article 1905 du Code civil",
+            "Article L.313-1 CMF",
+            "Article 1343 du Code civil",
+            "Article L.111-1 C. cons.",
+          ],
+          correct: [0],
+          explanation: "L'article 1905 CC pose le principe : le crédit est gratuit. Pour facturer des agios, il faut deux étapes : stipulation d'intérêt + stipulation du taux. À défaut : taux légal.",
+          difficulty: "easy",
+        },
+        // REVIEW: confirmer Cass. 1ère civ. 9 fév. 1988 et Cass. com. 12 avril 1988 sur l'écrit comme condition de validité du taux conventionnel
+        {
+          q: "Depuis Cass. 1ère civ. 9 fév. 1988 et Cass. com. 12 avril 1988, l'écrit constatant le taux conventionnel est :",
+          choices: [
+            "Une simple règle de preuve, comme avant 1988",
+            "Une condition de validité — pas d'écrit, pas de taux conventionnel",
+            "Une exigence limitée aux prêts > 50 000 €",
+            "Une formalité supplétive, prouvable par tout moyen",
+          ],
+          correct: [1],
+          explanation: "Les arrêts de 1988 ont fait passer l'écrit du statut de règle de preuve à condition de validité. Pas d'écrit → application du taux légal, même pour les professionnels.",
+          difficulty: "medium",
+        },
+        {
+          q: "Cass. AP 1er déc. 1995 (suivie de Cass. com. 9 juill. 1996) a opéré quel revirement majeur ?",
+          choices: [
+            "Interdiction définitive du taux variable en droit bancaire",
+            "Admission de la fixation unilatérale du taux variable en cours d'exécution sous condition de non-abus",
+            "Plafonnement légal du taux à 6 %",
+            "Extension du devoir de mise en garde aux banques",
+          ],
+          correct: [1],
+          explanation: "L'AP 1995 admet la fixation unilatérale, étendue par Cass. com. 9 juill. 1996 aux prêts bancaires. C'est le passage du modèle français de fixité au modèle américain de variabilité.",
+          difficulty: "hard",
+        },
+        {
+          q: "Sur les clauses plancher (Cass. 25 mars 2020 Dexia ; Cass. 4 nov. 2021), quel est le principe retenu ?",
+          choices: [
+            "Elles sont nulles par principe : déséquilibre contractuel manifeste",
+            "Elles sont valides : la banque peut maintenir des taux élevés malgré l'effondrement du marché",
+            "Elles sont valides uniquement pour les consommateurs",
+            "Elles sont nulles pour les personnes morales de droit public mais valides ailleurs",
+          ],
+          correct: [1],
+          explanation: "La Cass admet la validité des clauses plancher. Position contraire à la CJUE 21 déc. 2016. La protection contre les clauses abusives ne profite pas aux personnes morales de droit public.",
+          difficulty: "hard",
+        },
+        {
+          q: "Quelle approche correspond à la conception française traditionnelle du « juste prix » ?",
+          choices: [
+            "Le prix juste est celui du marché à chaque instant (variabilité)",
+            "Le prix juste est celui voulu par les deux parties (fixité, primauté de la volonté)",
+            "Le prix juste est fixé par décret du gouvernement",
+            "Le prix juste résulte d'un audit annuel de l'ACPR",
+          ],
+          correct: [1],
+          explanation: "Approche française = fixité, prix juste car voulu par les parties. Approche américaine = variabilité, prix juste car prix du marché. La crise des subprimes illustre l'échec de la seconde.",
+          difficulty: "medium",
+        },
+      ]} />
     </>
   ),
 
@@ -1017,6 +2084,58 @@ const SECTIONS = {
           ["Produits dérivés", "Loi PACTE 2019 : autorisation infra-annuelle, pour attirer les investisseurs."],
         ]}
       />
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Quelles conditions cumulatives l'article 1343-2 CC pose-t-il pour admettre l'anatocisme en droit civil ?",
+          choices: [
+            "Intérêts dus depuis au moins 1 an + demande en justice ou convention expresse",
+            "Intérêts dus depuis 6 mois + accord verbal du débiteur",
+            "Mise en demeure préalable et accord notarié",
+            "Aucune condition particulière, l'anatocisme est libre",
+          ],
+          correct: [0],
+          explanation: "L'art. 1343-2 CC est d'ordre public et exige les deux conditions cumulatives : intérêts dus depuis au moins 1 an + demande en justice OU convention expresse.",
+          difficulty: "medium",
+        },
+        {
+          q: "Civ. 1ère 4 décembre 1990 a posé quel principe sur l'anatocisme en compte courant professionnel ?",
+          choices: [
+            "Application stricte du Code civil",
+            "Neutralisation du Code civil : capitalisations infra-annuelles autorisées",
+            "Interdiction totale en compte courant",
+            "Plafonnement à 2 capitalisations par an",
+          ],
+          correct: [1],
+          explanation: "L'arrêt neutralise l'art. 1343-2 CC en matière de compte courant pro : les capitalisations infra-annuelles sont autorisées par l'usage commercial.",
+          difficulty: "hard",
+        },
+        // REVIEW: vérifier que Civ. 25 mai 2022 sanctionne effectivement la caution professionnelle qui paie des intérêts anatocistes en immobilier
+        {
+          q: "En matière de crédit immobilier (L.313-51 C. cons.), Civ. 25 mai 2022 retient quelle solution ?",
+          choices: [
+            "L'anatocisme est admis avec l'accord exprès de l'emprunteur",
+            "La caution professionnelle qui paie des intérêts anatocistes interdits commet une faute et est déchue de son recours",
+            "L'anatocisme est admis pour les sommes inférieures à 5 000 €",
+            "L'interdiction ne joue que pour les emprunteurs profanes",
+          ],
+          correct: [1],
+          explanation: "Civ. 25 mai 2022 verrouille le contournement indirect : la caution professionnelle qui paie ces intérêts interdits commet une faute et perd son recours contre l'emprunteur.",
+          difficulty: "hard",
+        },
+        {
+          q: "À 20 % de taux d'intérêt, en combien de temps une dette double-t-elle ?",
+          choices: [
+            "Environ 14 ans",
+            "Environ 7 ans",
+            "Environ 3,5 ans",
+            "Environ 1,5 an",
+          ],
+          correct: [2],
+          explanation: "Règle du temps de doublement ≈ 70 / taux. À 20 % : 70/20 = 3,5 ans. À 10 % : 7 ans. À 30 % : 2,5 ans. La dette devient rapidement exponentielle.",
+          difficulty: "easy",
+        },
+      ]} />
     </>
   ),
 
@@ -1036,6 +2155,46 @@ const SECTIONS = {
       <P>La pratique ancienne consistait à <Term>post-dater les crédits</Term> et <Term>anti-dater les débits</Term> : le compte apparaissait artificiellement débiteur et la banque déclenchait des agios sur un découvert technique. La Cass donnait raison aux banques au nom des coûts techniques de traitement.</P>
 
       <P>L'<Art>article L.133-14 CMF</Art> (qui ne joue que pour les paiements en euros) a renversé la logique : pour les paiements dématérialisés, la date juridique doit correspondre à la date réelle. Pour les chèques, la banque conserve la possibilité d'un décalage de J+1 ou J-1.</P>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Quelle pratique ancienne posait problème sur les dates de valeurs ?",
+          choices: [
+            "Anti-dater les crédits et post-dater les débits",
+            "Post-dater les crédits et anti-dater les débits, faisant apparaître artificiellement le compte débiteur",
+            "Refuser tout décalage entre date réelle et date de valeur",
+            "Appliquer J+30 sur tous les paiements professionnels",
+          ],
+          correct: [1],
+          explanation: "La pratique ancienne consistait à post-dater les crédits et anti-dater les débits — le compte apparaissait artificiellement débiteur, déclenchant des agios sur un découvert technique.",
+          difficulty: "medium",
+        },
+        // REVIEW: confirmer L.133-14 CMF et son champ d'application limité aux paiements en euros
+        {
+          q: "Que prévoit l'article L.133-14 CMF sur les dates de valeurs ?",
+          choices: [
+            "Il généralise le décalage J+1 sur tous les paiements",
+            "Pour les paiements dématérialisés en euros, la date juridique doit correspondre à la date réelle",
+            "Il interdit toute différence entre date réelle et date de valeur, y compris pour les chèques",
+            "Il limite le décalage à 7 jours maximum, tous instruments confondus",
+          ],
+          correct: [1],
+          explanation: "L.133-14 CMF (paiements en euros uniquement) impose que la date juridique = date réelle pour les paiements dématérialisés. Les chèques conservent un possible J+1 ou J-1.",
+          difficulty: "medium",
+        },
+        {
+          q: "Pour les chèques, le régime est :",
+          choices: [
+            "Identique aux virements : date juridique = date réelle",
+            "La banque conserve la possibilité d'un décalage de J+1 ou J-1",
+            "Décalage J+5 systématique pour les chèques de plus de 1 000 €",
+            "Aucun décalage admis depuis la loi de 2014",
+          ],
+          correct: [1],
+          explanation: "Pour les chèques, la banque conserve la possibilité d'un décalage de J+1 ou J-1 (exception persistante au principe d'alignement de la date juridique sur la date réelle).",
+          difficulty: "easy",
+        },
+      ]} />
     </>
   ),
 
@@ -1060,6 +2219,46 @@ const SECTIONS = {
           [<><Term>Affacturage</Term></>, <>La contrepassation ne vaut pas paiement : l'affactureur reste propriétaire des créances transmises par subrogation (<Cas>Cass. com. 29 avril 2014</Cas>).</>],
         ]}
       />
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Pour un chèque sans provision, quelle est la règle de contrepassation ?",
+          choices: [
+            "Contrepassation soumise à l'accord exprès du bénéficiaire",
+            "Contrepassation libre, sans recours préalable — le bénéficiaire poursuit l'auteur (Cass. com. 13 nov. 2012)",
+            "Contrepassation interdite : la banque doit poursuivre l'auteur du chèque",
+            "Contrepassation possible uniquement avec autorisation du JEX",
+          ],
+          correct: [1],
+          explanation: "Cass. com. 13 nov. 2012 : la contrepassation d'un chèque sans provision est libre. C'est au bénéficiaire (et non à la banque) de poursuivre l'auteur du chèque pour obtenir paiement.",
+          difficulty: "medium",
+        },
+        // REVIEW: vérifier Cass. com. 24 nov. 2021 sur l'accord du bénéficiaire requis pour la contrepassation d'un virement
+        {
+          q: "Pour un virement, même frauduleux, quelle est la règle posée par Cass. com. 24 nov. 2021 ?",
+          choices: [
+            "Contrepassation libre comme pour le chèque",
+            "Contrepassation suppose l'accord du bénéficiaire",
+            "Contrepassation interdite : seule la voie pénale est ouverte",
+            "Contrepassation automatique en cas de fraude avérée",
+          ],
+          correct: [1],
+          explanation: "Pour le virement (même frauduleux), la contrepassation suppose l'accord du bénéficiaire. C'est une différence majeure avec le régime du chèque sans provision.",
+          difficulty: "hard",
+        },
+        {
+          q: "En matière d'affacturage (Cass. com. 29 avril 2014), la contrepassation produit quel effet ?",
+          choices: [
+            "Elle vaut paiement définitif et libère l'affactureur",
+            "Elle ne vaut pas paiement : l'affactureur reste propriétaire des créances par subrogation",
+            "Elle bascule la créance dans le solde global du compte",
+            "Elle suspend la subrogation jusqu'à régularisation",
+          ],
+          correct: [1],
+          explanation: "Cass. com. 29 avril 2014 : la contrepassation ne vaut pas paiement en matière d'affacturage. L'affactureur conserve la propriété des créances transmises par subrogation.",
+          difficulty: "hard",
+        },
+      ]} />
     </>
   ),
 
@@ -1093,6 +2292,70 @@ const SECTIONS = {
 
       <H level={4}>Portée extra-territoriale</H>
       <P>Selon <Cas>Cass. 2ème civ. 14 fév. 2008</Cas>, tout dépend de la structure : la filiale a sa personnalité propre (saisie devant le juge étranger), la succursale n'en a pas (rattachement à la société mère, saisie en France).</P>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "La saisie du solde d'un compte bancaire est une opération :",
+          choices: [
+            "Bilatérale (créancier / banque)",
+            "Triangulaire (créancier saisissant / débiteur saisi / banque tiers-saisi)",
+            "Quadrilatérale (incluant l'ACPR)",
+            "Pénale, sous l'autorité du Procureur",
+          ],
+          correct: [1],
+          explanation: "Saisie triangulaire : créancier saisissant — débiteur saisi — banque tiers-saisi. Le créancier identifie les comptes via le fichier FICOBA.",
+          difficulty: "easy",
+        },
+        // REVIEW: confirmer Cass. 2ème civ. 26 mai 2011 sur la sanction automatique limitée à l'absence totale de réponse
+        {
+          q: "Selon Cass. 2ème civ. 26 mai 2011, dans quel cas la sanction automatique (la banque devient elle-même débitrice) joue-t-elle ?",
+          choices: [
+            "Dès lors que la réponse de la banque est incomplète ou tardive",
+            "Uniquement en cas d'absence totale de réponse de la banque",
+            "À chaque erreur factuelle dans la déclaration de la banque",
+            "Dès que le délai de 30 jours est dépassé",
+          ],
+          correct: [1],
+          explanation: "La sanction automatique ne joue qu'en cas d'absence totale de réponse. Si la banque répond, même incomplètement, retour au droit commun (faute / préjudice / lien de causalité).",
+          difficulty: "hard",
+        },
+        {
+          q: "Quel est le régime des autres tiers saisis (non-banques) en cas d'information erronée ?",
+          choices: [
+            "Identique à celui des banques : retour au droit commun",
+            "Régime indulgent : aucune sanction sauf preuve d'intention frauduleuse",
+            "Condamnation automatique dès une simple information erronée",
+            "Avertissement préalable obligatoire avant sanction",
+          ],
+          correct: [2],
+          explanation: "Les non-banques sont condamnées automatiquement dès une information erronée. Les banques bénéficient d'un régime plus indulgent — illustration du poids du lobby.",
+          difficulty: "medium",
+        },
+        {
+          q: "Pendant la saisie, si le débiteur conteste judiciairement, quel est l'effet selon Cass. 2ème civ. 1er oct. 2009 ?",
+          choices: [
+            "Le paiement au saisissant est immédiatement libéré malgré la contestation",
+            "Le paiement est suspendu jusqu'à l'issue judiciaire",
+            "La saisie est annulée d'office",
+            "Le débiteur doit consigner la somme contestée auprès du JEX",
+          ],
+          correct: [1],
+          explanation: "Cass. 2ème civ. 1er oct. 2009 : en cas de contestation, le paiement est suspendu jusqu'à l'issue judiciaire — protection du débiteur saisi.",
+          difficulty: "medium",
+        },
+        {
+          q: "Selon Cass. 2ème civ. 14 fév. 2008, quelle est la portée extra-territoriale d'une saisie ?",
+          choices: [
+            "Identique pour filiale et succursale : saisie en France",
+            "Filiale = personnalité propre (saisie devant juge étranger) ; succursale = saisie en France",
+            "Filiale et succursale toutes deux saisies par la juridiction étrangère",
+            "Aucune saisie possible à l'étranger sans exequatur préalable",
+          ],
+          correct: [1],
+          explanation: "Tout dépend de la structure : la filiale a sa personnalité propre (saisie devant le juge étranger) ; la succursale n'en a pas (saisie en France, sur la société mère).",
+          difficulty: "hard",
+        },
+      ]} />
     </>
   ),
 
@@ -1110,6 +2373,46 @@ const SECTIONS = {
       <P>Lors de la rupture, la banque établit un arrêté : restitution du solde si créditeur, paiement par le client si débiteur (avec intérêts conventionnels).</P>
 
       <P>Cas particulier des <Term>comptes en déshérence</Term> (loi de 2014, <Art>L.312-19 CMF</Art>) : la banque doit chercher l'identité du titulaire pendant 12 mois à 10 ans selon les hypothèses. À défaut et après 20 ans, l'État devient propriétaire via la Caisse des dépôts.</P>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "À la clôture du compte, quelle est l'opération réalisée par la banque ?",
+          choices: [
+            "Un audit fiscal envoyé à l'administration",
+            "Un arrêté du compte : restitution du solde si créditeur, paiement par le client si débiteur",
+            "Une transmission automatique au Fonds de Garantie",
+            "Une cession de la créance à un tiers recouvreur",
+          ],
+          correct: [1],
+          explanation: "À la rupture, la banque établit un arrêté du compte : restitution si créditeur, paiement avec intérêts conventionnels si débiteur.",
+          difficulty: "easy",
+        },
+        // REVIEW: confirmer L.312-19 CMF et la durée 12 mois à 10 ans selon les hypothèses
+        {
+          q: "Pour les comptes en déshérence (loi de 2014), pendant combien de temps la banque doit-elle chercher l'identité du titulaire ?",
+          choices: [
+            "1 mois maximum, puis transfert automatique",
+            "12 mois à 10 ans selon les hypothèses",
+            "Toujours 5 ans, peu importe l'hypothèse",
+            "Jusqu'à 30 ans, durée de la prescription civile classique",
+          ],
+          correct: [1],
+          explanation: "La loi de 2014 (L.312-19 CMF) prévoit une durée variable de 12 mois à 10 ans selon les hypothèses (sans nouvelles, décès, etc.) avant de pouvoir clôturer.",
+          difficulty: "medium",
+        },
+        {
+          q: "Au-delà de quel délai le compte en déshérence devient-il propriété de l'État via la Caisse des dépôts ?",
+          choices: [
+            "10 ans",
+            "20 ans",
+            "30 ans",
+            "L'État ne devient jamais propriétaire des comptes en déshérence",
+          ],
+          correct: [1],
+          explanation: "Après 20 ans (en cumulant la phase de recherche puis le délai à la Caisse des dépôts), l'État devient propriétaire des sommes via la CDC.",
+          difficulty: "medium",
+        },
+      ]} />
     </>
   ),
 
@@ -1170,6 +2473,46 @@ const SECTIONS = {
       </Callout>
 
       <P><Term>Défis contemporains :</Term> le surendettement mondial (≈ 345 % du PIB en 2022) rend la gestion des taux périlleuse — toute hausse fragilise des économies entières. Les crises récentes (COVID, Ukraine) ont produit une inflation « subie » (coûts de l'énergie) plutôt qu'une inflation de demande, ce qui paralyse la croissance. Le vieillissement démographique constitue un frein structurel.</P>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Qui fixe le taux directeur servant de plancher aux taux conventionnels en zone euro ?",
+          choices: [
+            "Le gouvernement français par décret",
+            "La BCE (Banque centrale européenne)",
+            "Le FMI annuellement",
+            "L'ACPR avec validation du Trésor",
+          ],
+          correct: [1],
+          explanation: "La BCE fixe le taux directeur en zone euro. Il sert de référence et de plancher aux taux conventionnels appliqués par les banques.",
+          difficulty: "easy",
+        },
+        // REVIEW: confirmer les seuils (< 2 % favorable, ≈ 2 % neutre, > 4 % douleur)
+        {
+          q: "Selon la grille de lecture des zones de politique monétaire, à partir de quel niveau de taux entre-t-on en « zone de douleur » (freinage brutal) ?",
+          choices: [
+            "Au-delà de 2 %",
+            "Au-delà de 4 %",
+            "Au-delà de 6 %",
+            "Au-delà de 10 %",
+          ],
+          correct: [1],
+          explanation: "Trois zones : favorable (< 2 %, argent facile), neutre (≈ 2 %), douleur (> 4 %, freinage brutal et risque de récession).",
+          difficulty: "medium",
+        },
+        {
+          q: "Quel est l'ordre de grandeur du surendettement mondial en 2022 ?",
+          choices: [
+            "≈ 100 % du PIB mondial",
+            "≈ 345 % du PIB mondial",
+            "≈ 50 % du PIB mondial",
+            "≈ 1000 % du PIB mondial",
+          ],
+          correct: [1],
+          explanation: "Le surendettement mondial atteint ≈ 345 % du PIB en 2022 (cumul dette publique + dette privée + entreprises). Toute hausse de taux fragilise des économies entières.",
+          difficulty: "medium",
+        },
+      ]} />
     </>
   ),
 
@@ -1211,6 +2554,70 @@ const SECTIONS = {
       />
 
       <P><Cas>Cass. 3ème civ. 24 juin 2021</Cas> sanctionne les <Em>ventes à réméré</Em> qui dissimulent un prêt usuraire. <Cas>Cass. crim. 3 nov. 2005</Cas>, au nom de la rétroactivité <Em>in mitius</Em>, a appliqué la dépénalisation aux contrats en cours : des emprunteurs ont ainsi perdu rétroactivement leur protection pénale.</P>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "L'usure a été dépénalisée en France à quelle date, et sous quelle pression ?",
+          choices: [
+            "1804, lors de la rédaction du Code civil",
+            "2003, sous la pression du lobby bancaire pour s'aligner sur le modèle anglo-américain",
+            "1980, suite à la directive européenne",
+            "2014, par la loi Hamon",
+          ],
+          correct: [1],
+          explanation: "Dépénalisation en 2003 sous la pression du lobby bancaire (effondrement du cours des banques après 2000). Avant : l'usure était un délit pénal depuis 1804.",
+          difficulty: "medium",
+        },
+        // REVIEW: vérifier que la liberté est le principe et la protection l'exception (PM libres, particuliers/découverts protégés)
+        {
+          q: "Aujourd'hui en France, quel est le principe applicable au taux d'usure ?",
+          choices: [
+            "Encadrement strict pour tous (particuliers et entreprises)",
+            "Liberté de principe ; protection limitée aux particuliers (prêts non pro) et aux découverts en compte",
+            "Plafonnement à 6 % pour tous les crédits",
+            "Pas de notion d'usure depuis 2014",
+          ],
+          correct: [1],
+          explanation: "Depuis la dépénalisation, la liberté est le principe et la protection l'exception. Liberté totale pour les personnes morales ; protection maintenue pour les particuliers (prêts non pro) et les découverts.",
+          difficulty: "hard",
+        },
+        {
+          q: "Comment se calcule le taux d'usure pour les prêts protégés ?",
+          choices: [
+            "Taux directeur BCE + 2 points",
+            "Taux moyen pratiqué + une marge d'un tiers",
+            "Plafond fixe de 12 % par décret",
+            "Doublement du taux légal",
+          ],
+          correct: [1],
+          explanation: "Calcul : taux moyen pratiqué + marge d'un tiers. Au-delà, le taux est usuraire.",
+          difficulty: "medium",
+        },
+        {
+          q: "Quelle est la sanction paradoxale lorsqu'un taux est usuraire ?",
+          choices: [
+            "Restitution intégrale au prêteur, c'est l'effet attendu",
+            "Restitution de la part au-dessus du plafond, mais le prêteur garde son droit aux intérêts dans la limite du plafond — système avantageux",
+            "Nullité totale du prêt et restitution intégrale du capital",
+            "Pénalité pénale de 100 000 € seulement",
+          ],
+          correct: [1],
+          explanation: "Sanction paradoxale : restitution de la part au-dessus du plafond, le prêteur garde son droit aux intérêts dans la limite — finalement avantageux pour le prêteur (≠ taux mal fixé sans usure).",
+          difficulty: "hard",
+        },
+        {
+          q: "Cass. crim. 3 nov. 2005 a appliqué la dépénalisation aux contrats en cours au nom de :",
+          choices: [
+            "Le principe de non-rétroactivité de la loi pénale",
+            "La rétroactivité in mitius (loi pénale plus douce rétroactive)",
+            "L'autorité de la chose jugée",
+            "Le principe de la non-rétroactivité civile",
+          ],
+          correct: [1],
+          explanation: "Cass. crim. 3 nov. 2005 applique la rétroactivité in mitius : la dépénalisation rétroagit aux contrats en cours, faisant perdre aux emprunteurs leur protection pénale.",
+          difficulty: "hard",
+        },
+      ]} />
     </>
   ),
 
@@ -1262,6 +2669,70 @@ const SECTIONS = {
       />
 
       <P>L'<Term>exception de nullité perpétuelle</Term> est refusée en matière de TAEG : dès qu'il y a eu début d'exécution, la nullité ne peut plus être invoquée (<Cas>Com. 13 mai 2014</Cas>).</P>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Que signifie TAEG et que doit-il comprendre ?",
+          choices: [
+            "Taux Annuel Estimé Garanti — comprend uniquement les intérêts conventionnels",
+            "Taux Annuel Effectif Global — comprend l'intérêt conventionnel + tous frais conditionnant l'octroi",
+            "Taux d'Amortissement Économique Général — comprend les seuls frais administratifs",
+            "Taux Annuel Effectif Garanti par l'État — fixé par décret",
+          ],
+          correct: [1],
+          explanation: "TAEG (L.314-5 C. cons.) = Taux Annuel Effectif Global, le coût réel et total du crédit. Il comprend l'intérêt conventionnel + tous les frais conditionnant l'octroi.",
+          difficulty: "easy",
+        },
+        // REVIEW: confirmer que le TAEG par tranches est interdit et qu'il doit être unique sur toute la durée
+        {
+          q: "Le TAEG peut-il être présenté par tranches sur la durée du crédit ?",
+          choices: [
+            "Oui, c'est même imposé pour les crédits longs",
+            "Non, le TAEG par tranches est interdit — il doit être unique sur toute la durée",
+            "Oui, mais uniquement pour les crédits immobiliers > 100 000 €",
+            "Oui, à condition que la moyenne soit indiquée",
+          ],
+          correct: [1],
+          explanation: "Le TAEG par tranches est interdit : il doit être unique sur toute la durée du crédit pour permettre une comparaison loyale entre offres.",
+          difficulty: "medium",
+        },
+        {
+          q: "L'année lombarde est :",
+          choices: [
+            "Un usage médiéval consistant à calculer les intérêts sur 360 jours (12 × 30) au lieu de 365",
+            "Un mode de calcul officiel à 366 jours pour les années bissextiles",
+            "Une exception européenne accordée aux banques transfrontalières",
+            "Une innovation issue de la loi PACTE de 2019",
+          ],
+          correct: [0],
+          explanation: "L'année lombarde calcule les intérêts sur 360 jours au lieu de 365. Le diviseur étant plus petit, l'intérêt quotidien est plus élevé — pratique défavorable à l'emprunteur.",
+          difficulty: "medium",
+        },
+        {
+          q: "Cass. Civ. 1ère 1er oct. 2014 a posé la « règle de la décimale » qui :",
+          choices: [
+            "Sanctionne toute erreur de TAEG, même < 0,1",
+            "N'inflige aucune sanction tant que l'erreur est inférieure à 0,1 — banque mathématiquement à l'abri si taux < 7,2 %",
+            "Plafonne le TAEG à 7,2 % pour tous les crédits non pro",
+            "Impose un audit annuel du TAEG par un expert-comptable",
+          ],
+          correct: [1],
+          explanation: "Règle de la décimale française : pas de sanction si l'erreur est < 0,1. Tant que le taux est < 7,2 %, les banques sont mathématiquement à l'abri. CJUE 13 fév. 2025 invalide ce contournement.",
+          difficulty: "hard",
+        },
+        {
+          q: "Quelles sont les sanctions selon le type de crédit en cas de TAEG erroné ?",
+          choices: [
+            "Déchéance pour les crédits à la consommation (crédit gratuit rétroactif)",
+            "Nullité pour les autres crédits (substitution du taux légal)",
+            "Amende pénale uniforme de 50 000 €",
+            "Aucune sanction depuis l'ordonnance de 2019",
+          ],
+          correct: [0, 1],
+          explanation: "Conso = déchéance (crédit gratuit rétroactif). Autres = nullité (taux légal). L'ordonnance de 2019 a néanmoins assoupli ce régime en rendant la déchéance facultative pour le juge.",
+          difficulty: "hard",
+        },
+      ]} />
     </>
   ),
 
@@ -1286,6 +2757,58 @@ const SECTIONS = {
       </Callout>
 
       <P><Cas>Cass. com. 28 mars 2018</Cas> tente de sauver la loi en affirmant que les communes ne sont pas protégées par la CEDH. <Cas>Cass. com. 6 mars 2019 (Carrière-sur-Seine)</Cas> : la commune obtient gain de cause, non sur le droit bancaire neutralisé, mais sur le terrain du droit des collectivités territoriales (violation du CGCT).</P>
+
+      <QCM sectionId={sectionId} questions={[
+        // REVIEW: confirmer le coût potentiel de 17 milliards d'euros pour l'État
+        {
+          q: "Quel coût potentiel l'État craignait-il si tous les organismes publics gagnaient face à Dexia ?",
+          choices: [
+            "≈ 1 milliard d'euros",
+            "≈ 17 milliards d'euros",
+            "≈ 100 millions d'euros",
+            "≈ 50 milliards d'euros",
+          ],
+          correct: [1],
+          explanation: "Le coût potentiel était estimé à 17 milliards d'euros, ce qui justifia la riposte législative immédiate (loi de validation rétroactive du 29 juillet 2014).",
+          difficulty: "medium",
+        },
+        {
+          q: "La loi du 29 juillet 2014 sur les contrats Dexia procède à :",
+          choices: [
+            "Une simple modification pour l'avenir des règles TAEG",
+            "Une validation rétroactive de tous les contrats Dexia, contraire à la CEDH (art. 6 + art. 1 du 1er protocole)",
+            "Une indemnisation des collectivités lésées",
+            "Une nationalisation des crédits structurés",
+          ],
+          correct: [1],
+          explanation: "La loi opère une validation rétroactive — manifestement contraire à la CEDH (article 6 et article 1 du 1er protocole), au mépris des arrêts comme le tableau d'amortissement.",
+          difficulty: "hard",
+        },
+        {
+          q: "Sur quel fondement la commune de Carrière-sur-Seine a-t-elle finalement obtenu gain de cause (Cass. com. 6 mars 2019) ?",
+          choices: [
+            "Le droit bancaire (violation du TAEG)",
+            "Le terrain du CGCT (Code général des collectivités territoriales)",
+            "Le droit pénal (escroquerie de Dexia)",
+            "Le droit communautaire (clauses abusives)",
+          ],
+          correct: [1],
+          explanation: "Le droit bancaire ayant été neutralisé par la loi de validation, la commune a invoqué le CGCT (violation des règles de compétence des collectivités) — voie indirecte de contournement.",
+          difficulty: "hard",
+        },
+        {
+          q: "Cass. com. 28 mars 2018 a tenté de sauver la loi de validation rétroactive en arguant que :",
+          choices: [
+            "Les communes sont des personnes privées",
+            "Les communes ne sont pas protégées par la CEDH",
+            "L'effet rétroactif est validé par décret du Conseil d'État",
+            "Le TAEG ne s'applique pas aux contrats structurés",
+          ],
+          correct: [1],
+          explanation: "Cass. com. 28 mars 2018 : les communes ne sont pas protégées par la CEDH. Position discutable mais qui visait à neutraliser le grief CEDH contre la loi de validation.",
+          difficulty: "medium",
+        },
+      ]} />
     </>
   ),
 
@@ -1310,6 +2833,58 @@ const SECTIONS = {
       </Callout>
 
       <P>Le sort de l'année lombarde y trouve un nouvel élan : avant 2019, l'exigence d'exactitude jouait pour l'intérêt conventionnel et le TAEG. Désormais seul le TAEG est soumis à la règle de la décimale. Une erreur sur l'intérêt conventionnel ou sur les échéances brisées n'entraîne plus de sanction si le TAEG reste sous 7,2 %. Il devient souvent plus efficace d'agir au pénal pour tromperie. La CJUE n'a pas encore statué : les banques se désistent systématiquement avant qu'une question préjudicielle ne soit posée.</P>
+
+      <QCM sectionId={sectionId} questions={[
+        // REVIEW: confirmer le verbe « peut » (non plus « doit ») dans l'ordonnance du 17 juillet 2019
+        {
+          q: "Quelle est la nature exacte du changement opéré par l'ordonnance du 17 juillet 2019 ?",
+          choices: [
+            "Le juge doit désormais prononcer la perte des intérêts à chaque erreur de TAEG",
+            "Le juge peut (et non plus doit) prononcer une perte du droit aux intérêts, totale ou partielle",
+            "Le juge ne peut plus prononcer aucune sanction",
+            "Le juge doit désormais saisir l'ACPR pour décision",
+          ],
+          correct: [1],
+          explanation: "L.341 et s. C. cons. : le juge peut (et non plus doit) prononcer une perte du droit aux intérêts, totale ou partielle. C'est la suppression de la sanction automatique.",
+          difficulty: "medium",
+        },
+        {
+          q: "Cass. com. 24 mars 2021 a appliqué l'ordonnance de 2019 :",
+          choices: [
+            "Uniquement aux contrats conclus après son entrée en vigueur",
+            "Rétroactivement, alors que rien dans l'ordonnance ne le prévoyait, pour « uniformiser le régime des sanctions »",
+            "Uniquement aux crédits immobiliers, pas à la consommation",
+            "Aux seuls contrats des collectivités territoriales",
+          ],
+          correct: [1],
+          explanation: "Cass. com. 24 mars 2021 a appliqué l'ordonnance rétroactivement, alors que rien dans le texte ne le prévoyait — « il apparaît justifié d'uniformiser le régime des sanctions ».",
+          difficulty: "hard",
+        },
+        {
+          q: "Pourquoi le débat sur la conformité au droit communautaire de la suppression de la sanction automatique n'a-t-il pas été tranché par la CJUE ?",
+          choices: [
+            "La CJUE a refusé de répondre",
+            "Les banques se désistent systématiquement avant qu'une question préjudicielle ne soit posée",
+            "La France a obtenu une exception européenne",
+            "Le sujet n'est pas de compétence communautaire",
+          ],
+          correct: [1],
+          explanation: "Tactique des banques : elles se désistent systématiquement avant qu'une question préjudicielle ne puisse être posée à la CJUE — la jurisprudence européenne reste donc en suspens.",
+          difficulty: "hard",
+        },
+        {
+          q: "Depuis 2019, l'exigence d'exactitude joue désormais pour :",
+          choices: [
+            "L'intérêt conventionnel ET le TAEG (situation antérieure inchangée)",
+            "Le seul TAEG, soumis à la règle de la décimale (l'intérêt conventionnel ou les échéances brisées ne sont plus sanctionnés tant que le TAEG reste sous 7,2 %)",
+            "Aucun des deux : suppression complète de toute exigence",
+            "Le seul intérêt conventionnel, pas le TAEG",
+          ],
+          correct: [1],
+          explanation: "Depuis 2019, seul le TAEG reste soumis à la règle de la décimale. Une erreur sur l'intérêt conventionnel ou sur les échéances brisées n'entraîne plus de sanction si le TAEG reste sous 7,2 %.",
+          difficulty: "hard",
+        },
+      ]} />
     </>
   ),
 
@@ -1332,6 +2907,46 @@ const SECTIONS = {
       <Callout kind="prof" title="Sociologie du crédit (Galbraith)">
         « L'idéal est de maintenir les besoins du consommateur légèrement au-dessus de ses ressources : on le soumet alors à des tentations qui le contraignent à s'endetter ; la pression des dettes fait de lui un travailleur encore plus sûr ». Les gens vivent avec un « manteau de dette ». Pour Aron, le capitalisme risque l'autodestruction par déséquilibre entre production et répartition — mais la création monétaire et le crédit ont permis jusqu'ici d'absorber la production.
       </Callout>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "La loi Scrivener du 10 janvier 1978 a institué un régime :",
+          choices: [
+            "Restrictif, dissuadant l'endettement de masse",
+            "Protecteur, qui incite à emprunter — rupture avec l'autonomie ancienne des contrats",
+            "Aligné sur le Code civil sans innovation",
+            "Limité aux crédits supérieurs à 50 000 €",
+          ],
+          correct: [1],
+          explanation: "Sous Giscard, le régime devient protecteur ET incitatif (« tout, tout de suite »). Avant 1978 : autonomie des contrats, pas d'interdépendance — ce qui dissuadait l'endettement.",
+          difficulty: "easy",
+        },
+        // REVIEW: vérifier la date d'entrée en vigueur de la directive 2023/2225 (20 novembre 2026)
+        {
+          q: "À partir de quelle date la directive 2023/2225 entrera-t-elle pleinement en vigueur ?",
+          choices: [
+            "1er janvier 2024",
+            "20 novembre 2026",
+            "1er juillet 2025",
+            "Elle est déjà en vigueur depuis 2023",
+          ],
+          correct: [1],
+          explanation: "L'ordonnance du 3 septembre 2025 transpose la directive 2023/2225 ; entrée en vigueur fixée au 20 novembre 2026. Étend aux LOA, seuil à 100 000 €, renforce contrôle de solvabilité.",
+          difficulty: "medium",
+        },
+        {
+          q: "Selon Galbraith, quelle est la fonction sociologique du crédit ?",
+          choices: [
+            "Permettre l'égalité économique",
+            "Maintenir les besoins du consommateur au-dessus de ses ressources, le contraignant à travailler",
+            "Démocratiser l'accès à la propriété",
+            "Stabiliser les classes moyennes",
+          ],
+          correct: [1],
+          explanation: "Galbraith : « maintenir les besoins du consommateur légèrement au-dessus de ses ressources » — le crédit comme outil sociologique de soumission au travail.",
+          difficulty: "medium",
+        },
+      ]} />
     </>
   ),
 
@@ -1359,6 +2974,58 @@ const SECTIONS = {
       <Callout kind="info" title="Critère décisif">
         Ce qui distingue crédit à la consommation et crédit immobilier <Term>n'est pas le montant mais la garantie</Term>. Une garantie hypothécaire (ou équivalente sur immeuble à usage d'habitation) bascule l'opération en immobilier — ce qui pose un piège pour les panneaux photovoltaïques, biens mobiliers en eux-mêmes mais immobilisés par destination.
       </Callout>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Quelles sont les conditions cumulatives pour relever du crédit à la consommation (L.312-1 et s. C. cons.) ?",
+          choices: [
+            "Finalité non professionnelle ET montant jusqu'à 75 000 € (100 000 € à compter de novembre 2026)",
+            "Finalité non professionnelle uniquement, sans condition de montant",
+            "Montant jusqu'à 75 000 € uniquement, peu importe la finalité",
+            "Finalité non professionnelle ET garantie hypothécaire",
+          ],
+          correct: [0],
+          explanation: "Conditions cumulatives : finalité non pro + montant jusqu'à 75 000 € (100 000 € à compter de novembre 2026). L'inscription en compte pro exclut la qualification.",
+          difficulty: "easy",
+        },
+        // REVIEW: confirmer que la garantie (et non le montant) est le critère qui bascule en crédit immobilier
+        {
+          q: "Quel est le critère qui bascule un crédit en régime immobilier plutôt qu'en consommation ?",
+          choices: [
+            "Le seul montant : au-delà de 75 000 €, c'est immobilier",
+            "Pas le montant, mais la garantie hypothécaire ou équivalente sur immeuble à usage d'habitation",
+            "L'inscription en compte joint",
+            "La durée du crédit (au-delà de 5 ans, immobilier)",
+          ],
+          correct: [1],
+          explanation: "Le critère décisif n'est pas le montant mais la garantie. Une hypothèque ou sûreté équivalente sur immeuble d'habitation bascule l'opération en immobilier, peu importe le montant.",
+          difficulty: "hard",
+        },
+        {
+          q: "Selon CJUE 21 déc. 2023, la LOA et le leasing sans option d'achat sont-ils traités identiquement ?",
+          choices: [
+            "Oui, même régime protecteur pour les deux",
+            "Non, la LOA est dans le périmètre protecteur ; le leasing sans option d'achat ne l'est pas",
+            "Non, c'est l'inverse : seul le leasing sans option est protégé",
+            "Aucun n'est protégé : ce sont des baux, pas des crédits",
+          ],
+          correct: [1],
+          explanation: "CJUE 21 déc. 2023 : la LOA est désormais incluse dans le périmètre du crédit conso ; le leasing sans option d'achat ne bénéficie pas de la protection.",
+          difficulty: "medium",
+        },
+        {
+          q: "Pour les crédits mixtes (1ère civ. 1er mars 2023), la Cass adopte quelle solution ?",
+          choices: [
+            "Cumul des régimes (le plus protecteur s'applique sur chaque partie)",
+            "Refus du cumul : on retient la finalité dominante",
+            "Application systématique du régime immobilier",
+            "Application systématique du régime consommation",
+          ],
+          correct: [1],
+          explanation: "Cass. 1ère civ. 1er mars 2023 (3,8 M€ regroupant immo + trésorerie + assurance-vie) : refus du cumul des régimes. On retient la finalité dominante.",
+          difficulty: "hard",
+        },
+      ]} />
     </>
   ),
 
@@ -1387,6 +3054,70 @@ const SECTIONS = {
       <P>La banque doit vérifier la solvabilité et en conserver la preuve (<Art>L.312-16 s.</Art>). <Cas>1ère civ. 23 nov. 2022</Cas> : la vérification doit intervenir avant le <Em>versement</Em> des fonds, pas avant l'acceptation.</P>
 
       <P>Surtout, <Cas>CJUE 7 décembre 2023</Cas> : la décision d'octroi doit être <Term>humaine</Term> — interdiction des décisions automatisées (le scoring est en lui-même une décision à effet juridique). Cette jurisprudence aura des effets considérables sur les pratiques bancaires.</P>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Que désigne la FIPEN dans le régime du crédit à la consommation ?",
+          choices: [
+            "Fiche d'Information Précontractuelle Européenne Normalisée — 14 mentions obligatoires",
+            "Forme Prudentielle d'Émission de Notes",
+            "Fonds d'Indemnisation des Particuliers Endettés",
+            "Frais d'Inscription Préliminaires Encadrés Nationalement",
+          ],
+          correct: [0],
+          explanation: "FIPEN = Fiche d'Information Précontractuelle Européenne Normalisée, imposée par la directive avec 14 mentions obligatoires pour permettre la comparaison des offres.",
+          difficulty: "easy",
+        },
+        // REVIEW: confirmer CJUE 8 avril 2021 sur les clauses de reconnaissance et la charge de la preuve sur la banque
+        {
+          q: "Sur les « clauses de reconnaissance » (le client signe avoir reçu l'information), quelle est la position de CJUE 8 avril 2021 ?",
+          choices: [
+            "Elles sont valables : la signature vaut preuve définitive",
+            "Elles sont condamnées : la signature n'est qu'un indice, la charge de la preuve repose sur la banque",
+            "Elles sont valables uniquement pour les emprunteurs avertis",
+            "Elles ne concernent pas les contrats français, droit allemand uniquement",
+          ],
+          correct: [1],
+          explanation: "CJUE 8 avril 2021 condamne les clauses de reconnaissance : la signature n'est qu'un indice, la charge de la preuve effective de la remise repose sur la banque.",
+          difficulty: "hard",
+        },
+        {
+          q: "Quelles sont les sanctions du non-respect du formalisme de l'OPC ?",
+          choices: [
+            "Déchéance des intérêts, crédit gratuit, restitution rétroactive",
+            "Amende pénale fixe de 5 000 €",
+            "Suspension du contrat 6 mois puis reprise normale",
+            "Aucune sanction depuis l'ordonnance de 2019",
+          ],
+          correct: [0],
+          explanation: "Sanctions cumulées : déchéance des intérêts, crédit gratuit, restitution rétroactive. La CJUE 2016 juge la sanction proportionnée.",
+          difficulty: "medium",
+        },
+        {
+          q: "Selon Cass. 1ère civ. 23 nov. 2022, à quel moment la banque doit-elle vérifier la solvabilité de l'emprunteur ?",
+          choices: [
+            "Avant l'acceptation du contrat par le client",
+            "Avant le versement des fonds (et non avant l'acceptation)",
+            "Au moment du premier impayé",
+            "À tout moment dans les 12 mois suivant l'octroi",
+          ],
+          correct: [1],
+          explanation: "Cass. 1ère civ. 23 nov. 2022 : la vérification doit intervenir avant le versement des fonds, pas avant l'acceptation. Permet à la banque de revoir sa décision si la solvabilité a évolué.",
+          difficulty: "hard",
+        },
+        {
+          q: "Quelle révolution la CJUE a-t-elle posée le 7 décembre 2023 concernant l'octroi de crédit ?",
+          choices: [
+            "L'octroi peut être entièrement automatisé pour gagner en efficacité",
+            "La décision d'octroi doit être humaine — interdiction des décisions purement automatisées (le scoring étant lui-même une décision)",
+            "L'octroi doit faire l'objet d'un audit fiscal préalable",
+            "L'octroi est subordonné à la consultation du fichier FICOBA",
+          ],
+          correct: [1],
+          explanation: "CJUE 7 décembre 2023 : la décision d'octroi doit être humaine. Le scoring automatisé constitue lui-même une décision à effet juridique — révolution pour les pratiques bancaires.",
+          difficulty: "hard",
+        },
+      ]} />
     </>
   ),
 
@@ -1407,6 +3138,46 @@ const SECTIONS = {
       <P>Sans date, l'OPC est nulle et les intérêts déchus. <Cas>CA Douai 24 mai 2005</Cas> admet en revanche la fausse date pour purger le délai de rétractation.</P>
 
       <P>Pour le bordereau de rétractation, la Cass avait fait peser la preuve de l'irrégularité sur l'emprunteur (2013). <Term>Revirement en 2020 sous influence CJUE</Term> : la banque doit prouver la remise et la conformité du bordereau, la signature d'une clause type n'étant qu'un indice.</P>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Pendant combien de temps la banque doit-elle maintenir l'OPC après son émission (L.312-18) ?",
+          choices: [
+            "7 jours",
+            "15 jours",
+            "30 jours",
+            "1 mois",
+          ],
+          correct: [1],
+          explanation: "L.312-18 : maintien obligatoire de l'offre pendant au moins 15 jours. Permet à l'emprunteur de comparer plusieurs offres avant d'accepter.",
+          difficulty: "easy",
+        },
+        // REVIEW: confirmer que le délai de rétractation est de 14 jours depuis la directive de 2008 (auparavant 7)
+        {
+          q: "Quel est le délai de rétractation du crédit à la consommation depuis la directive de 2008 ?",
+          choices: [
+            "7 jours",
+            "14 jours",
+            "30 jours",
+            "1 mois",
+          ],
+          correct: [1],
+          explanation: "Depuis la directive de 2008 : 14 jours (auparavant 7 jours). Cela créait un « no man's land juridique » qui sera supprimé à compter de novembre 2026.",
+          difficulty: "easy",
+        },
+        {
+          q: "Quelle est la sanction d'une OPC sans date ?",
+          choices: [
+            "Aucune sanction, la date n'est qu'une mention indicative",
+            "Nullité de l'OPC et déchéance des intérêts",
+            "Amende de 5 000 € à la charge de la banque",
+            "Suspension du contrat 30 jours",
+          ],
+          correct: [1],
+          explanation: "Sans date, l'OPC est nulle et les intérêts sont déchus. CA Douai 24 mai 2005 admet en revanche la fausse date pour purger le délai de rétractation.",
+          difficulty: "medium",
+        },
+      ]} />
     </>
   ),
 
@@ -1435,6 +3206,70 @@ const SECTIONS = {
       <P>L'arrêt majeur est l'<Cas>Affaire du chauffe-eau, 1ère civ. 16 janv. 2013</Cas> : la banque qui a débloqué les fonds en intégralité avant la livraison complète du matériel a commis une faute — elle aurait dû attendre la preuve de l'exécution complète. L'emprunteur est libéré.</P>
 
       <P><Cas>Cass. 1ère civ. 25 nov. 2020</Cas> : pour obtenir réparation, l'emprunteur doit prouver le préjudice causé par la faute. <Cas>Cass. 6 fév. 2019</Cas> : si la demande de restitution du capital n'est pas expressément formulée, elle ne peut être ordonnée — vigilance procédurale absolue.</P>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "La loi Scrivener de 1978 a renversé le droit commun en imposant :",
+          choices: [
+            "Une autonomie absolue entre crédit et contrat financé",
+            "Une interdépendance : la nullité de l'un entraîne celle de l'autre",
+            "Un cumul des régimes en cas de litige",
+            "Un transfert automatique du contrat à un tiers en cas de difficulté",
+          ],
+          correct: [1],
+          explanation: "Loi Scrivener 1978 : interdépendance entre crédit et contrat financé. La nullité de l'un entraîne celle de l'autre — rupture avec l'autonomie ancienne.",
+          difficulty: "easy",
+        },
+        // REVIEW: confirmer CJCE 4 oct. 2007 sur le caractère automatique de l'interdépendance
+        {
+          q: "Selon CJCE 4 oct. 2007, l'interdépendance entre le crédit et le contrat financé est :",
+          choices: [
+            "Conditionnée à la mention de l'usage des fonds dans le crédit",
+            "Automatique, elle joue même sans mention de l'usage des fonds",
+            "Limitée aux contrats supérieurs à 10 000 €",
+            "Réservée aux crédits affectés expressément",
+          ],
+          correct: [1],
+          explanation: "CJCE 4 oct. 2007 : l'interdépendance est automatique. Elle joue même sans mention de l'usage des fonds dans le contrat de crédit — protection forte de l'emprunteur.",
+          difficulty: "hard",
+        },
+        {
+          q: "Quel principe l'« Affaire du chauffe-eau » (1ère civ. 16 janv. 2013) a-t-elle posé ?",
+          choices: [
+            "Le banquier n'engage jamais sa responsabilité tant que le contrat principal existe",
+            "La banque qui débloque les fonds avant livraison complète commet une faute — emprunteur libéré",
+            "L'emprunteur doit poursuivre le vendeur seul, sans recours bancaire",
+            "Le banquier doit toujours retenir 10 % du prix jusqu'à la livraison",
+          ],
+          correct: [1],
+          explanation: "L'arrêt chauffe-eau : la banque qui débloque les fonds en intégralité avant la livraison complète commet une faute. Elle aurait dû attendre la preuve de l'exécution. L'emprunteur est libéré.",
+          difficulty: "medium",
+        },
+        {
+          q: "Tant que le juge n'a pas statué sur la défaillance du vendeur, le crédit doit-il être exécuté ?",
+          choices: [
+            "Non, l'interdépendance suspend automatiquement le crédit",
+            "Oui, le crédit doit être exécuté ; l'avocat doit demander la suspension et appeler la banque à la procédure (L.312-55)",
+            "Le crédit est suspendu de plein droit après mise en demeure",
+            "Le crédit est annulé rétroactivement à la première contestation",
+          ],
+          correct: [1],
+          explanation: "L'interdépendance est neutralisée pour des raisons judiciaires : le crédit doit être exécuté tant que le juge n'a pas statué. Parade : demander la suspension judiciaire et appeler la banque à la procédure (L.312-55).",
+          difficulty: "hard",
+        },
+        {
+          q: "Selon Cass. 6 fév. 2019, si la demande de restitution du capital n'est pas expressément formulée :",
+          choices: [
+            "Le juge l'ordonne d'office au titre de l'office du juge",
+            "Elle ne peut être ordonnée — vigilance procédurale absolue",
+            "Le juge demande à la partie de la formuler verbalement",
+            "Elle est suppléée par décret du Conseil d'État",
+          ],
+          correct: [1],
+          explanation: "Cass. 6 fév. 2019 : pas d'office du juge sur la restitution du capital. Si la demande n'est pas expressément formulée, elle ne peut être ordonnée — exige la vigilance procédurale absolue de l'avocat.",
+          difficulty: "hard",
+        },
+      ]} />
     </>
   ),
 
@@ -1479,6 +3314,58 @@ const SECTIONS = {
           <li>Les pratiques d'intimidation par les agences de recouvrement (filiales bancaires) constituent un abus de droit (<Cas>TJ Nogent-sur-Marne, 1er mars 2022</Cas>).</li>
         </ul>
       </Callout>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "L'article L.312-39 organise une « triple peine » de l'emprunteur défaillant. Quelles en sont les composantes ?",
+          choices: [
+            "Exigibilité immédiate du capital restant dû",
+            "Intérêts conventionnels jusqu'au paiement",
+            "Indemnité barémique",
+            "Inscription automatique au FICP pendant 10 ans",
+          ],
+          correct: [0, 1, 2],
+          explanation: "Triple peine de L.312-39 : exigibilité immédiate du capital + intérêts conventionnels jusqu'au paiement + indemnité barémique. La défaillance sur une seule échéance déclenche tout.",
+          difficulty: "hard",
+        },
+        {
+          q: "Quel article du Code civil permet à l'emprunteur de bonne foi de solliciter un délai de grâce de 2 ans ?",
+          choices: [
+            "Article 1240 CC",
+            "Article 1343-5 CC",
+            "Article L.312-39 C. cons.",
+            "Article L.312-1 CMF",
+          ],
+          correct: [1],
+          explanation: "Art. 1343-5 CC permet de solliciter un délai de grâce jusqu'à 2 ans. Tant qu'il joue, l'emprunteur n'est plus juridiquement défaillant et la banque ne peut prononcer la déchéance.",
+          difficulty: "medium",
+        },
+        // REVIEW: confirmer Cass. 1ère civ. avis du 8 oct. 2025 et la divergence avec CJUE Banco Primus 2017
+        {
+          q: "Quelle divergence existe entre Cass. 1ère civ. avis du 8 oct. 2025 et CJUE Banco Primus du 26 janvier 2017 sur les clauses de dispense de mise en demeure ?",
+          choices: [
+            "Aucune divergence : les deux juridictions valident les clauses",
+            "La CJUE les juge abusives par principe ; Cass les valide sauf si la déchéance ne dépend pas d'une obligation essentielle",
+            "Cass les juge abusives par principe ; la CJUE les valide",
+            "Les deux les jugent toujours nulles",
+          ],
+          correct: [1],
+          explanation: "CJUE Banco Primus 2017 : abusives par principe. Cass. 1ère civ. avis du 8 oct. 2025 : licites SAUF si la déchéance ne dépend pas d'une obligation essentielle. Divergence à surveiller.",
+          difficulty: "hard",
+        },
+        {
+          q: "La mise en demeure (MED) a-t-elle un effet interruptif de prescription selon Cass. com. 18 mai 2022 ?",
+          choices: [
+            "Oui, c'est même son objet principal",
+            "Non, la MED n'a pas d'effet interruptif de prescription",
+            "Oui, mais uniquement entre commerçants",
+            "Oui, à condition d'être délivrée par huissier",
+          ],
+          correct: [1],
+          explanation: "Cass. com. 18 mai 2022 : la MED n'a pas d'effet interruptif de prescription. Pour interrompre, il faut une action en justice ou un acte d'exécution forcée.",
+          difficulty: "medium",
+        },
+      ]} />
     </>
   ),
 
@@ -1515,6 +3402,70 @@ const SECTIONS = {
       <P><Term>Neutralisation.</Term> Le délai de grâce, le différé de remboursement et le découvert tacite reportent le point de départ. La procédure de surendettement, en principe, ne le reporte <Em>pas</Em> — sauf si la commission octroie un moratoire. <Cas>Cass. 23 octobre 2025</Cas> : l'octroi d'un moratoire entraîne une suspension par interruption — au terme du moratoire, le temps déjà couru est conservé.</P>
 
       <P><Cas>Cass. 18 sept. 2019</Cas> a tranché un débat structurant : la déchéance du droit aux intérêts est une <Term>défense au fond</Term> (donc imprescriptible) ; mais formulée comme une demande reconventionnelle (restitution d'intérêts), elle est soumise à la prescription de droit commun de 5 ans.</P>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Selon CJUE 21 avril 2016, l'office du juge en matière de crédit à la consommation est :",
+          choices: [
+            "Une simple faculté à apprécier au cas par cas",
+            "Un devoir, qui porte sur tous les éléments y compris l'examen des pièces",
+            "Limité aux clauses abusives, pas aux questions de prescription",
+            "Réservé aux contentieux de masse",
+          ],
+          correct: [1],
+          explanation: "CJUE 21 avril 2016 : l'office est un devoir (non une faculté), portant sur tous les éléments y compris l'examen des pièces. CJUE 30 juin 2022 admet même la compensation d'office.",
+          difficulty: "hard",
+        },
+        // REVIEW: vérifier que CJUE 24 mars 2014 censure la majoration légale automatique L.313-3 et que la seule sanction légitime est la gratuité
+        {
+          q: "CJUE 24 mars 2014 sur la majoration légale automatique du taux (L.313-3 CMF) en cas de défaillance retient :",
+          choices: [
+            "La majoration est validée car proportionnée",
+            "La majoration est censurée : la seule sanction légitime est la gratuité du crédit",
+            "La majoration doit être réduite à 2 points (au lieu de 5)",
+            "La majoration ne s'applique qu'aux entreprises",
+          ],
+          correct: [1],
+          explanation: "CJUE 24 mars 2014 censure la France : le banquier négligent doit être sanctionné, la sanction doit être dissuasive — la seule sanction légitime est la gratuité du crédit. Cass. 28 juin 2023 s'incline.",
+          difficulty: "hard",
+        },
+        {
+          q: "Quel est le point de départ du délai de forclusion en matière de crédit à la consommation (AP 6 juin 2003) ?",
+          choices: [
+            "La conclusion du contrat (point de départ fixe)",
+            "Le premier incident de paiement non régularisé (point de départ flottant)",
+            "La date de la mise en demeure",
+            "La date de la déchéance du terme",
+          ],
+          correct: [1],
+          explanation: "AP 6 juin 2003 fixe un point de départ flottant : à compter du premier incident de paiement non régularisé. Délai 2 ans de forclusion.",
+          difficulty: "medium",
+        },
+        {
+          q: "L'action en requalification d'une clause abusive est :",
+          choices: [
+            "Prescriptible 5 ans à compter du contrat",
+            "Imprescriptible (mais la demande de restitution reste prescriptible 5 ans à compter de la décision d'abus)",
+            "Prescriptible 2 ans en forclusion",
+            "Soumise à la prescription décennale",
+          ],
+          correct: [1],
+          explanation: "L'action en requalification est imprescriptible. Mais la demande de restitution des intérêts indus reste prescriptible 5 ans à compter de la décision retenant l'abus (CJUE puis Cass. 12 juill. 2023).",
+          difficulty: "hard",
+        },
+        {
+          q: "Selon Cass. 18 sept. 2019, la déchéance du droit aux intérêts est :",
+          choices: [
+            "Toujours une demande reconventionnelle prescriptible 5 ans",
+            "Une défense au fond imprescriptible ; mais formulée en demande reconventionnelle, prescription 5 ans",
+            "Toujours imprescriptible quel que soit son support procédural",
+            "Toujours prescriptible 2 ans, comme la forclusion",
+          ],
+          correct: [1],
+          explanation: "Cass. 18 sept. 2019 : déchéance = défense au fond imprescriptible. Mais formulée en demande reconventionnelle (restitution), elle est soumise à la prescription 5 ans de droit commun.",
+          difficulty: "hard",
+        },
+      ]} />
     </>
   ),
 
@@ -1553,6 +3504,58 @@ const SECTIONS = {
       <Callout kind="info" title="Révolution silencieuse du droit de l'exécution">
         <Cas>Revirement majeur : CJUE 17 mai 2022</Cas> (suivi par Cass. com. et civ. 2023) — le <Term>JEX peut désormais contrôler d'office les clauses abusives</Term> lors de la mise en œuvre de tout titre exécutoire, y compris notarié et même définitif. Si une clause résolutoire est jugée abusive, la saisie est nulle, alors même qu'elle s'appuie sur une décision revêtue de l'autorité de la chose jugée.
       </Callout>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Sur le modèle américain de crédit immobilier, en cas de défaillance, que devient la dette ?",
+          choices: [
+            "Elle subsiste au-delà de la valeur du bien et est transmissible aux héritiers",
+            "Elle est effacée par la saisie du bien : l'emprunteur repart à zéro",
+            "Elle est convertie en participation au capital de la banque",
+            "Elle est rachetée par l'État via le FGDR",
+          ],
+          correct: [1],
+          explanation: "Modèle américain : saisie du bien et dette effacée — l'emprunteur repart à zéro. Modèle français inverse : la dette subsiste si le bien ne couvre pas tout, imprescriptible et transmissible aux héritiers.",
+          difficulty: "medium",
+        },
+        // REVIEW: confirmer le seuil de solvabilité 25 → 35 % du revenu brut posé en 2022
+        {
+          q: "En 2022, quel seuil de solvabilité le Haut Comité pour la Stabilité Financière a-t-il fixé ?",
+          choices: [
+            "20 % du revenu net",
+            "35 % du revenu brut (relevé depuis 25 %)",
+            "50 % du revenu brut",
+            "Aucun seuil légal, libre appréciation des banques",
+          ],
+          correct: [1],
+          explanation: "Le HCSF a relevé le seuil de 25 à 35 % du revenu brut en 2022 — pour soutenir la bulle immobilière sans la faire exploser.",
+          difficulty: "medium",
+        },
+        {
+          q: "Quel est le plafond légal de durée des crédits immobiliers depuis le décret du 25 juillet 2025 ?",
+          choices: [
+            "20 ans",
+            "30 ans",
+            "40 ans",
+            "Pas de plafond légal",
+          ],
+          correct: [1],
+          explanation: "Décret du 25 juillet 2025 : plafond légal de 30 ans. La durée moyenne, autrefois à 10 ans, est passée à 25-30 ans avec la bulle immobilière.",
+          difficulty: "easy",
+        },
+        {
+          q: "Quel revirement majeur la CJUE 17 mai 2022 a-t-elle opéré sur le contrôle des saisies immobilières ?",
+          choices: [
+            "Le JEX ne peut jamais contrôler les clauses abusives une fois la décision définitive",
+            "Le JEX peut désormais contrôler d'office les clauses abusives lors de la mise en œuvre de tout titre exécutoire, y compris notarié et même définitif",
+            "Le JEX doit transmettre tout litige à la CJUE pour avis",
+            "Le JEX est désormais incompétent en matière de saisie immobilière",
+          ],
+          correct: [1],
+          explanation: "CJUE 17 mai 2022 : révolution silencieuse — le JEX contrôle d'office les clauses abusives sur tout titre exécutoire, y compris notarié et définitif. Si abusive : saisie nulle.",
+          difficulty: "hard",
+        },
+      ]} />
     </>
   ),
 
@@ -1572,6 +3575,46 @@ const SECTIONS = {
       <P>S'applique aux crédits finançant un bien immobilier à finalité non professionnelle, à partir de 75 000 € ou — quel que soit le montant — dès lors que la garantie est une <Term>hypothèque ou sûreté équivalente</Term> sur immeuble à usage d'habitation. L'ordonnance de 2008 a créé le <Em>gage sur immeuble par destination</Em> (art. 2334 CC) : un gage portant sur des panneaux photovoltaïques bascule sous le régime du crédit immobilier.</P>
 
       <P>La <Art>directive de 2014</Art> a alourdi la responsabilité bancaire avec deux étages : une obligation de mise en garde générale (L.312-12) et un devoir de mise en garde renforcé pour les emprunteurs profanes (L.313-11). La <Art>loi Habitat dégradé du 9 avril 2024</Art> a créé un emprunt collectif pour financer les travaux de rénovation imposés aux copropriétés.</P>
+
+      <QCM sectionId={sectionId} questions={[
+        // REVIEW: confirmer le seuil 75 000 € de la loi Scrivener pour basculer en crédit immo, et le rôle de la garantie
+        {
+          q: "Le régime du crédit immobilier (L.313-1 et s. C. cons.) s'applique :",
+          choices: [
+            "À tout crédit immobilier sans condition de montant ni de garantie",
+            "Aux crédits immobiliers non pro à partir de 75 000 €, OU tout montant dès lors que la garantie est une hypothèque ou sûreté équivalente sur immeuble d'habitation",
+            "Uniquement aux crédits supérieurs à 100 000 €",
+            "Uniquement aux crédits avec hypothèque, peu importe le montant",
+          ],
+          correct: [1],
+          explanation: "Conditions alternatives : ≥ 75 000 € OU hypothèque/sûreté équivalente sur immeuble d'habitation (peu importe alors le montant). Piège des panneaux photovoltaïques.",
+          difficulty: "hard",
+        },
+        {
+          q: "La directive de 2014 a institué deux étages de devoir de mise en garde. Lequel s'applique aux emprunteurs profanes ?",
+          choices: [
+            "Mise en garde générale (L.312-12)",
+            "Mise en garde renforcée (L.313-11)",
+            "Mise en garde minimale (L.111-1 C. cons.)",
+            "Devoir de conseil positif (L.314-1)",
+          ],
+          correct: [1],
+          explanation: "Deux étages : mise en garde générale (L.312-12) pour tous + mise en garde renforcée (L.313-11) pour les emprunteurs profanes. Plus le client est profane, plus l'obligation pèse.",
+          difficulty: "medium",
+        },
+        {
+          q: "Le gage sur immeuble par destination (art. 2334 CC, ordonnance 2008) :",
+          choices: [
+            "N'a aucune incidence sur la qualification du crédit",
+            "Bascule sous le régime du crédit immobilier (ex. panneaux photovoltaïques)",
+            "Bascule sous le régime du crédit à la consommation",
+            "Est interdit en droit français",
+          ],
+          correct: [1],
+          explanation: "Le gage sur immeuble par destination (panneaux photovoltaïques notamment) bascule sous le régime du crédit immobilier — biens mobiliers eux-mêmes, mais immobilisés par destination.",
+          difficulty: "hard",
+        },
+      ]} />
     </>
   ),
 
@@ -1592,6 +3635,46 @@ const SECTIONS = {
 
       <H level={4}>Combinaison avec la loi SRU</H>
       <P>La <Art>loi SRU 2000</Art> (<Art>L.271-1 CCH</Art>) a ajouté un droit de rétractation de 10 jours portant sur la vente elle-même, qui se combine avec celui du crédit. La Cass a successivement protégé puis assoupli puis reprotégé l'acheteur : la remise en main propre par le notaire ne purgeait pas le délai (<Cas>Cass. 2011</Cas>), la loi Macron de 2015 a légalisé cette pratique, mais la Cass a multiplié les exigences procédurales (vérification de l'identité du signataire, mandat exprès du tiers, mail au notaire valant LRAR depuis 2022).</P>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Quel est le délai de rétractation du crédit immobilier (L.313-34) et sa sanction ?",
+          choices: [
+            "7 jours, nullité absolue",
+            "10 jours, nullité relative (prescription 5 ans, couvrable par l'emprunteur)",
+            "14 jours, nullité absolue",
+            "30 jours, déchéance des intérêts uniquement",
+          ],
+          correct: [1],
+          explanation: "L.313-34 : 10 jours, sanction = nullité relative (prescription 5 ans, couvrable par l'emprunteur). L'acceptation doit être par lettre, à défaut déchéance des intérêts.",
+          difficulty: "medium",
+        },
+        // REVIEW: vérifier le montant de l'amende en cas de versement pendant le no man's land (300 000 € par loi Hamon 2014)
+        {
+          q: "Pendant les 10 jours de rétractation, en cas de versement prématuré des fonds, quelle est la sanction (loi Hamon 2014) ?",
+          choices: [
+            "Aucune sanction si l'emprunteur ne se rétracte pas",
+            "Nullité relative + amende de 300 000 €",
+            "Amende fiscale de 10 % du montant versé",
+            "Suspension du contrat 30 jours puis reprise",
+          ],
+          correct: [1],
+          explanation: "L.313-35 : nullité relative + amende de 300 000 € (loi Hamon 2014). Le no man's land juridique sera supprimé à compter de novembre 2026.",
+          difficulty: "hard",
+        },
+        {
+          q: "La loi SRU 2000 (L.271-1 CCH) a institué un droit de rétractation portant sur :",
+          choices: [
+            "Le seul contrat de crédit (10 jours supplémentaires)",
+            "La vente elle-même (10 jours), qui se combine avec celui du crédit",
+            "Le mandat de vente du notaire uniquement",
+            "Les seules ventes en l'état futur d'achèvement",
+          ],
+          correct: [1],
+          explanation: "Loi SRU 2000 : 10 jours portant sur la vente elle-même, distinct et combinable avec le délai de rétractation du crédit. Double protection pour l'acquéreur.",
+          difficulty: "medium",
+        },
+      ]} />
     </>
   ),
 
@@ -1627,6 +3710,70 @@ const SECTIONS = {
       <Callout kind="info" title="Stratégie procédurale (à retenir)">
         Trois voies pour contester une loi inique. Le <Term>Conseil constitutionnel</Term> (QPC) sanctionne avec autorité mais sans rétroactivité. La <Term>CEDH</Term> répare partiellement (DI) et oblige l'État à modifier le texte. La <Term>CJUE</Term> s'impose immédiatement à toutes les juridictions si le droit communautaire est en cause. Les leçons Dexia et tableau d'amortissement montrent que la voie européenne est la plus protectrice.
       </Callout>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Pour l'OPC immobilière (L.313-25), la déchéance des intérêts en cas d'irrégularité est-elle automatique ?",
+          choices: [
+            "Oui, comme en crédit à la consommation",
+            "Non, elle n'est pas automatique : Cass. 16 janv. 2013 exige du juge qu'il motive la sanction",
+            "Oui, mais limitée à 10 % des intérêts",
+            "Non, aucune sanction n'est possible depuis l'ordonnance de 2019",
+          ],
+          correct: [1],
+          explanation: "Différence majeure avec le crédit conso : en immobilier, la déchéance n'est PAS automatique. Cass. 16 janv. 2013 : le juge doit motiver la sanction (totale, partielle, ou aucune).",
+          difficulty: "hard",
+        },
+        // REVIEW: confirmer que la loi PACTE 2019 a abrogé l'encadrement à 10 ans des clauses de domiciliation
+        {
+          q: "Quelles dispositions a abrogé la loi PACTE de 2019 ?",
+          choices: [
+            "L'encadrement à 10 ans des clauses de domiciliation, malgré CJUE 15 octobre 2020 qui validait l'encadrement",
+            "Le délai de rétractation de 10 jours",
+            "L'interdiction des clauses résolutoires triggers",
+            "Le devoir de mise en garde renforcé",
+          ],
+          correct: [0],
+          explanation: "Loi PACTE 2019 : abrogation de l'encadrement à 10 ans des clauses de domiciliation, sous la pression du lobby — alors que la CJUE 15 octobre 2020 validait pourtant l'encadrement français.",
+          difficulty: "hard",
+        },
+        {
+          q: "CEDH 14 février 2006 (tableau d'amortissement) condamne la France au motif que :",
+          choices: [
+            "La loi de validation rétroactive est conforme à la CEDH",
+            "L'intérêt des banques n'est pas l'intérêt général ; la loi de validation est une ingérence illégale",
+            "La France n'a pas ratifié le protocole en cause",
+            "Les banques privées ne sont pas couvertes par l'art. 6 CEDH",
+          ],
+          correct: [1],
+          explanation: "CEDH 14 février 2006 (tableau d'amortissement) : condamnation ferme — l'intérêt des banques n'est pas l'intérêt général. La loi de validation rétroactive est une ingérence illégale.",
+          difficulty: "hard",
+        },
+        {
+          q: "Parmi les trois voies pour contester une loi inique, laquelle s'impose immédiatement à toutes les juridictions si le droit communautaire est en cause ?",
+          choices: [
+            "Le Conseil constitutionnel (QPC)",
+            "La CEDH",
+            "La CJUE",
+            "Le Conseil d'État",
+          ],
+          correct: [2],
+          explanation: "CJUE = effet immédiat sur toutes les juridictions nationales (primauté + effet direct du droit UE). QPC = sans rétroactivité. CEDH = réparation partielle + obligation pour l'État de modifier.",
+          difficulty: "medium",
+        },
+        {
+          q: "Cass. 16 mars 1994 a posé quelle exigence sur le tableau d'amortissement ?",
+          choices: [
+            "Sans tableau, le crédit reste valable mais avec une amende administrative",
+            "Sans tableau, le crédit est gratuit et les intérêts restituables",
+            "Sans tableau, le crédit est nul, restitution intégrale du capital",
+            "Le tableau n'est obligatoire que pour les crédits supérieurs à 200 000 €",
+          ],
+          correct: [1],
+          explanation: "Cass. 16 mars 1994 : sans tableau d'amortissement, le crédit est gratuit et les intérêts sont restituables. Cette protection a été neutralisée par la loi de validation rétroactive du 12 avril 1996.",
+          difficulty: "medium",
+        },
+      ]} />
     </>
   ),
 
@@ -1665,6 +3812,58 @@ const SECTIONS = {
           ["Offre légèrement inférieure au montant", <>Position oscillante. <Cas>Cass. 3ème civ. 14 décembre 2022</Cas> admet que l'emprunteur peut refuser sans être fautif — la condition est défaillante.</>],
         ]}
       />
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Du côté de l'offre de crédit (L.313-36), l'interdépendance prend la forme de :",
+          choices: [
+            "Une condition suspensive de l'obtention du crédit",
+            "Une condition résolutoire de la non-conclusion du contrat principal",
+            "Une clause pénale forfaitaire",
+            "Un mandat de saisie automatique",
+          ],
+          correct: [1],
+          explanation: "L.313-36 : condition résolutoire de non-conclusion du contrat principal. Délai 4 mois (OP). Côté vente : condition suspensive d'obtention du crédit (L.313-41, 1 mois OP).",
+          difficulty: "hard",
+        },
+        // REVIEW: confirmer que la condition n'est pas potestative — l'octroi ne dépend pas de l'emprunteur
+        {
+          q: "La condition d'obtention du crédit dans la vente est-elle potestative ?",
+          choices: [
+            "Oui, l'emprunteur peut librement choisir d'obtenir ou non le crédit",
+            "Non, l'octroi du crédit ne dépend pas de la volonté de l'emprunteur",
+            "Oui, mais limitée à 30 jours",
+            "Oui, c'est l'essence même de la condition Scrivener",
+          ],
+          correct: [1],
+          explanation: "La condition n'est pas potestative : l'octroi du crédit dépend de la banque, pas de l'emprunteur. Sinon la condition serait nulle (art. 1304-2 CC).",
+          difficulty: "medium",
+        },
+        {
+          q: "Selon Civ. 1ère 9 déc. 1992, si l'emprunteur ne fait aucune démarche pour obtenir le crédit :",
+          choices: [
+            "La condition est défaillante, la vente est anéantie",
+            "La condition est juridiquement réputée acquise (vente formée)",
+            "La banque doit malgré tout accorder le crédit",
+            "Le notaire doit suspendre la vente",
+          ],
+          correct: [1],
+          explanation: "Civ. 1ère 9 déc. 1992 : pas de démarches = condition réputée acquise (vente formée). Sanction de la mauvaise foi de l'emprunteur qui voudrait se rétracter via une fausse défaillance.",
+          difficulty: "medium",
+        },
+        {
+          q: "Selon Cass. 3ème civ. 14 décembre 2022, si la banque propose une offre légèrement inférieure au montant demandé, l'emprunteur peut-il refuser ?",
+          choices: [
+            "Non, il doit accepter toute offre raisonnable",
+            "Oui, l'emprunteur peut refuser sans être fautif — la condition est défaillante",
+            "Oui, mais uniquement si l'écart dépasse 10 %",
+            "Non, sauf à payer une indemnité au vendeur",
+          ],
+          correct: [1],
+          explanation: "Cass. 3ème civ. 14 décembre 2022 (position oscillante désormais clarifiée) : l'emprunteur peut refuser une offre légèrement inférieure sans être fautif — la condition est défaillante.",
+          difficulty: "hard",
+        },
+      ]} />
     </>
   ),
 
@@ -1682,6 +3881,46 @@ const SECTIONS = {
       <P>L'<Art>article L.313-38</Art> est mal rédigé : il vise le cas où l'un des contrats « n'est pas conclu ». Que faire si le contrat existe mais est nul (vice du consentement) ou résolu ?</P>
 
       <P><Cas>Civ. 1ère 1er décembre 1993</Cas> interprète en faveur de l'emprunteur : nullité <Em>et</Em> résolution emportent disparition de l'autre contrat. Le mécanisme protecteur joue dans toute son ampleur.</P>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "L'article L.313-38 vise littéralement le cas où l'un des contrats :",
+          choices: [
+            "Est nul (vice du consentement)",
+            "« N'est pas conclu » — silence sur nullité et résolution",
+            "Est résolu après inexécution",
+            "Est suspendu pour fraude",
+          ],
+          correct: [1],
+          explanation: "L.313-38 vise uniquement le cas où le contrat « n'est pas conclu ». Silence sur nullité et résolution — d'où l'extension jurisprudentielle nécessaire.",
+          difficulty: "medium",
+        },
+        // REVIEW: confirmer que Civ. 1ère 1er décembre 1993 étend le mécanisme à la nullité ET à la résolution
+        {
+          q: "Civ. 1ère 1er décembre 1993 a-t-elle étendu l'interdépendance à la nullité et à la résolution ?",
+          choices: [
+            "Non, la Cass s'en est tenue aux termes étroits du texte",
+            "Oui, nullité ET résolution emportent disparition de l'autre contrat — interprétation favorable à l'emprunteur",
+            "Oui, mais uniquement à la nullité, pas à la résolution",
+            "Oui, mais uniquement à la résolution, pas à la nullité",
+          ],
+          correct: [1],
+          explanation: "Civ. 1ère 1er décembre 1993 : interprétation extensive en faveur de l'emprunteur. Nullité ET résolution emportent disparition de l'autre contrat — extension prétorienne salutaire.",
+          difficulty: "hard",
+        },
+        {
+          q: "Quelle est la portée pratique de cette extension prétorienne ?",
+          choices: [
+            "Le mécanisme protecteur de l'interdépendance ne joue qu'en cas de défaut de conclusion",
+            "Le mécanisme joue au-delà des termes étroits du texte, dans toute son ampleur",
+            "La protection est limitée aux contrats commerciaux",
+            "L'extension n'a pas de portée pratique",
+          ],
+          correct: [1],
+          explanation: "Le mécanisme joue au-delà des termes étroits du texte. Si le contrat principal disparaît (par nullité ou résolution), le crédit disparaît aussi — protection forte.",
+          difficulty: "medium",
+        },
+      ]} />
     </>
   ),
 
@@ -1729,6 +3968,70 @@ const SECTIONS = {
 
       <H level={4}>D. Déchéance anticipée et MED</H>
       <P>Mécanisme similaire au crédit à la consommation. <Cas>1ère civ. 22 mars 2023</Cas> : un délai d'exécution de 8 jours seulement après MED est abusif — il faut un délai raisonnable, au minimum un mois. La clause de dispense de MED est qualifiée d'abusive (<Cas>CJUE Banco Primus 2017</Cas>), ce qui aboutit à la gratuité du crédit.</P>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "L'indemnité de remboursement anticipé en crédit immobilier protégé est plafonnée à (L.313-47) :",
+          choices: [
+            "1 % du capital restant dû",
+            "3 % du capital restant dû",
+            "10 % du capital restant dû",
+            "Aucun plafond légal",
+          ],
+          correct: [1],
+          explanation: "L.313-47 : indemnité plafonnée à 3 % du capital restant dû. Le régime de droit commun (finalité pro) n'a pas ce plafond — l'indemnité est légale et non réductible (FFA 27 sept. 2005).",
+          difficulty: "easy",
+        },
+        {
+          q: "Quelle clause N'A PAS été qualifiée d'abusive par la Cass dans cette section ?",
+          choices: [
+            "Interdiction de louer le bien acheté (Cass. 2005)",
+            "Déchéance pour licenciement (Cass. 1ère civ. 5 juin 2019)",
+            "Déchéance pour déclaration inexacte à la signature (1ère civ. 10 oct. 2018)",
+            "Indemnité de remboursement anticipé plafonnée à 3 %",
+          ],
+          correct: [3],
+          explanation: "L'indemnité plafonnée à 3 % est légale (L.313-47), pas abusive. Les trois autres clauses sont effectivement qualifiées d'abusives par la Cass.",
+          difficulty: "medium",
+        },
+        // REVIEW: confirmer le triptyque bonne foi / transparence / équilibre dans CJUE 10 juin 2021 sur Helvet Immo
+        {
+          q: "CJUE 10 juin 2021 (revirement Helvet Immo) repose sur quel triptyque pesant sur la banque ?",
+          choices: [
+            "Solvabilité, durée, garantie",
+            "Bonne foi, transparence, équilibre",
+            "Transparence, profit, retour",
+            "Information, conseil, mise en garde",
+          ],
+          correct: [1],
+          explanation: "Triptyque CJUE 10 juin 2021 : bonne foi, transparence, équilibre. Apprécié au regard de l'information de l'emprunteur et du risque disproportionné de change.",
+          difficulty: "hard",
+        },
+        {
+          q: "À quel montant BNP a-t-elle été provisionnée pour l'affaire Helvet Immo (condamnation pénale pour tromperie) ?",
+          choices: [
+            "≈ 50 M€",
+            "≈ 720 M€",
+            "≈ 100 M€",
+            "≈ 5 milliards €",
+          ],
+          correct: [1],
+          explanation: "BNP a été condamnée pénalement pour tromperie (Helvet Immo) avec une provision de ≈ 720 M€ en 2023.",
+          difficulty: "medium",
+        },
+        {
+          q: "Selon Cass. 1ère civ. 22 mars 2023, un délai d'exécution de 8 jours seulement après MED est :",
+          choices: [
+            "Valable, c'est l'usage bancaire",
+            "Abusif — il faut un délai raisonnable, au minimum un mois",
+            "Soumis à l'appréciation du juge sans règle fixe",
+            "Valable uniquement pour les emprunteurs de mauvaise foi",
+          ],
+          correct: [1],
+          explanation: "Cass. 1ère civ. 22 mars 2023 : délai de 8 jours abusif. Il faut un délai raisonnable, au minimum un mois, pour permettre à l'emprunteur de régulariser ou de se défendre.",
+          difficulty: "hard",
+        },
+      ]} />
     </>
   ),
 
@@ -1755,6 +4058,58 @@ const SECTIONS = {
       <Callout kind="prof">
         C'est dire la fragilité de la position de l'emprunteur et de ses héritiers face à un mécanisme conçu pour la sécurité juridique du créancier. Sous prétexte d'éviter l'impunité, la jurisprudence a vidé la prescription protectrice de toute substance — un emprunteur peut être poursuivi vingt-cinq ans après son dernier impayé.
       </Callout>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Que désigne le « lien de congruence » en matière de prescription bancaire ?",
+          choices: [
+            "L'égalité du taux entre crédit conso et immobilier",
+            "L'idée que le délai de prescription doit être adapté à la durée du crédit",
+            "La symétrie entre l'obligation de la banque et celle de l'emprunteur",
+            "La proportionnalité entre la sanction et la faute",
+          ],
+          correct: [1],
+          explanation: "Lien de congruence : la prescription doit être adaptée à la durée du crédit. Réforme 2008 : 5 ans pour 30 ans de crédit — congruence rompue.",
+          difficulty: "medium",
+        },
+        {
+          q: "Selon CJUE 8 sept. 2022, par application du principe d'effectivité, un délai de prescription de 10 ans pour un crédit de 30 ans est-il conforme au droit communautaire ?",
+          choices: [
+            "Oui, c'est même un délai protecteur",
+            "Non, le droit communautaire s'oppose à un tel délai trop court",
+            "Conforme uniquement si l'emprunteur a renoncé à se prévaloir",
+            "Conforme uniquement pour les crédits supérieurs à 100 000 €",
+          ],
+          correct: [1],
+          explanation: "CJUE 8 sept. 2022 : par effectivité, le droit communautaire s'oppose à un délai de 10 ans pour un crédit de 30 ans — la protection deviendrait illusoire pour l'emprunteur.",
+          difficulty: "hard",
+        },
+        // REVIEW: confirmer Cass. 11 février 2016 et son effet : prescription n'éteint que l'échéance impayée, pas le capital
+        {
+          q: "Cass. 11 février 2016 (arrêt structurant) retient quel principe de prescription ?",
+          choices: [
+            "Le délai de 2 ans éteint toute la dette à compter du premier impayé",
+            "Le délai de 2 ans n'éteint que l'échéance impayée, pas le capital restant dû — la dette devient en pratique imprescriptible",
+            "Le délai de 5 ans éteint toute la dette",
+            "Aucun délai ne joue tant que la déchéance du terme n'est pas prononcée",
+          ],
+          correct: [1],
+          explanation: "Cass. 11 février 2016 : la prescription de 2 ans n'éteint que l'échéance impayée, pas le capital restant dû. La dette devient en pratique imprescriptible. Position critiquée mais structurante.",
+          difficulty: "hard",
+        },
+        {
+          q: "Selon Cass. 20 octobre 2021, le décès de l'emprunteur a-t-il une incidence sur la prescription du crédit ?",
+          choices: [
+            "Oui, le décès provoque la déchéance immédiate du crédit",
+            "Non, le décès n'a aucune incidence — seul le prononcé de la déchéance du terme déclenche la prescription",
+            "Oui, le délai recommence à courir contre les héritiers",
+            "Oui, mais uniquement si le décès est notifié par le notaire",
+          ],
+          correct: [1],
+          explanation: "Cass. 20 octobre 2021 : le décès n'a aucune incidence et ne provoque pas la déchéance du crédit. Seul le prononcé de la déchéance du terme déclenche la prescription. Position défavorable aux héritiers.",
+          difficulty: "hard",
+        },
+      ]} />
     </>
   ),
 
@@ -1790,6 +4145,46 @@ const SECTIONS = {
       <Callout kind="warn" title="Méthode pour la dissertation">
         Ne jamais traiter une règle comme un dogme. Toujours rechercher la <Term>tension qu'elle cristallise</Term>, sa <Term>généalogie</Term> (quelle crise l'a fait naître, quel lobby l'a infléchie), sa <Term>dialectique</Term> (quel mouvement contraire elle suscite). Le droit bancaire n'est pas un corps de règles, c'est une chronique des rapports de force économiques traduits en droit.
       </Callout>
+
+      <QCM sectionId={sectionId} questions={[
+        {
+          q: "Parmi les trois lignes de fracture structurantes du droit bancaire, lesquelles sont identifiées dans la fiche ?",
+          choices: [
+            "Protection du client vs liberté bancaire",
+            "Droit national vs droit européen",
+            "Sécurité juridique vs rentabilité économique",
+            "Droit pénal vs droit civil bancaire",
+          ],
+          correct: [0, 1, 2],
+          explanation: "Trois lignes : (1) protection client vs liberté bancaire ; (2) droit national vs droit européen ; (3) sécurité juridique vs rentabilité économique. La 4e (pénal vs civil) n'est pas une ligne de fracture structurante.",
+          difficulty: "medium",
+        },
+        // REVIEW: vérifier que le droit communautaire est bien décrit comme un « second souffle protecteur »
+        {
+          q: "Comment la fiche caractérise-t-elle la fonction du droit européen vis-à-vis du droit bancaire national ?",
+          choices: [
+            "Un frein technique sans portée pratique",
+            "Un second souffle protecteur quand le droit national cède (CJUE office du juge, JEX, décision humaine ; CEDH validation rétroactive)",
+            "Un alignement systématique sur le modèle anglo-américain",
+            "Une simple harmonisation marchande, sans dimension protectrice",
+          ],
+          correct: [1],
+          explanation: "Le droit européen joue comme un « second souffle protecteur ». CJUE impose office du juge, contrôle JEX, décision humaine, conformité TAEG ; CEDH censure les validations rétroactives.",
+          difficulty: "hard",
+        },
+        {
+          q: "Quels jalons de recul de la protection sous couvert d'efficacité économique sont cités dans la conclusion ?",
+          choices: [
+            "L'ordonnance de 2019 supprimant la sanction automatique du TAEG",
+            "La loi PACTE de 2019 supprimant l'encadrement de la domiciliation",
+            "La loi de 2014 validant rétroactivement les prêts Dexia",
+            "La loi MURCEF de 2001 imposant la convention de compte",
+          ],
+          correct: [0, 1, 2],
+          explanation: "Trois jalons de recul : ordonnance 2019 (TAEG), loi PACTE 2019 (domiciliation), loi 2014 (validation Dexia). MURCEF 2001 est au contraire un jalon protecteur (convention écrite OP).",
+          difficulty: "hard",
+        },
+      ]} />
     </>
   ),
 };
@@ -1812,6 +4207,8 @@ export default function App() {
   const [maskedMode, setMaskedMode] = useState({ pepites: false, cas: false });
   const [reviewMode, setReviewMode] = useState(false);
   const [reviewIndex, setReviewIndex] = useState(0);
+  const [examOpen, setExamOpen] = useState(false);
+  const [examPool, setExamPool] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const contentRef = useRef(null);
 
@@ -2093,10 +4490,22 @@ export default function App() {
         </defs>
       </svg>
 
-      {/* === HEADER === */}
+      {/* === Pré-rendu caché : peuple QUESTION_REGISTRY pour l'examen blanc === */}
+      {loaded && (
+        <div style={{ position: "absolute", width: 0, height: 0, overflow: "hidden", pointerEvents: "none", opacity: 0 }} aria-hidden="true">
+          {Object.entries(SECTIONS).map(([id, Section]) => (
+            <Section key={id} sectionId={id} />
+          ))}
+        </div>
+      )}
+
+      {/* === HEADER (Liquid Glass) === */}
       <header style={{
-        backgroundColor: C.paper,
-        borderBottom: `1px solid ${C.rule}`,
+        backgroundColor: "rgba(255, 255, 255, 0.08)",
+        backdropFilter: "url(#liquid-glass) blur(14px) saturate(170%)",
+        WebkitBackdropFilter: "blur(14px) saturate(170%)",
+        borderBottom: "1px solid rgba(255, 255, 255, 0.16)",
+        boxShadow: "inset 0 0 20px -5px rgba(255, 255, 255, 0.7), 0 8px 32px rgba(0, 0, 0, 0.25)",
         padding: isMobile ? "10px 14px" : "14px 24px",
         display: "flex",
         alignItems: "center",
@@ -2256,6 +4665,54 @@ export default function App() {
           >
             <Scale size={14}/>
             {!isMobile && <span>Arrêts</span>}
+          </button>
+
+          <button
+            onClick={() => {
+              const allQuestions = Object.entries(QUESTION_REGISTRY)
+                .flatMap(([sId, qs]) => qs.map(q => ({ ...q, _sectionId: sId })));
+              const weighted = allQuestions.map(q => {
+                const conf = progress[q._sectionId]?.confidence;
+                const weight = conf === "red" ? 4 : conf === "yellow" ? 2 : conf === "green" ? 1 : 3;
+                return { q, weight };
+              });
+              const picked = [];
+              const N = Math.min(20, weighted.length);
+              while (picked.length < N && weighted.length > 0) {
+                const totalWeight = weighted.reduce((s, w) => s + w.weight, 0);
+                let r = Math.random() * totalWeight;
+                for (let i = 0; i < weighted.length; i++) {
+                  r -= weighted[i].weight;
+                  if (r <= 0) {
+                    picked.push(weighted[i].q);
+                    weighted.splice(i, 1);
+                    break;
+                  }
+                }
+              }
+              setExamPool(picked);
+              setExamOpen(true);
+            }}
+            style={{
+              background: "transparent",
+              color: C.navy,
+              border: `1px solid ${C.navy}`,
+              borderRadius: 4,
+              padding: "8px 12px",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+              fontSize: 12,
+              fontWeight: 600,
+              letterSpacing: "0.05em",
+              textTransform: "uppercase",
+              fontFamily: "inherit",
+            }}
+            title="Tirer 20 questions au hasard parmi toutes les sections, pondérées par confidence"
+          >
+            <FileText size={14}/>
+            {!isMobile && <span>Examen blanc</span>}
           </button>
         </div>
 
@@ -3004,6 +5461,80 @@ export default function App() {
           );
         })()}
       </div>
+
+      {/* === MODALE EXAMEN BLANC === */}
+      {examOpen && (
+        <div
+          onClick={(e) => { if (e.target === e.currentTarget) setExamOpen(false); }}
+          style={{
+            position: "fixed",
+            inset: 0,
+            backgroundColor: "rgba(8, 12, 28, 0.7)",
+            backdropFilter: "blur(8px)",
+            WebkitBackdropFilter: "blur(8px)",
+            display: "flex",
+            alignItems: "flex-start",
+            justifyContent: "center",
+            zIndex: 1000,
+            padding: "40px 20px",
+            overflowY: "auto",
+          }}
+        >
+          <div style={{
+            backgroundColor: C.paper,
+            maxWidth: 800,
+            width: "100%",
+            borderRadius: 8,
+            padding: isMobile ? "20px 18px" : "32px 40px",
+            boxShadow: "0 20px 60px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.06)",
+            border: "1px solid rgba(255,255,255,0.08)",
+          }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24, gap: 12 }}>
+              <h2 style={{
+                fontFamily: "'Fraunces', serif",
+                fontSize: isMobile ? 22 : 28,
+                margin: 0,
+                color: C.ink,
+                fontWeight: 600,
+              }}>
+                Examen blanc — {examPool.length} questions
+              </h2>
+              <button
+                onClick={() => setExamOpen(false)}
+                style={{
+                  background: "transparent",
+                  border: `1px solid ${C.rule}`,
+                  color: C.ink,
+                  padding: "6px 12px",
+                  borderRadius: 3,
+                  cursor: "pointer",
+                  fontSize: 12,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                  fontFamily: "inherit",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                Fermer
+              </button>
+            </div>
+            {examPool.length > 0 ? (
+              <QCM mode="exam" questions={examPool} />
+            ) : (
+              <div style={{
+                padding: 40,
+                textAlign: "center",
+                color: C.inkSoft,
+                fontFamily: "'EB Garamond', serif",
+                fontSize: 16,
+                fontStyle: "italic",
+              }}>
+                Aucune question disponible. Charge la fiche entièrement puis réessaie.
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
     </MaskedModeContext.Provider>
     </ProgressContext.Provider>
