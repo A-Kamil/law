@@ -3,20 +3,299 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fiche — Droit bancaire</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Manrope:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      html, body, #root { height: 100%; }
-      body { margin: 0; background: #0E1730; }
-    </style>
+    <title>Plateforme d'Excellence Juridique et Fiscale</title>
+    <link rel="stylesheet" href="/src/App.css" />
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <div class="app-wrapper">
+      
+      <!-- NAVIGATION TABS -->
+      <nav class="nav-tabs">
+        <button class="tab-btn active" data-tab="quiz">🎯 Quiz</button>
+        <button class="tab-btn" data-tab="review">📖 Révision Rapide</button>
+        <button class="tab-btn" data-tab="stats">📊 Mes Stats</button>
+      </nav>
+
+      <!-- 1. QUIZ TAB -->
+      <div id="quiz-tab" class="tab-content active">
+        
+        <!-- SUBJECT SELECTOR SCREEN -->
+        <div id="subject-select-screen" class="config-card fade-in">
+          <header class="header">
+            <div class="brand-badge">SÛRETÉS &amp; IS · MASTER PREP</div>
+            <h1>Plateforme d'Excellence</h1>
+            <p>Sélectionnez la matière que vous souhaitez travailler aujourd'hui pour démarrer l'entraînement.</p>
+          </header>
+
+          <h2 style="text-align: center; margin-bottom: 2rem;">Sélectionnez votre Matière</h2>
+          
+          <div class="subject-selection-grid">
+            <!-- DS Card -->
+            <div id="card-select-ds" class="subject-select-card select-ds fade-in">
+              <div class="select-card-badge ds">Droit civil</div>
+              <h3>Droit des Sûretés (DS)</h3>
+              <p>Le cautionnement (caractéristiques, formation, effets, recours, extinction), la garantie autonome, la lettre d'intention, les sûretés réelles exclusives (crédit-bail, rétention, CRP) et préférentielles (gage, nantissement).</p>
+              <button class="btn btn-ds-solid mt-4" style="width: 100%;">Réviser le Droit des Sûretés</button>
+            </div>
+
+            <!-- IS Card -->
+            <div id="card-select-is" class="subject-select-card select-is fade-in">
+              <div class="select-card-badge is">Droit fiscal</div>
+              <h3>Impôt sur les Sociétés (IS)</h3>
+              <p>Théorie de l'Acte Anormal de Gestion, Abus de droit (simulation, fraude à la loi, directive ATAD), principe de territorialité, rattachement des produits d'exploitation, déductibilité des charges, amortissements et provisions.</p>
+              <button class="btn btn-is-solid mt-4" style="width: 100%;">Réviser l'Impôt sur les Sociétés</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONFIGURATION SCREEN -->
+        <div id="quiz-config-screen" class="config-card fade-in" style="display: none;">
+          <button id="btn-back-to-subjects" class="btn btn-text" style="margin-bottom: 1.5rem; font-weight: bold;">← Changer de matière</button>
+          
+          <h2 id="config-title">Configuration de la Session</h2>
+
+          <!-- Themes Grid selection -->
+          <div class="config-section-title">
+            <span>Thèmes de révision</span>
+            <div class="selection-actions">
+              <button id="btn-select-all-themes" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">Tout sélectionner</button>
+              <button id="btn-deselect-all-themes" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">Tout désélectionner</button>
+            </div>
+          </div>
+          <div id="themes-grid" class="themes-grid">
+            <!-- Dynamically populated via app.js with toggleTheme divs -->
+          </div>
+
+          <!-- Filters Row (Difficulties + Timers + Modes) -->
+          <div class="filter-row-group">
+            <!-- Difficulties -->
+            <div class="filter-item">
+              <div class="config-section-title">Niveaux de Difficulté</div>
+              <div class="diff-selectors">
+                <button class="difficulty-filter easy checked" data-diff="easy">Facile</button>
+                <button class="difficulty-filter medium checked" data-diff="medium">Moyen</button>
+                <button class="difficulty-filter hard checked" data-diff="hard">Difficile</button>
+              </div>
+            </div>
+
+            <!-- Timer toggles -->
+            <div class="filter-item">
+              <div class="config-section-title">Minuteur par question</div>
+              <div class="switch-container">
+                <label class="switch">
+                  <input type="checkbox" id="timer-toggle">
+                  <span class="slider"></span>
+                </label>
+                <span class="switch-label">Activer</span>
+                <select id="timer-duration-select" class="duration-select" disabled>
+                  <option value="20">20s</option>
+                  <option value="30" selected>30s</option>
+                  <option value="40">40s</option>
+                  <option value="60">60s</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Quiz modes -->
+            <div class="filter-item">
+              <div class="config-section-title">Mode d'évaluation</div>
+              <div class="quiz-modes">
+                <button class="quiz-mode-btn active" data-mode="normal">Mode Normal<br><small style="font-weight:normal;opacity:0.8;">Feedback immédiat</small></button>
+                <button class="quiz-mode-btn" data-mode="exam">Examen Blanc<br><small style="font-weight:normal;opacity:0.8;">Correction à la fin</small></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Launch Button -->
+          <button id="btn-start-quiz" class="btn btn-primary btn-large" style="font-size: 1.2rem; padding: 1.25rem;">🚀 Démarrer la session (40 questions d'examen)</button>
+        </div>
+
+        <!-- PLAY ARENA SCREEN -->
+        <div id="quiz-play-screen" class="quiz-container fade-in" style="display: none;">
+          <div class="quiz-header">
+            <button id="btn-quit-quiz" class="btn btn-text" onclick="location.reload();">← Quitter la session</button>
+            <div class="timer-badge-container">
+              <div id="quiz-timer-container" class="quiz-timer-container">
+                <div id="timer-progress-fill" class="timer-fill"></div>
+              </div>
+            </div>
+            <div id="q-counter" style="font-weight: bold;">Question 1 / 40</div>
+          </div>
+
+          <div class="progress-bar">
+            <div id="quiz-progress-bar-fill" class="progress-fill"></div>
+          </div>
+
+          <!-- Question Card -->
+          <div class="question-box">
+            <div class="badge-row">
+              <span id="q-diff-badge" class="diff-badge">🟢 Facile</span>
+              <span id="q-mastered-badge" class="mastered-star-badge">⭐ Maîtrisé</span>
+              <span id="q-theme-badge" class="badge-theme">Thème</span>
+              <span id="q-type-badge" class="badge-type">Simple</span>
+            </div>
+            
+            <h2 id="q-text" class="question-text">Texte de la question...</h2>
+
+            <!-- Grid of options -->
+            <div id="options-grid" class="options-grid">
+              <!-- Rendered via app.js -->
+            </div>
+
+            <!-- Discret mastery stats indicator -->
+            <p id="q-stats-info" style="font-size: 0.75rem; color: var(--text-muted); margin-top: 1.5rem; text-align: right;"></p>
+          </div>
+
+          <!-- Correction Box (Only in Normal Mode) -->
+          <div id="feedback-box" class="correction-card fade-in-up" style="display: none;">
+            <!-- Rendered dynamically -->
+          </div>
+
+          <!-- Play Control Row -->
+          <div id="quiz-controls" class="quiz-controls-row">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- RESULTS DASHBOARD SCREEN -->
+        <div id="quiz-result-screen" class="fade-in" style="display: none;">
+          <div class="result-card">
+            <div class="result-emoji">🎓</div>
+            <h2>Session Terminée !</h2>
+            <p id="result-message-subtitle" class="result-meta">Résultats de votre révision active</p>
+            
+            <div class="score-circle-container">
+              <div class="score-ring">
+                <span id="result-score-percent" class="result-score-percent">0%</span>
+                <span id="result-score-fraction" class="result-score-fraction">0 / 0</span>
+              </div>
+            </div>
+
+            <div id="result-message" class="score-message">
+              <!-- Rendered dynamically -->
+            </div>
+
+            <div class="result-actions" style="flex-direction: column; gap: 0.75rem; max-width: 320px; margin: 0 auto;">
+              <button id="btn-redo-errors" class="btn btn-outline btn-large" style="border-color: var(--danger-color); color: var(--danger-color);">🔄 Refaire uniquement vos erreurs</button>
+              <button id="btn-print-mistakes" class="btn btn-outline btn-large">🖨️ Imprimer la fiche d'erreurs</button>
+              <button id="btn-new-quiz" class="btn btn-primary btn-large">🎮 Lancer une nouvelle session</button>
+            </div>
+          </div>
+
+          <!-- AI Unlock system Box -->
+          <div id="ai-unlock-box" style="margin-bottom: 3rem;">
+            <!-- Dynamically populated based on errors count -->
+          </div>
+
+          <!-- Group Performance by Theme -->
+          <div id="result-themes-dashboard" class="themes-dashboard-card">
+            <!-- Dynamically populated -->
+          </div>
+
+          <!-- Correction panel list of errors -->
+          <div id="result-corrections-list" class="corrections-list-card">
+            <!-- Dynamically populated -->
+          </div>
+
+          <!-- Fast link redirections -->
+          <div style="text-align: center; margin-bottom: 4rem;">
+            <button id="btn-quick-review-redirect" class="btn btn-outline">📖 Aller à la Révision Rapide</button>
+            <button id="btn-stats-redirect" class="btn btn-outline" style="margin-left: 1rem;">📊 Consulter mes statistiques globales</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 2. QUICK REVIEW TAB -->
+      <div id="review-tab" class="tab-content">
+        <header class="header">
+          <div class="brand-badge">LECTURE ANALYTIQUE</div>
+          <h1>Révision Rapide</h1>
+          <p>Consultez l'intégralité du pool de questions avec leurs explications et références sans lancer de quiz.</p>
+        </header>
+
+        <!-- Filters -->
+        <div class="quick-review-controls">
+          <div class="review-select-group">
+            <label for="review-subject-select">Sélectionner la Matière</label>
+            <select id="review-subject-select" class="review-select">
+              <option value="all" selected>Toutes les matières</option>
+              <option value="DS">Droit des Sûretés (DS)</option>
+              <option value="IS">Impôt sur les Sociétés (IS)</option>
+            </select>
+          </div>
+          <div class="review-select-group">
+            <label for="review-theme-select">Filtrer par Thème</label>
+            <select id="review-theme-select" class="review-select">
+              <option value="all" selected>Tous les thèmes</option>
+            </select>
+          </div>
+          <div class="review-select-group">
+            <label for="review-diff-select">Filtrer par Difficulté</label>
+            <select id="review-diff-select" class="review-select">
+              <option value="all" selected>Toutes les difficultés</option>
+              <option value="easy">Facile</option>
+              <option value="medium">Moyen</option>
+              <option value="hard">Difficile</option>
+            </select>
+          </div>
+        </div>
+
+        <p id="review-count" style="margin-bottom: 1.5rem; font-weight: bold; color: var(--text-muted);"></p>
+
+        <!-- List of cards -->
+        <div id="review-questions-list">
+          <!-- Dynamically populated via app.js -->
+        </div>
+      </div>
+
+      <!-- 3. STATISTICS TAB -->
+      <div id="stats-tab" class="tab-content">
+        <header class="header">
+          <div class="brand-badge">COMPTEURS &amp; HISTORIQUE</div>
+          <h1>Mes Statistiques</h1>
+          <p>Analysez votre niveau de maîtrise global calculé en temps réel d'après la mémorisation espacée.</p>
+        </header>
+
+        <!-- Counters Grid -->
+        <div class="stats-cards-grid">
+          <div class="stat-card">
+            <div id="stats-mastered" class="stat-card-num">0</div>
+            <div class="stat-card-label">🔥 Questions Maîtrisées (Streak ≥ 3)</div>
+          </div>
+          <div class="stat-card">
+            <div id="stats-seen" class="stat-card-num">0</div>
+            <div class="stat-card-label">👀 Questions Vues</div>
+          </div>
+          <div class="stat-card">
+            <div id="stats-total-pool" class="stat-card-num">0</div>
+            <div class="stat-card-label">📁 Total de Questions dans le Pool</div>
+          </div>
+        </div>
+
+        <div class="stats-grid-layouts">
+          <!-- Session history bar chart -->
+          <div class="stats-section-box">
+            <h3>Historique des 5 dernières sessions</h3>
+            <div id="stats-history-bars" class="bar-chart">
+              <!-- Rendered via app.js -->
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 1rem; text-align: center;">Sessions successives (S1 la plus ancienne, S5 la plus récente)</p>
+          </div>
+
+          <!-- Mastery by Theme list progress -->
+          <div class="stats-section-box">
+            <h3>Niveau de Maîtrise par Thème</h3>
+            <div id="stats-mastery-cards">
+              <!-- Rendered via app.js -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- MAIN APP CONTROLLER -->
+    <script type="module" src="/src/app.js"></script>
   </body>
 </html>
