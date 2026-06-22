@@ -1054,3 +1054,137 @@ input:checked + .slider:before {
 
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ========================================== */
+/* ========= FLASHCARDS ORAL STYLES ========= */
+/* ========================================== */
+.flashcards-layout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+  margin-top: 1rem;
+}
+
+.flashcard-container-wrapper {
+  width: 100%;
+  max-width: 650px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.flashcard-deck-info {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  background-color: #1e293b;
+  padding: 0.5rem 1.25rem;
+  border-radius: 50px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+.flashcard {
+  perspective: 1200px;
+  width: 100%;
+  height: 380px;
+  cursor: pointer;
+}
+
+.flashcard-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-style: preserve-3d;
+}
+
+.flashcard.flipped .flashcard-inner {
+  transform: rotateY(180deg);
+}
+
+.flashcard-front, .flashcard-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--shadow-lg);
+  border: 2px solid var(--border-color);
+}
+
+.flashcard-front {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border-color: rgba(167, 139, 250, 0.4); /* subtle ds color glow */
+}
+
+.flashcard-back {
+  background: linear-gradient(135deg, #2e1065 0%, #1e1b4b 100%); /* Deep purple/blue gradient */
+  transform: rotateY(180deg);
+  border-color: rgba(167, 139, 250, 0.8);
+}
+
+.fc-theme-badge {
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  background-color: rgba(167, 139, 250, 0.2);
+  color: #c4b5fd;
+  padding: 0.4rem 1rem;
+  border-radius: 50px;
+  border: 1px solid rgba(167, 139, 250, 0.3);
+}
+
+.fc-question-text {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1.4;
+  text-align: center;
+  margin: auto 0;
+  max-width: 90%;
+}
+
+.fc-answer-text {
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: #f1f5f9;
+  line-height: 1.5;
+  text-align: justify;
+  margin: auto 0;
+  max-width: 95%;
+}
+
+.fc-answer-text strong {
+  color: #fbbf24; /* yellow highlights for oral emphasis */
+}
+
+.fc-reference-tag {
+  font-size: 0.85rem;
+  color: #c4b5fd;
+  font-weight: 700;
+  margin-top: 0.5rem;
+}
+
+.fc-flip-hint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-top: 1rem;
+  letter-spacing: 0.02em;
+}
+
+.flashcard-controls {
+  display: flex;
+  gap: 1.25rem;
+  margin-top: 1rem;
+}

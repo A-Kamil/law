@@ -13,6 +13,7 @@
       <nav class="nav-tabs">
         <button class="tab-btn active" data-tab="quiz">🎯 Quiz</button>
         <button class="tab-btn" data-tab="review">📖 Révision Rapide</button>
+        <button class="tab-btn" data-tab="flashcards">🎴 Flashcards Oral</button>
         <button class="tab-btn" data-tab="stats">📊 Mes Stats</button>
       </nav>
 
@@ -246,6 +247,45 @@
         <!-- List of cards -->
         <div id="review-questions-list">
           <!-- Dynamically populated via app.js -->
+        </div>
+      </div>
+
+      <!-- 4. FLASHCARDS TAB -->
+      <div id="flashcards-tab" class="tab-content">
+        <header class="header">
+          <div class="brand-badge">ORAL PREPARATION</div>
+          <h1>Flashcards Sûretés (DS)</h1>
+          <p>Entraînez-vous pour votre examen oral de demain. Ces flashcards soulèvent les points les plus critiques et épineux du cours, conçues pour tester votre répartie juridique et votre argumentation face au jury.</p>
+        </header>
+
+        <div class="flashcards-layout">
+          <div class="flashcard-container-wrapper">
+            <div class="flashcard-deck-info">
+              Carte <span id="fc-current-index">1</span> / <span id="fc-total-count">0</span>
+            </div>
+            
+            <div id="flashcard-box" class="flashcard">
+              <div class="flashcard-inner">
+                <div class="flashcard-front">
+                  <div class="fc-theme-badge" id="fc-front-theme">Thème</div>
+                  <div class="fc-question-text" id="fc-front-question">Question de l'oral ?</div>
+                  <div class="fc-flip-hint">🎴 Cliquez pour révéler la réponse juridique</div>
+                </div>
+                <div class="flashcard-back">
+                  <div class="fc-theme-badge" id="fc-back-theme">Analyse Critique</div>
+                  <div class="fc-answer-text" id="fc-back-answer">Réponse détaillée...</div>
+                  <div class="fc-reference-tag" id="fc-back-ref">📍 Référence</div>
+                  <div class="fc-flip-hint">🎴 Cliquez pour retourner la carte</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flashcard-controls">
+              <button id="btn-fc-prev" class="btn btn-outline" style="min-width: 120px;">⬅️ Précédent</button>
+              <button id="btn-fc-flip" class="btn btn-ds-solid" style="min-width: 120px;">🔄 Retourner</button>
+              <button id="btn-fc-next" class="btn btn-outline" style="min-width: 120px;">Suivant ➡️</button>
+            </div>
+          </div>
         </div>
       </div>
 

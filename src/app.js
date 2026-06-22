@@ -65,6 +65,9 @@ function switchTab(tabId) {
     renderStats();
   } else if (tabId === 'review') {
     renderQuickReview();
+  } else if (tabId === 'flashcards') {
+    initFlashcards();
+    renderFlashcard();
   }
 }
 
@@ -1017,4 +1020,130 @@ function renderStats() {
     `;
     masteryCardContainer.appendChild(card);
   });
+}
+
+// --- ORAL FLASHCARDS ENGINE ---
+let currentFlashcardIndex = 0;
+let flashcardsInitialized = false;
+
+const FLASHCARDS_DATA = [
+  {
+    theme: "Cautionnement - Exceptions (Art. 2298)",
+    q: "En tant que caution personne physique poursuivie par un créancier professionnel, puis-je invoquer la nullité du contrat principal pour vice du consentement subi par le débiteur principal (dol ou erreur), alors même que le débiteur refuse de l'invoquer ?",
+    a: "<strong>Oui, depuis le 1er janvier 2022 !</strong> L'article 2298 du Code civil met fin à une longue jurisprudence restrictive. Désormais, la caution peut opposer toutes les exceptions appartenant au débiteur, qu'elles soient inhérentes à la dette ou <strong>personnelles au débiteur</strong>, y compris la nullité relative pour dol ou erreur subi par le débiteur principal. C'est une consécration majeure du caractère accessoire renforcé du cautionnement.",
+    ref: "Art. 2298 du Code civil / Fiche p.2, p.6, p.7"
+  },
+  {
+    theme: "Cautionnement - Régime matrimonial & EI",
+    q: "Si un époux marié sous le régime de la communauté légale réduite aux acquêts consent seul un cautionnement sans accord exprès de son conjoint, et qu'il est également entrepreneur individuel (EI), comment s'articulent l'article 1415 du Code civil et la protection des patrimoines de l'EI ?",
+    a: "<strong>Double étanchéité de plein droit !</strong> D'une part, l'article 1415 cciv protège la communauté : seuls ses biens propres et ses revenus personnels sont engagés (la masse commune est préservée). D'autre part, la séparation légale de l'EI (post-2022) fait que s'il cautionne pour son activité professionnelle, il engage d'office ses biens professionnels propres + revenus. Son patrimoine personnel et la communauté sont protégés de plein droit s'il n'a pas renoncé au bénéfice de protection au profit d'un créancier.",
+    ref: "Art. 1415 cciv & Loi EI 2022 / Fiche p.1, p.3"
+  },
+  {
+    theme: "Cautionnement - Sanctions (Art. 2219 vs 2300)",
+    q: "Quelle est la différence fondamentale entre un manquement au devoir de mise en garde (Art. 2219) et la sanction de la disproportion manifeste (Art. 2300) d'un cautionnement souscrit par une personne physique auprès d'un créancier pro depuis 2022 ?",
+    a: "<strong>Objet et sanction diffèrent !</strong><br>1. Le <strong>devoir de mise en garde (Art. 2219)</strong> porte sur l'inadaptation du crédit ou l'endettement excessif du débiteur principal. Sanction : déchéance du droit d'agir du créancier à concurrence du préjudice subi par la caution.<br>2. La <strong>disproportion manifeste (Art. 2300)</strong> porte sur l'incapacité financière propre de la caution à faire face à son engagement au jour de sa signature. Sanction : réduction du cautionnement au montant qu'elle pouvait raisonnablement garantir (et non plus la décharge totale !).",
+    ref: "Art. 2219 et 2300 du Code civil / Fiche p.3, p.4"
+  },
+  {
+    theme: "Cautionnement - Obligation d'information",
+    q: "Un créancier omet l'information annuelle obligatoire (Art. 2302) ET l'information du premier incident de paiement sous un mois (Art. 2303) envers une caution personne physique. Les sanctions se cumulent-elles et quelle est leur portée exacte ?",
+    a: "<strong>Oui, les sanctions se cumulent !</strong> Le créancier professionnel est déchu de plein droit du droit aux intérêts et pénalités de retard :<br>1. Échus depuis la précédente information annuelle jusqu'à la nouvelle (Art. 2302).<br>2. Échus entre la date du premier incident et celle de l'information effective de la caution (Art. 2303).<br>En pratique, la caution ne sera tenue de payer que le capital principal restant dû, purgé de tous les intérêts contractuels.",
+    ref: "Art. 2302 et 2303 du Code civil / Fiche p.5"
+  },
+  {
+    theme: "Cautionnement - Décès de la caution (Art. 2317)",
+    q: "En cas de décès de la caution personne physique, ses héritiers acceptant la succession sont-ils tenus des dettes nées après le décès ?",
+    a: "<strong>Non, sauf pour le règlement !</strong> L'article 2317 du Code civil consacre la distinction entre obligation de couverture et de règlement. Au décès de la caution, l'obligation de couverture (qui garantit les dettes futures) s'éteint de plein droit. Les héritiers ne sont tenus que par l'obligation de règlement, c'est-à-dire les dettes qui étaient déjà nées et existantes dans le patrimoine du débiteur principal au jour du décès de la caution.",
+    ref: "Art. 2317 du Code civil / Fiche p.7"
+  },
+  {
+    theme: "Cautionnement - Recours subrogatoire vs personnel",
+    q: "Pourquoi le recours subrogatoire (Art. 1346 / 2309) de la caution est-il qualifié de 'parfois dangereux' par rapport à son recours personnel (Art. 2308) contre le débiteur principal ?",
+    a: "<strong>À cause de l'opposabilité des exceptions !</strong><br>Le garant dispose d'un recours personnel contre le donneur d'ordre (le débiteur), idéalement prévu au contrat. Il peut aussi exercer le recours subrogatoire de l'article 1346 cciv en récupérant les droits du créancier, mais l'inconvénient majeur de la subrogation est que le donneur d'ordre pourra lui opposer toutes les exceptions qu'il avait contre le créancier d'origine (ce qui fragilise le remboursement du garant).",
+    ref: "Art. 2308 et 2309 du Code civil / Fiche p.6"
+  },
+  {
+    theme: "Garantie Autonome - Critère de qualification (Art. 2321)",
+    q: "Quelle clause contractuelle insérée dans une Garantie Autonome (GA) risque de la faire requalifier d'office en cautionnement par le juge ?",
+    a: "<strong>La clause de règlement de la deete du débiteur !</strong> Si la lettre de garantie stipule que le garant s'oblige à payer « la deete du débiteur », ou fait référence à l'inexécution contractuelle pour fixer le montant (ex: « à hauteur du solde débiteur impayé »), le juge requalifiera l'acte en cautionnement d'office car la garantie perd son indépendance. Pour rester autonome (Art. 2321), le garant doit s'engager à payer une somme déterminée ou déterminable selon des modalités propres, sans référence à l'existence de la deete.",
+    ref: "Art. 2321 du Code civil / Double critère de qualification / Fiche p.8"
+  },
+  {
+    theme: "Sûretés réelles - Sûreté réelle pour autrui (Art. 2325)",
+    q: "Un tiers qui affecte son propre bien en garantie de la dette d'autrui (cautionnement réel) peut-il être poursuivi sur le reste de ses biens personnels si le bien s'avère insuffisant ?",
+    a: "<strong>Absolument pas !</strong> L'article 2325 du Code civil consacre la nature de la <strong>sûreté réelle pour autrui</strong> (ancienne caution réelle). Le tiers garant réel ne contracte aucun engagement personnel envers le créancier. L'action du créancier est strictement réelle et limitée au seul bien affecté en garantie. Il n'a aucun droit de gage général sur le reste du patrimoine du garant, même si la vente du bien ne suffit pas à le désintéresser.",
+    ref: "Art. 2325 du Code civil (Réforme 2021) / Fiche p.11"
+  },
+  {
+    theme: "Sûretés réelles - Conflit de gages (Art. 2340)",
+    q: "En cas de conflit de gages sur un même bien : la Banque A (sans dépossession, publiée le 1er juin) et la Banque B (avec dépossession effective du bien le 5 juin). Qui l'emporte ?",
+    a: "<strong>La Banque A (sans dépossession) !</strong> L'article 2340 du Code civil pose que le conflit entre créanciers gagistes est réglé par l'ordre des publications (inscription ou dépossession). L'opposabilité de la Banque A ayant été acquise par publication le 1er juin, elle prime sur la Banque B dont la dépossession (opposabilité) n'est intervenue que le 5 juin. L'antériorité de la formalité d'opposabilité l'emporte de manière absolue.",
+    ref: "Art. 2337 et 2340 du Code civil / Fiche p.15"
+  },
+  {
+    theme: "Nantissement de créance - Dénouement (Art. 2364/2365)",
+    q: "Quelle différence existe-t-il dans le dénouement d'un nantissement de créance selon que la créance nantie (la garantie) ou la créance garantie (la dette) arrive à échéance en premier ?",
+    a: "<strong>Consignation VS Paiement direct !</strong><br>1. Si la <strong>créance nantie</strong> arrive à échéance en premier (Art. 2364) : le créancier perçoit les fonds mais la deete garantie n'est pas encore exigible. Il doit obligatoirement <strong>consigner les fonds sur un compte spécial bloqué</strong>.<br>2. Si la <strong>créance garantie</strong> arrive à échéance en premier et est impayée : le créancier nanti peut attendre l'échéance de la créance nantie pour se faire payer par le débiteur de la créance nantie (Art. 2364) ou en demander l'attribution conventionnelle ou judiciaire (Art. 2365).",
+    ref: "Art. 2364 et 2365 du Code civil / Fiche p.17"
+  }
+];
+
+function initFlashcards() {
+  if (flashcardsInitialized) return;
+
+  const cardBox = document.getElementById('flashcard-box');
+  const btnPrev = document.getElementById('btn-fc-prev');
+  const btnFlip = document.getElementById('btn-fc-flip');
+  const btnNext = document.getElementById('btn-fc-next');
+
+  // Flip on card click
+  cardBox.addEventListener('click', () => {
+    cardBox.classList.toggle('flipped');
+  });
+
+  // Flip on button click
+  btnFlip.addEventListener('click', (e) => {
+    e.stopPropagation(); // prevent double toggle due to bubbling on cardBox click
+    cardBox.classList.toggle('flipped');
+  });
+
+  // Next card
+  btnNext.addEventListener('click', (e) => {
+    e.stopPropagation();
+    cardBox.classList.remove('flipped'); // reset flip back to front
+    setTimeout(() => {
+      currentFlashcardIndex = (currentFlashcardIndex + 1) % FLASHCARDS_DATA.length;
+      renderFlashcard();
+    }, 150); // slight delay to allow smooth unflip before content swap
+  });
+
+  // Prev card
+  btnPrev.addEventListener('click', (e) => {
+    e.stopPropagation();
+    cardBox.classList.remove('flipped'); // reset flip back to front
+    setTimeout(() => {
+      currentFlashcardIndex = (currentFlashcardIndex - 1 + FLASHCARDS_DATA.length) % FLASHCARDS_DATA.length;
+      renderFlashcard();
+    }, 150);
+  });
+
+  flashcardsInitialized = true;
+}
+
+function renderFlashcard() {
+  const card = FLASHCARDS_DATA[currentFlashcardIndex];
+
+  // Update indices
+  document.getElementById('fc-current-index').textContent = currentFlashcardIndex + 1;
+  document.getElementById('fc-total-count').textContent = FLASHCARDS_DATA.length;
+
+  // Update front content
+  document.getElementById('fc-front-theme').textContent = card.theme;
+  document.getElementById('fc-front-question').innerHTML = card.q;
+
+  // Update back content
+  document.getElementById('fc-back-theme').textContent = card.theme + " - Réponse";
+  document.getElementById('fc-back-answer').innerHTML = card.a;
+  document.getElementById('fc-back-ref').textContent = "📍 " + card.ref;
 }

@@ -6,683 +6,684 @@ export const ALL_QUESTIONS = [
     id: 1,
     cat: "sûretés",
     theme: "Introduction aux Sûretés",
-    q: "Quelle est la définition exacte du droit de gage général au regard des articles 2284 et 2285 du Code civil ?",
-    multi: false,
+    q: "Sous le principe d'égalité de l'article 2285 du Code civil, quelles sont les conséquences exactes de la règle du 'prix de la course' pour les créanciers chirographaires ?",
+    multi: true,
     opts: [
-      "Le droit d'obtenir la propriété immédiate des biens mobiliers du débiteur en cas de retard",
-      "Le droit reconnu à tout créancier de faire saisir tous les biens de son débiteur afin d'obtenir paiement",
-      "Le privilège exclusif accordé aux créanciers hypothécaires sur les immeubles",
-      "L'obligation légale de souscrire un cautionnement bancaire pour tout prêt pro"
+      "Le premier créancier chirographaire qui saisit un bien du débiteur est payé en priorité sur le produit de la vente de ce bien, au détriment des autres créanciers",
+      "Le principe d'égalité n'opère qu'à proportion de leurs créances si les saisies sont concomitantes, mais la course individuelle permet d'éviter le concours",
+      "Le droit de gage général confère automatiquement aux créanciers saisissants un droit de préférence de nature réelle sur le bien saisi",
+      "La règle du 'prix de la course' est suspendue de plein droit dès lors qu'un créancier privilégié ou hypothécaire intervient à la procédure"
     ],
-    correct: [1],
-    expl: "Le droit de gage général (Art. 2284 et 2285 cciv) permet à tout créancier de saisir les biens de son débiteur. Cependant, son défaut est l'égalité entre créanciers chirographaires, d'où la règle du 'prix de la course'.",
-    ref: "Articles 2284 et 2285 du Code civil",
-    diff: "easy"
+    correct: [0, 1],
+    expl: "Le droit de gage général (Art. 2284 et 2285 cciv) consacre l'égalité des créanciers chirographaires. Cependant, faute de droit de préférence, le premier qui saisit est le premier payé ('prix de la course'), rompant l'égalité de fait. Les sûretés viennent corriger cette fragilité en conférant un droit de préférence ou d'exclusivité.",
+    ref: "Articles 2284 et 2285 du Code civil / Fiche p.1",
+    diff: "hard"
   },
   {
     id: 2,
     cat: "sûretés",
     theme: "Introduction aux Sûretés",
-    q: "Quelles sont les faiblesses majeures du droit de gage général pour un créancier chirographaire ? (Sélectionner 2 réponses)",
-    multi: true,
+    q: "Un Entrepreneur Individuel (EI), sous le régime post-réforme de 2022, souhaite souscrire un cautionnement. Quelle affirmation est juridiquement exacte au regard du principe de scission des patrimoines ?",
+    multi: false,
     opts: [
-      "Le patrimoine du débiteur peut s'avérer insuffisant pour désintéresser tous les créanciers",
-      "Le débiteur peut opposer le bénéfice de discussion de plein droit",
-      "Le principe d'égalité (Art. 2285) implique la règle du 'prix de la course'",
-      "Les biens saisis sont obligatoirement rachetés par l'État à moitié prix"
+      "L'EI peut se porter caution pour garantir une deete dont il est lui-même le débiteur principal, engageant ainsi alternativement son patrimoine personnel ou professionnel",
+      "La séparation légale des patrimoines interdit de se porter caution pour une deete dont on est débiteur principal en voulant engager l'autre patrimoine : nul ne peut se garantir soi-même",
+      "Le cautionnement consenti par l'EI au bénéfice de son activité professionnelle engage d'office, par dérogation, ses deux patrimoines sans formalité spéciale",
+      "L'EI ne peut jamais, sous peine de nullité absolue, souscrire de cautionnement personnel au profit d'un tiers"
     ],
-    correct: [0, 2],
-    expl: "Le droit de gage général présente deux limites majeures : l'insuffisance possible du patrimoine du débiteur, et la concurrence des autres créanciers chirographaires sous le principe d'égalité (premier saisissant, premier payé).",
-    ref: "Article 2285 du Code civil / Cours p.1",
-    diff: "medium"
+    correct: [1],
+    expl: "Le régime post-2022 sépare de plein droit les patrimoines personnel et professionnel de l'EI. Toutefois, l'EI ne peut se porter caution pour une dette dont il est lui-même débiteur principal afin d'offrir son autre patrimoine en garantie, car une personne ne peut se garantir elle-même (il n'y a pas d'altérité, élément fondamental du cautionnement).",
+    ref: "Réforme de l'EI 2022 / Fiche p.1",
+    diff: "hard"
   },
   {
     id: 3,
     cat: "sûretés",
-    theme: "Introduction aux Sûretés",
-    q: "L'ordonnance du 15 septembre 2021 portant réforme du droit des sûretés :",
+    theme: "Cautionnement - Caractéristiques",
+    q: "Depuis l'entrée en vigueur de la réforme du 15 septembre 2021 (au 1er janvier 2022), quelle est l'étendue exacte des exceptions opposables par la caution au créancier sous l'article 2298 du Code civil ?",
     multi: false,
     opts: [
-      "S'applique de manière rétroactive à tous les contrats en cours sans exception",
-      "Est entrée en vigueur le 1er janvier 2022, les contrats antérieurs restant soumis au droit ancien",
-      "A supprimé définitivement le cautionnement solidaire",
-      "A interdit l'accès des personnes physiques au cautionnement"
+      "La caution ne peut opposer que les exceptions strictement inhérentes à la deete principale (nullité absolue, paiement, prescription), à l'exclusion de toute exception personnelle",
+      "La caution peut désormais opposer toutes les exceptions, qu'elles soient inhérentes à la deete ou personnelles au débiteur, y compris le dol subi par le débiteur principal ou sa nullité relative",
+      "La caution ne peut opposer aucune exception si elle est qualifiée de 'caution avertie' ou si elle a renoncé au bénéfice de discussion",
+      "La caution ne peut opposer les exceptions personnelles du débiteur qu'avec l'autorisation expresse du juge de l'exécution"
     ],
     correct: [1],
-    expl: "L'ordonnance du 15 septembre 2021 est entrée en vigueur le 1er janvier 2022. Les situations nées antérieurement restent soumises aux dispositions du droit ancien pour préserver la sécurité juridique.",
-    ref: "Ordonnance du 15 septembre 2021",
-    diff: "easy"
+    expl: "C'est une modification majeure de la réforme de 2021. L'article 2298 cciv dispose que la caution peut opposer toutes les exceptions appartenant au débiteur, qu'elles soient inhérentes à la deete ou personnelles à ce dernier (comme le dol subi par le débiteur principal ou la nullité relative du contrat de base), renforçant considérablement le caractère accessoire de la garantie.",
+    ref: "Article 2298 du Code civil / Fiche p.2, p.6, p.7",
+    diff: "hard"
   },
   {
     id: 4,
     cat: "sûretés",
-    theme: "Introduction aux Sûretés",
-    q: "Un Entrepreneur Individuel (EI) sous le régime post-2022 souhaite se porter caution. Quelle est la règle applicable ?",
-    multi: false,
+    theme: "Cautionnement - Caractéristiques",
+    q: "Quelles conditions de fond et de forme régissent l'invocation du bénéfice de discussion prévu à l'article 2305 du Code civil ?",
+    multi: true,
     opts: [
-      "Il peut se porter caution pour une dette dont il est lui-même débiteur principal",
-      "La séparation légale des patrimoines (perso/pro) lui interdit de se porter caution pour une deete dont il est débiteur principal",
-      "Il n'engagera que ses biens professionnels s'il n'obtient pas l'accord du tribunal",
-      "Le cautionnement est nul si le montant dépasse 10% de son actif net"
+      "Le bénéfice de discussion doit obligatoirement être invoqué par la caution dès les premières poursuites dirigées contre elle",
+      "La caution doit indiquer au créancier les biens du débiteur principal susceptibles d'être saisis, situés dans le ressort de la cour d'appel et hors litige",
+      "Le bénéfice de discussion s'applique de plein droit, même si le cautionnement est stipulé solidaire ou si la caution y a renoncé",
+      "La caution doit avancer les deniers nécessaires à la réalisation de la discussion des biens du débiteur principal"
     ],
-    correct: [1],
-    expl: "La réforme de 2022 sépare de plein droit le patrimoine professionnel et personnel de l'EI. Cependant, l'EI ne peut pas se porter caution pour une deete dont il est lui-même débiteur en voulant utiliser son autre patrimoine.",
-    ref: "Réforme de l'EI 2022 / Cours p.1",
+    correct: [0, 1, 3],
+    expl: "Le bénéfice de discussion (Art. 2305 cciv) permet à la caution d'exiger que le créancier poursuive d'abord le débiteur. Pour cela, elle doit l'invoquer dès les premières poursuites, indiquer des biens saisissables du débiteur (non litigieux, hors hypothèques préalables, situés sur le territoire national), et avancer les frais de poursuite. Il disparaît si la caution est solidaire ou y a renoncé.",
+    ref: "Article 2305 du Code civil / Fiche p.2",
     diff: "hard"
   },
   {
     id: 5,
     cat: "sûretés",
     theme: "Cautionnement - Formation",
-    q: "Quelles conditions de fond sont exigées pour la validité d'un contrat de cautionnement ? (Sélectionner 3 réponses)",
+    q: "Un cautionnement consenti par une personne physique ou morale présente un caractère commercial. Quelles sont les implications juridiques précises de cette qualification ?",
     multi: true,
     opts: [
-      "Le consentement libre et éclairé de la caution (sans vice du consentement)",
-      "La capacité et le pouvoir de contracter des parties",
-      "Un contenu licite et certain de l'obligation de garantie",
-      "L'enregistrement obligatoire auprès du service de la publicité foncière"
+      "La preuve de l'engagement de caution peut être rapportée par tous moyens, dérogeant à l'exigence d'un écrit à titre de preuve au-delà de 1500€",
+      "Le litige relève de la compétence exclusive du Tribunal de commerce, même si la caution est une personne physique non commerçante",
+      "Le cautionnement commercial est présumé solidaire en jurisprudence, dispensant le créancier de prouver une clause expresse de solidarité",
+      "La caution commerciale bénéficie d'office d'un délai de prescription réduit à 2 ans d'après le Code de commerce"
     ],
-    correct: [0, 1, 2],
-    expl: "Le cautionnement, en tant que contrat, obéit d'abord aux conditions de fond de droit commun de l'article 1128 du Code civil : consentement, capacité, et contenu licite/certain.",
-    ref: "Article 1128 du Code civil",
-    diff: "medium"
+    correct: [0, 2],
+    expl: "Le cautionnement est commercial s'il est souscrit pour les besoins d'un commerce ou par un établissement de crédit (nature commerciale). Il entraîne : la liberté de la preuve (Art. 110-3 C. com) et une présomption de solidarité (jurisprudence constante). Attention : si la caution personne physique n'est pas commerçante, le tribunal de commerce n'a pas de compétence exclusive (compétence optionnelle ou civile possible pour protéger le non-commerçant).",
+    ref: "Jurisprudence constante / Fiche p.2",
+    diff: "hard"
   },
   {
     id: 6,
     cat: "sûretés",
     theme: "Cautionnement - Formation",
-    q: "Le cautionnement consenti par une personne physique à un créancier professionnel doit comporter une mention écrite. Quelle est la règle sous l'article 2297 du Code civil ?",
+    q: "Sous l'empire de l'article 2219 du Code civil (issu de la réforme de 2021), quelles sont les conditions d'application et la sanction exacte du devoir de mise en garde du créancier professionnel ?",
     multi: false,
     opts: [
-      "La mention doit obligatoirement être rédigée de manière manuscrite sous peine de nullité absolue",
-      "La mention écrite est requise, mais elle peut être non manuscrite (électronique d'après 1174/1175 cciv)",
-      "Aucune mention n'est requise si l'acte est signé devant deux témoins majeurs",
-      "La mention est facultative pour les dirigeants de sociétés par actions"
+      "Il s'applique à tous les cautionnements; la sanction est la nullité relative du contrat pour dol par réticence d'information",
+      "Il s'applique uniquement aux cautions non averties face à un établissement de crédit; la sanction est la responsabilité civile contractuelle",
+      "Il concerne toute caution personne physique engagée envers un créancier professionnel; la sanction est la déchéance des droits du créancier à hauteur du préjudice subi par la caution",
+      "Il s'applique uniquement si le prêt principal dépasse un montant de 150 000 euros; la sanction est la déchéance totale de la deete"
     ],
-    correct: [1],
-    expl: "Depuis le 1er janvier 2022, l'article 2297 cciv exige une mention écrite par la caution, mais celle-ci n'a plus besoin d'être obligatoirement manuscrite (ouverture aux signatures électroniques sous réserve des articles 1174 et 1175).",
-    ref: "Article 2297 du Code civil",
+    correct: [2],
+    expl: "La réforme de 2021 a codifié le devoir de mise en garde à l'article 2219 cciv. Il bénéficie désormais à toute caution personne physique (sans distinction d'avertie ou non) face à un créancier professionnel. En cas de manquement (crédit inadapté ou risque d'endettement excessif), la sanction n'est plus la responsabilité civile mais la déchéance du droit d'agir du créancier à concurrence du préjudice subi par la caution.",
+    ref: "Article 2219 du Code civil / Fiche p.3",
     diff: "hard"
   },
   {
     id: 7,
     cat: "sûretés",
     theme: "Cautionnement - Formation",
-    q: "Comment les juges apprécient-ils si une caution est qualifiée de 'caution avertie' au regard du devoir de mise en garde ?",
+    q: "Lorsqu'un cautionnement conclu par une personne physique avec un créancier professionnel est qualifié de 'manifestement disproportionné', quelle règle s'applique depuis 2022 ?",
     multi: false,
     opts: [
-      "Uniquement d'après son diplôme de droit ou de comptabilité",
-      "En évaluant ses aptitudes à apprécier les risques de l'opération d'après sa formation, son expérience pro et ses liens avec le débiteur",
-      "C'est une présomption irréfragable pour toute personne mariée sous le régime de la communauté",
-      "Uniquement si elle possède plus de 50% du capital de la banque créancière"
+      "Le cautionnement est frappé d'une nullité absolue et d'ordre public d'après l'article 2300 du Code civil",
+      "Le créancier professionnel perd l'intégralité de sa créance contre le débiteur principal et contre la caution",
+      "Le cautionnement est maintenu mais son montant est judiciairement réduit à ce que la caution peut raisonnablement garantir au jour de l'appel",
+      "Le cautionnement est réduit au montant que la caution peut raisonnablement garantir au jour de sa conclusion, sans possibilité d'invoquer la clause de retour à meilleure fortune"
     ],
-    correct: [1],
-    expl: "L'aptitude de la caution à évaluer les risques d'endettement est appréciée au cas par cas par les juges d'après un faisceau d'indices comprenant sa formation, son expérience professionnelle, et ses liens d'affaires ou familiaux avec le débiteur.",
-    ref: "Jurisprudence constante / Cours p.3",
-    diff: "medium"
+    correct: [3],
+    expl: "L'article 2300 cciv (réforme de 2021) a profondément modifié la sanction de la disproportion manifeste. Au lieu de la décharge totale de la caution (ancien droit de la consommation), le cautionnement disproportionné conclu par une PP avec un pro est désormais simplement réduit au montant que la caution pouvait raisonnablement garantir à la date de sa conclusion. De plus, la clause jurisprudentielle de 'retour à meilleure fortune' a disparu : on apprécie strictement au jour de la conclusion.",
+    ref: "Article 2300 du Code civil / Fiche p.4, p.5",
+    diff: "hard"
   },
   {
     id: 8,
     cat: "sûretés",
     theme: "Cautionnement - Formation",
-    q: "Quelle est la sanction encourue par le créancier professionnel en cas de disproportion manifeste du cautionnement signé par une personne physique après 2022 ?",
-    multi: false,
+    q: "Une société se porte caution. Quelle est la sanction d'un cautionnement qui dépasse l'objet social ou contredit l'intérêt social, selon la forme de la société ?",
+    multi: true,
     opts: [
-      "La nullité absolue et définitive du contrat de cautionnement",
-      "Le cautionnement est réduit au montant que la caution peut raisonnablement garantir",
-      "Une amende administrative de 15 000 euros versée au Trésor Public",
-      "L'obligation de transformer la créance en don sans contrepartie"
+      "Dans une SARL ou société par actions, le dépassement de l'objet social par les dirigeants est inopposable aux tiers de bonne foi; la société reste engagée",
+      "Dans une SCI ou société civile, le cautionnement contraire à l'intérêt social ou dépassant l'objet social est nul, car il peut compromettre l'existence même de la société",
+      "Pour toute société (SARL, SA, SCI), le dépassement de l'objet social entraîne systématiquement la nullité absolue du contrat de cautionnement",
+      "Dans les sociétés à responsabilité illimitée, la contrariété à l'intérêt social (Art. 1833 cciv) peut entraîner la nullité de l'engagement"
     ],
-    correct: [1],
-    expl: "L'article 2300 cciv issu de la réforme de 2021 a modifié la sanction : au lieu de la décharge totale de la caution (ancien droit), le cautionnement disproportionné est désormais simplement réduit au montant que la caution peut raisonnablement garantir.",
-    ref: "Article 2300 du Code civil",
+    correct: [0, 1, 3],
+    expl: "Dans les SARL et sociétés par actions, les dirigeants engagent la société même pour les actes dépassant l'objet social (inopposabilité du dépassement aux tiers de bonne foi). En revanche, dans les sociétés civiles (SCI, etc.) et sociétés de personnes, le dépassement de l'objet social ou la contrariété à l'intérêt social (surtout s'il compromet l'existence de la société, ex: SCI hypothéquant son unique actif pour garantir un tiers sans contrepartie) entraîne la nullité absolue du cautionnement.",
+    ref: "Article 1833 du Code civil / Droit des sociétés / Fiche p.3",
     diff: "hard"
   },
   {
     id: 9,
     cat: "sûretés",
     theme: "Cautionnement - Formation",
-    q: "Un dirigeant de SARL signe un cautionnement au nom de sa société. Ce cautionnement dépasse l'objet social. Quelle est la conséquence ?",
+    q: "Un époux marié sous le régime légal de la communauté réduite aux acquêts souscrit seul, sans le consentement exprès de son conjoint, un cautionnement. Quels biens sont engagés d'après l'article 1415 du Code civil ?",
     multi: false,
     opts: [
-      "Le cautionnement est automatiquement nul de plein droit",
-      "Le dépassement de l'objet social est inopposable aux tiers de bonne foi, le cautionnement reste donc valable pour la société",
-      "Le cautionnement est valable mais réduit à 10% du capital social",
-      "L'acte est valable uniquement si tous les associés ont signé l'acte de cautionnement individuellement"
+      "Ses biens propres, ses revenus (salaires) ainsi que l'intégralité des biens communs du couple",
+      "Uniquement ses biens propres et ses revenus personnels, les biens communs du couple (y compris les revenus du conjoint) étant préservés",
+      "L'acte est entaché de nullité relative invocable par le conjoint non consentant dans un délai de 2 ans",
+      "Seuls ses biens propres sont engagés; ses revenus (salaires) faisant partie de la communauté sont exclus des poursuites d'après l'article 1415"
     ],
     correct: [1],
-    expl: "Dans les SARL et les sociétés par actions, le dépassement de l'objet social par les dirigeants est inopposable aux tiers de bonne foi. La société reste donc engagée par le cautionnement, sauf si elle prouve que le tiers savait que l'acte dépassait l'objet social.",
-    ref: "Droit des sociétés / Cours p.3",
-    diff: "medium"
+    expl: "Selon l'article 1415 cciv, le cautionnement contracté par un seul époux sans le consentement exprès de l'autre n'engage que ses biens propres et ses revenus. Les biens communs de la communauté sont protégés et ne peuvent pas être saisis par le créancier, mais l'acte reste parfaitement valable (pas de nullité).",
+    ref: "Article 1415 du Code civil / Fiche p.3",
+    diff: "hard"
   },
   {
     id: 10,
     cat: "sûretés",
     theme: "Cautionnement - Formation",
-    q: "Quelles conditions cumulatives caractérisent le manquement au devoir de mise en garde sous l'article 2219 cciv ? (Sélectionner 2 réponses)",
+    q: "Deux époux mariés sous le régime de la communauté légale interviennent à une opération de garantie. Dans quelles configurations les biens communs et les biens propres de chacun sont-ils engagés ? (Sélectionner 2 réponses)",
     multi: true,
     opts: [
-      "Le créancier est un professionnel et la caution une personne physique (Art. 2219)",
-      "La caution doit obligatoirement être un établissement de crédit concurrent",
-      "L'engagement est disproportionné aux facultés de la caution ou le crédit est inadapté aux capacités du débiteur",
-      "Le prêt doit comporter un taux d'intérêt usuraire d'au moins 12%"
+      "Si un époux se porte caution avec le consentement exprès de l'autre, seuls les biens propres de l'époux caution et les biens communs sont engagés (les biens propres du conjoint sont exclus)",
+      "Si les deux époux signent le même acte de cautionnement conjointement, les biens propres des deux époux ainsi que la masse commune sont engagés",
+      "Si les deux époux signent deux cautionnements par actes distincts sans autorisation mutuelle, la communauté est engagée pour le tout",
+      "Si le couple est marié sous le régime de la séparation de biens, l'article 1415 s'applique et exige le consentement du conjoint pour engager ses propres revenus"
     ],
-    correct: [0, 2],
-    expl: "Le devoir de mise en garde (Art. 2219 cciv) s'applique aux cautionnements conclus par une personne physique avec un créancier professionnel. Il porte sur l'inadaptation du crédit ou le risque d'endettement excessif.",
-    ref: "Article 2219 du Code civil",
+    correct: [0, 1],
+    expl: "Sous le régime de communauté : 1) Si un époux cautionne avec consentement de l'autre, on engage ses propres + la communauté (mais pas les propres du conjoint non-caution). 2) Si les deux signent le même acte, les propres de chacun et la communauté sont engagés. 3) S'ils signent deux actes distincts sans autorisation mutuelle, seuls les propres et revenus de chacun sont engagés (la communauté reste exclue). 4) En séparation de biens, l'article 1415 ne s'applique pas car il n'y a pas de masse commune.",
+    ref: "Article 1415 du Code civil / Fiche p.3",
     diff: "hard"
   },
   {
     id: 11,
     cat: "sûretés",
-    theme: "Cautionnement - Étendue",
-    q: "Qu'est-ce que le cautionnement défini ?",
+    theme: "Cautionnement - Formation",
+    q: "Quelle règle de validité formelle l'article 2297 du Code civil impose-t-il au cautionnement souscrit par une personne physique envers un créancier professionnel depuis le 1er janvier 2022 ?",
     multi: false,
     opts: [
-      "Un cautionnement qui ne couvre que le capital principal de la dette, à l'exclusion des intérêts",
-      "Un cautionnement dont la durée est indéterminée et résiliable à tout moment",
-      "Un cautionnement garantissant toutes les dettes futures d'une entreprise",
-      "Une garantie accordée uniquement par un établissement financier public"
+      "La caution doit rédiger de sa main une mention manuscrite calquée au mot près sur la formule légale, sous peine de nullité absolue",
+      "La caution doit apposer une mention écrite précisant le montant garanti en chiffres et en lettres, mais cette mention n'a plus besoin d'être manuscrite et peut être électronique",
+      "L'acte doit obligatoirement être notarié dès lors que le montant garanti excède 1500 euros, d'après l'article 1359 du Code civil",
+      "La mention peut être rédigée par le créancier lui-même, la caution se contentant de signer électroniquement l'acte de garantie"
     ],
-    correct: [0],
-    expl: "Le cautionnement défini couvre seulement le capital de la dette principale, excluant les intérêts de retard ou pénalités, à la différence du cautionnement indéfini (Art. 2296 cciv).",
-    ref: "Article 2296 du Code civil",
-    diff: "easy"
+    correct: [1],
+    expl: "Depuis le 1er janvier 2022, l'article 2297 cciv simplifie le formalisme : la caution personne physique doit apposer une mention écrite spécifiant le montant maximal garanti (en chiffres et en lettres). Cependant, le caractère impérativement 'manuscrit' est supprimé, permettant l'usage de la signature électronique (en respectant les articles 1174 et 1175 du Code civil). Il n'y a plus de formule légale sacramentelle obligatoire au mot près, mais la nullité reste la sanction en cas de défaut de mention.",
+    ref: "Article 2297 du Code civil / Fiche p.2, p.5",
+    diff: "hard"
   },
   {
     id: 12,
     cat: "sûretés",
     theme: "Cautionnement - Étendue",
-    q: "Quelle est la différence cruciale entre l'obligation de couverture et l'obligation de règlement ?",
+    q: "Dans un cautionnement de deetes futures, quelle est la distinction fondamentale entre l'obligation de couverture et l'obligation de règlement ?",
     multi: false,
     opts: [
-      "L'obligation de couverture porte sur les dettes présentes, celle de règlement sur les dettes futures",
-      "L'obligation de couverture délimite les dettes qui entreront dans la garantie, tandis que l'obligation de règlement impose de payer le créancier à l'échéance",
-      "L'obligation de règlement est facultative, celle de couverture est obligatoire",
-      "La distinction n'est applicable que dans la garantie autonome"
+      "L'obligation de couverture impose de payer immédiatement la deete présente, tandis que l'obligation de règlement garantit le découvert futur",
+      "L'obligation de couverture détermine les deetes futures qui entreront dans le champ de la garantie, tandis que l'obligation de règlement est l'obligation de payer les deetes nées durant la couverture à leur échéance",
+      "L'obligation de couverture s'éteint rétroactivement en cas de décès de la caution, libérant ses héritiers de l'obligation de règlement",
+      "La distinction n'a d'intérêt pratique que si le cautionnement est à durée déterminée et inférieur à 1500 euros"
     ],
     correct: [1],
-    expl: "L'obligation de couverture détermine quelles dettes futures intègrent le périmètre de la garantie. L'obligation de règlement est l'obligation de payer le créancier lorsque la deete garantie est exigible et impayée.",
-    ref: "Articles 2316 et 2318 du Code civil",
-    diff: "medium"
+    expl: "L'obligation de couverture fixe le cadre temporel et matériel durant lequel les dettes futures du débiteur intègrent le périmètre de la garantie. L'obligation de règlement est l'obligation de payer ces dettes nées pendant la phase de couverture lorsqu'elles deviennent exigibles. C'est l'intérêt majeur de la distinction lors de la résiliation ou du décès de la caution.",
+    ref: "Articles 2316 et 2318 du Code civil / Fiche p.4, p.7",
+    diff: "hard"
   },
   {
     id: 13,
     cat: "sûretés",
     theme: "Cautionnement - Étendue",
-    q: "Dans un cautionnement à durée indéterminée, quelle faculté est offerte à la caution par l'article 1211 du Code civil ?",
-    multi: false,
+    q: "Quelles sont les caractéristiques et les limites du cautionnement défini par rapport au cautionnement indéfini d'après l'article 2296 du Code civil ?",
+    multi: true,
     opts: [
-      "Elle peut réduire unilatéralement le montant garanti à tout moment",
-      "Elle peut résilier unilatéralement son engagement de couverture pour l'avenir",
-      "Elle est libérée rétroactivement de toutes les deetes déjà nées",
-      "Elle peut exiger du créancier qu'il renonce aux intérêts de retard"
+      "Le cautionnement défini ou limité couvre uniquement le capital principal de la deete ou un montant maximum expressément déterminé",
+      "Le cautionnement indéfini garantit d'office le capital, les intérêts, les frais de poursuite ainsi que toutes les indemnités contractuelles",
+      "Le cautionnement défini peut valablement dépasser le montant de l'obligation principale si le créancier prouve la mauvaise foi de la caution",
+      "Dans le cautionnement défini, la caution n'est pas tenue des intérêts de retard de la dette principale sauf clause contraire expresse"
     ],
-    correct: [1],
-    expl: "Conformément à l'article 1211 cciv, tout engagement à durée indéterminée peut être résilié unilatéralement. La caution reste tenue des deetes nées avant la résiliation, mais n'en couvre plus de nouvelles.",
-    ref: "Article 1211 du Code civil / Cours p.4",
-    diff: "medium"
+    correct: [0, 1, 3],
+    expl: "Le cautionnement indéfini (Art. 2292 et 2296 cciv) s'aligne sur l'obligation du débiteur principal et s'étend accessoires inclus (intérêts, pénalités, frais de poursuite). Le cautionnement défini limite la garantie à une somme ou au seul capital principal (Art. 2296), excluant d'office les intérêts de retard sauf clause contraire. En aucun cas le cautionnement ne peut excéder la deete principale sous peine de réduction.",
+    ref: "Articles 2292 et 2296 du Code civil / Fiche p.4",
+    diff: "hard"
   },
   {
     id: 14,
     cat: "sûretés",
     theme: "Cautionnement - Effets",
-    q: "Quelle est la sanction encourue par le créancier professionnel qui omet d'informer annuellement la caution personne physique (Art. 2302 cciv) ?",
+    q: "Quelle est la sanction exacte encourue par le créancier professionnel s'il manque à son obligation d'information annuelle de la caution personne physique sous l'article 2302 du Code civil ?",
     multi: false,
     opts: [
-      "La nullité absolue du contrat de cautionnement",
-      "La déchéance des intérêts et pénalités de retard échus depuis la précédente information",
-      "Une pénalité forfaitaire égale à 50% du capital garanti",
-      "La suspension automatique des poursuites contre le débiteur principal"
+      "La déchéance totale du droit de poursuivre la caution pour l'exécution du contrat de garantie",
+      "La nullité absolue du contrat de cautionnement par voie de caducité",
+      "La déchéance du droit aux intérêts et pénalités de retard échus depuis la précédente information jusqu'à la date de la nouvelle notification",
+      "L'obligation pour le créancier de restituer 50% des paiements déjà effectués par le débiteur principal"
     ],
-    correct: [1],
-    expl: "L'article 2302 cciv impose d'informer annuellement la caution du montant restant dû et de la durée. À défaut, le créancier professionnel est déchu du droit aux intérêts et pénalités de retard échus.",
-    ref: "Article 2302 du Code civil",
+    correct: [2],
+    expl: "L'article 2302 cciv impose au créancier professionnel d'informer annuellement la caution personne physique (et parfois morale si le créancier est une banque) du montant du capital restant dû, des intérêts, frais et de la durée. La sanction de ce défaut d'information est la déchéance du droit aux intérêts et pénalités de retard contractuels échus depuis la précédente information jusqu'à la fourniture de la nouvelle information.",
+    ref: "Article 2302 du Code civil / Fiche p.5",
     diff: "hard"
   },
   {
     id: 15,
     cat: "sûretés",
     theme: "Cautionnement - Effets",
-    q: "À quel moment le créancier professionnel doit-il informer la caution personne physique de la défaillance du débiteur principal (Art. 2303 cciv) ?",
+    q: "Un créancier professionnel omet d'informer la caution personne physique du premier incident de paiement non régularisé du débiteur principal (Art. 2303 du Code civil). Quelle est la conséquence juridique ?",
     multi: false,
     opts: [
-      "Uniquement lors du dépôt de bilan du débiteur",
-      "Dès le premier incident de paiement non régularisé dans le mois de son exigibilité",
-      "Au bout de trois mois consécutifs d'impayés",
-      "Seulement lors de la saisine du tribunal judiciaire"
+      "La caution est libérée de plein droit de toute obligation de règlement pour l'intégralité de la deete",
+      "Le créancier encourt la déchéance des intérêts et pénalités de retard échus entre le premier incident de paiement et la date à laquelle la caution en a été informée",
+      "Le débiteur principal est déchu du terme et le créancier doit poursuivre la caution immédiatement sans mise en demeure",
+      "L'incident de paiement est considéré comme non avenu, suspendant la deete de plein droit"
     ],
     correct: [1],
-    expl: "L'article 2303 cciv impose au créancier professionnel d'informer la caution de tout incident de paiement non régularisé dès le premier incident, sous peine de déchéance des intérêts et pénalités de retard.",
-    ref: "Article 2303 du Code civil",
+    expl: "L'article 2303 cciv oblige le créancier professionnel à informer la caution personne physique de tout incident de paiement non régularisé dans le mois de son exigibilité, dès le premier incident. En cas de manquement, le créancier is déchu des intérêts et pénalités de retard échus entre ce premier incident et la date de l'information effective de la caution.",
+    ref: "Article 2303 du Code civil / Fiche p.5",
     diff: "hard"
   },
   {
     id: 16,
     cat: "sûretés",
     theme: "Cautionnement - Recours & Extinction",
-    q: "Quelles sont les caractéristiques du recours personnel de la caution après paiement ? (Sélectionner 2 réponses)",
+    q: "Une caution a désintéressé le créancier et exerce ses recours contre le débiteur principal. Quelles différences majeures distinguent son recours personnel (Art. 2308) et son recours subrogatoire (Art. 2309) ?",
     multi: true,
     opts: [
-      "Il s'agit d'un droit propre né du paiement, fondé sur un droit nouveau (Art. 2308 cciv)",
-      "Le débiteur peut lui opposer toutes les exceptions qu'il avait contre le créancier d'origine",
-      "Le débiteur ne peut pas lui opposer les litiges qu'il avait avec le créancier d'origine",
-      "Il s'éteint automatiquement si le débiteur est une personne morale"
+      "Le recours personnel crée un droit propre et nouveau pour la caution, empêchant le débiteur de lui opposer les exceptions qu'il pouvait opposer au créancier",
+      "Le recours subrogatoire transmet à la caution la créance d'origine avec ses sûretés et privilèges, mais le débiteur peut lui opposer toutes les exceptions qu'il avait contre le créancier",
+      "Le recours subrogatoire is toujours plus protecteur car il exclut d'office l'application des délais de prescription de la créance d'origine",
+      "Le recours personnel permet à la caution de réclamer le principal, les intérêts, les frais de poursuite ainsi que des dommages et intérêts pour son propre préjudice"
     ],
-    correct: [0, 2],
-    expl: "Le recours personnel (Art. 2308 cciv) crée un droit propre et nouveau pour la caution. Puisqu'elle n'agit pas au nom du créancier, le débiteur ne peut pas lui opposer les exceptions issues du contrat de base.",
-    ref: "Article 2308 du Code civil",
+    correct: [0, 1, 3],
+    expl: "Le recours personnel (Art. 2308 cciv) is fondé sur un droit propre né du paiement : le débiteur ne peut opposer les exceptions issues de ses rapports avec le créancier, et la caution peut demander capital, intérêts, frais et DI. Le recours subrogatoire (Art. 2309 / 1346 cciv) transmet la créance avec ses garanties d'origine, mais le débiteur peut opposer toutes les exceptions opposables au créancier initial. L'inconvénient du subrogatoire is précisément cette opposabilité des exceptions.",
+    ref: "Articles 2308 et 2309 du Code civil / Fiche p.6",
     diff: "hard"
   },
   {
     id: 17,
     cat: "sûretés",
     theme: "Cautionnement - Recours & Extinction",
-    q: "Qu'est-ce que le recours subrogatoire de la caution après paiement (Art. 2309 cciv) ?",
+    q: "Dans le cadre de cofidéjusseurs (plusieurs cautions garantissant une même deete), quels sont les droits et recours d'une caution qui a payé l'intégralité de la deete (caution solvens) ?",
     multi: false,
     opts: [
-      "Un recours permettant de doubler le montant exigible auprès du débiteur",
-      "La transmission à la caution des droits, privilèges et sûretés du créancier d'origine, mais soumise aux exceptions opposables",
-      "Un recours devant le tribunal administratif pour faute de l'État",
-      "Une action en annulation de la deete principale"
+      "La caution solvens dispose d'un recours subrogatoire exclusif contre le débiteur principal, mais n'a aucun recours contre ses cofidéjusseurs",
+      "La caution solvens dispose d'un recours personnel (Art. 2308) and subrogatoire (Art. 2312) lui permettant de réclamer à chaque cofidéjusseur sa part et portion de la deete, la part de l'insolvable étant répartie entre les autres",
+      "La caution solvens peut réclamer l'intégralité de la somme payée à n'importe quel cofidéjusseur, la solidarité active s'appliquant de plein droit entre cautions",
+      "L'extinction de la deete principale libère tous les cofidéjusseurs, interdisant tout recours réciproque"
     ],
     correct: [1],
-    expl: "Le recours subrogatoire (Art. 2309 cciv) permet à la caution d'exercer les droits du créancier. Elle bénéficie de ses sûretés et privilèges, mais le débiteur peut lui opposer toutes les exceptions qu'il avait contre le créancier.",
-    ref: "Article 2309 du Code civil",
-    diff: "medium"
+    expl: "Selon l'article 2312 cciv, si une caution paye le tout (caution solvens), elle a un recours contre le débiteur principal et un recours contre les autres cautions, chacun pour sa part et portion. Si l'un des cofidéjusseurs is insolvable, sa part is répartie proportionnellement entre les autres cautions solvables et celle qui a fait le paiement.",
+    ref: "Articles 2306 et 2312 du Code civil / Fiche p.2, p.6",
+    diff: "hard"
   },
   {
     id: 18,
     cat: "sûretés",
     theme: "Cautionnement - Recours & Extinction",
-    q: "En cas de cofidéjusseurs (plusieurs cautions d'une même deete), qu'est-ce que le bénéfice de division (Art. 2306 cciv) ?",
-    multi: false,
+    q: "Comment s'opère l'extinction du cautionnement par la voie accessoire en présence d'une remise de deete ou d'une remise de poursuite du créancier (Art. 1350 et 1350-2 du Code civil) ?",
+    multi: true,
     opts: [
-      "Le droit de diviser les biens du débiteur principal",
-      "Le droit pour la caution poursuivie d'obliger le créancier à diviser ses poursuites entre toutes les cautions solvables",
-      "La réduction de la deete principale au prorata des cautions",
-      "L'annulation du cautionnement s'il y a plus de trois garanties"
+      "La remise de deete accordée au débiteur principal libère intégralement la caution de son engagement (Art. 1350-2)",
+      "La simple remise de poursuite accordée par le créancier au débiteur principal libère la caution de plein droit",
+      "La remise de deete accordée à l'un des cofidéjusseurs solidaires libère les autres cautions pour la part de celui-ci",
+      "La remise de poursuite accordée au débiteur principal ne libère pas la deete; le créancier peut encore poursuivre la caution, ce qui déroge à l'accessoirité"
     ],
-    correct: [1],
-    expl: "Le bénéfice de division permet à une caution poursuivie d'obliger le créancier à diviser sa demande entre les différentes cautions solvables, de sorte qu'elle ne paie que sa part.",
-    ref: "Article 2306 du Code civil",
-    diff: "medium"
+    correct: [0, 2, 3],
+    expl: "L'article 1350-2 cciv dispose que la remise de deete accordée au débiteur libère la caution (car la deete s'éteint, voie accessoire). Par contre, la remise de poursuite (le créancier s'engage simplement à ne pas poursuivre le débiteur pour le moment) ne libère pas le débiteur ni la caution, le créancier pouvant poursuivre directement cette dernière. De même, la remise de deete consentie à un cofidéjusseur libère les autres à hauteur de sa part.",
+    ref: "Articles 1350 et 1350-2 du Code civil / Fiche p.7",
+    diff: "hard"
   },
   {
     id: 19,
     cat: "sûretés",
-    theme: "Garantie Autonome",
-    q: "Au regard de l'article 2321 cciv, quel critère caractérise l'indépendance de la Garantie Autonome ? (Sélectionner 2 réponses)",
-    multi: true,
+    theme: "Cautionnement - Recours & Extinction",
+    q: "Quelle est l'incidence exacte de l'ouverture d'une procédure collective (sauvegarde, redressement, liquidation) du débiteur professionnel sur les poursuites contre la caution personne physique ?",
+    multi: false,
     opts: [
-      "Le garant ne peut opposer aucune exception tirée du contrat de base",
-      "Le garant doit payer sur simple demande indépendamment du contrat principal",
-      "La garantie est automatiquement transmise avec la créance d'origine",
-      "Le montant garanti doit être inférieur à la moitié de la deete"
+      "Les poursuites sont suspendues dans toutes les procédures collectives (sauvegarde, RJ, LJ) sans distinction",
+      "Les poursuites sont suspendues de plein droit pour la caution PP en sauvegarde et redressement judiciaire si la créance is déclarée, mais reprennent de plein droit en liquidation judiciaire (LJ)",
+      "L'absence de déclaration de la créance dans les délais de la procédure collective éteint définitivement la deete principale, libérant d'office toutes les cautions",
+      "La caution PP bénéficie systématiquement de toutes les remises et délais imposés par le plan de sauvegarde ou de redressement"
     ],
-    correct: [0, 1],
-    expl: "La Garantie Autonome (Art. 2321 cciv) se caractérise par son indépendance complète. Le garant s'oblige à payer sur simple demande et ne peut soulever aucune exception liée au contrat principal.",
-    ref: "Article 2321 du Code civil",
+    correct: [1],
+    expl: "En matière de procédures collectives : pour les cautions PP (personnes physiques), l'ouverture d'une procédure de sauvegarde ou de redressement judiciaire suspend les poursuites individuelles du créancier (si créance déclarée). En revanche, en cas de Liquidation Judiciaire (LJ), cette protection cesse et le créancier peut poursuivre immédiatement la caution PP. Si la créance n'est pas déclarée dans les délais, elle is inopposable aux cautions PP en sauvegarde/RJ mais reste opposable en LJ (depuis 2021). De plus, les réductions du plan ne profitent pas à la caution (Art. 2298).",
+    ref: "Régime des procédures collectives / Fiche p.5, p.7",
     diff: "hard"
   },
   {
     id: 20,
     cat: "sûretés",
-    theme: "Garantie Autonome",
-    q: "Quelles sont les trois modalités possibles d'appel d'une Garantie Autonome ?",
-    multi: false,
+    theme: "Cautionnement - Recours & Extinction",
+    q: "Pour que la caution soit déchargée de son obligation sur le fondement de l'exception de subrogation (bénéfice de cession d'actions de l'article 2314 du Code civil), quelles conditions cumulatives doivent être réunies ?",
+    multi: true,
     opts: [
-      "Appel unilatéral, appel contradictoire, appel judiciaire",
-      "Garantie à première demande, garantie documentaire, garantie justifiée",
-      "Appel par lettre, appel par huissier, appel par virement",
-      "La loi n'autorise que l'appel écrit de nature notariale"
+      "La perte d'un droit préférentiel ou d'une sûreté utile (gage, hypothèque, privilège) par le fait exclusif du créancier",
+      "Une faute caractérisée (négligence ou acte positif) commise par le créancier dans la conservation ou l'inscription de son droit",
+      "L'existence d'un préjudice subi par la caution, qui se traduit par l'impossibilité d'exercer utilement son recours subrogatoire",
+      "Un montant de deete garanti supérieur à l'actif disponible du débiteur principal au jour de la signature"
     ],
-    correct: [1],
-    expl: "Il existe 3 modalités d'appel : la garantie à première demande (sans justificatif), la garantie documentaire (sur présentation de pièces), et la garantie justifiée (le créancier énonce les motifs de l'appel).",
-    ref: "Cours p.9 / Pratique des affaires",
-    diff: "medium"
+    correct: [0, 1, 2],
+    expl: "Le bénéfice de subrogation ou exception de subrogation (Art. 2314 cciv) exige 3 conditions cumulatives : 1) La perte d'un droit préférentiel ou d'une sûreté (qui devait garantir le recours de la caution). 2) Une faute du créancier (omission d'inscription, mainlevée volontaire, etc.). 3) Un préjudice pour la caution (privée d'une garantie utile pour se faire rembourser). La caution is alors déchargée à hauteur du préjudice subi.",
+    ref: "Article 2314 du Code civil / Fiche p.7",
+    diff: "hard"
   },
   {
     id: 21,
     cat: "sûretés",
-    theme: "Lettre d'intention",
-    q: "La leetre d'intention (confortant/garant) régie par l'article 2322 du Code civil :",
+    theme: "Cautionnement - Recours & Extinction",
+    q: "Au décès de la caution personne physique (Art. 2317 du Code civil), quelles obligations sont transmises à ses héritiers ?",
     multi: false,
     opts: [
-      "Ne crée qu'un simple engagement moral sans valeur juridique",
-      "Est un engagement de soutien qui peut être une obligation de moyens ou de résultat selon sa rédaction",
-      "Est un contrat synallagmatique exigeant un acte notarié",
-      "S'éteint obligatoirement au bout de 12 mois d'activité"
+      "Les héritiers sont libérés de plein droit de toute obligation présente et future par effet rétroactif",
+      "Les obligations de couverture (dettes futures) et de règlement (dettes déjà nées) sont intégralement transmises aux héritiers de manière indéfinie",
+      "Seule l'obligation de règlement (dettes nées avant le décès) is transmise aux héritiers; l'obligation de couverture cesse de plein droit au jour du décès",
+      "Les héritiers ne sont tenus que si l'acte comporte une clause de transmission notariale expresse visée par l'article 786"
     ],
-    correct: [1],
-    expl: "L'article 2322 cciv définit la leetre d'intention comme un engagement de soutien. Si la leetre s'engage à 'veiller à ce que le débiteur puisse faire face', c'est de moyens ; si elle garantit un paiement, c'est de résultat.",
-    ref: "Article 2322 du Code civil",
-    diff: "medium"
+    correct: [2],
+    expl: "L'article 2317 cciv dispose qu'au décès de la caution personne physique, ses héritiers ne sont tenus que des dettes nées avant le décès (transmission de l'obligation de règlement). L'obligation de couverture (for dettes futures) prend fin de plein droit au jour du décès, les héritiers ne garantissant pas les nouvelles dettes souscrites par le débiteur après cette date.",
+    ref: "Article 2317 du Code civil / Fiche p.7",
+    diff: "hard"
   },
   {
     id: 22,
     cat: "sûretés",
-    theme: "Lettre d'intention",
-    q: "Quelle est la conséquence si le confortant manque à son obligation de résultat dans une leetre d'intention ?",
-    multi: false,
+    theme: "Garantie Autonome",
+    q: "Au regard de l'article 2321 du Code civil, quel est le régime juridique de l'indépendance de la Garantie Autonome (GA) ?",
+    multi: true,
     opts: [
-      "Le créancier ne peut exiger qu'une amende de 10% de la deete",
-      "Le seul fait que le débiteur ne paie pas sa deete établit le manquement du confortant, ouvrant droit à indemnisation (DI)",
-      "L'acte est requalifié d'office en donation simple",
-      "La leetre d'intention s'annule rétroactivement"
+      "Le garant ne peut opposer aucune exception tirée de l'obligation principale (inexécution, nullité, force majeure, etc.)",
+      "La garantie is une obligation autonome qui ne se transmet pas de plein droit avec la créance d'origine du bénéficiaire",
+      "La garantie autonome is interdite dans les crédits de consommation, de crédit immobilier relevant du droit de la conso, ou dans les baux d'habitation",
+      "Le garant peut valablement invoquer la disproportion manifeste de la dette de base pour réduire son obligation d'appel"
     ],
-    correct: [1],
-    expl: "Dans une obligation de résultat liée à une leetre d'intention, le défaut de paiement du débiteur suffit à prouver la faute du confortant, engageant sa responsabilité civile contractuelle pour l'octroi de dommages et intérêts.",
-    ref: "Article 2322 du Code civil / Cours p.10",
+    correct: [0, 1, 2],
+    expl: "La Garantie Autonome (Art. 2321 cciv) se caractérise par une déconnexion complète du contrat de base : inopposabilité absolue des exceptions (sauf fraude ou abus manifeste). Elle is attachée personnellement au bénéficiaire et ne se transmet pas automatiquement avec la créance d'origine (absence d'accessoirité). Pour protéger les particuliers, la loi l'interdit dans les baux d'habitation et crédits à la consommation ou immobiliers relevant du droit de la consommation.",
+    ref: "Article 2321 du Code civil / Fiche p.8, p.9",
     diff: "hard"
   },
   {
     id: 23,
     cat: "sûretés",
-    theme: "Sûretés réelles - Exclusives",
-    q: "Comment fonctionne la clause de réserve de propriété (CRP) régie par l'article 2367 cciv ?",
-    multi: false,
+    theme: "Garantie Autonome",
+    q: "Dans quelles circonstances précises le garant d'une Garantie Autonome (GA) ou le donneur d'ordre peuvent-ils s'opposer au paiement de l'appel en garantie ?",
+    multi: true,
     opts: [
-      "Elle transfère la propriété du bien dès la signature, mais interdit sa revente pendant 1 an",
-      "Elle suspend le transfert de propriété d'un bien jusqu'à l'entier paiement du prix par l'acheteur",
-      "Elle permet à l'acheteur d'annuler la vente s'il trouve un prix inférieur ailleurs",
-      "Elle requiert une publication mensuelle au Journal Officiel"
+      "Si les conditions contractuelles formelles stipulées dans la lettre de garantie ne sont pas respectées par le bénéficiaire lors de l'appel",
+      "En cas d'appel manifestement abusif ou frauduleux, caractérisé par la mauvaise foi incontestable du créancier ou une fraude évidente",
+      "Dès lors que le débiteur principal prouve qu'il a déjà exécuté 50% des prestations prévues dans le contrat de base",
+      "Si la caution apporte la preuve que la deete principale is frappée de prescription extinctive of droit commun"
     ],
-    correct: [1],
-    expl: "La CRP (Art. 2367 cciv) suspend le transfert de propriété d'un bien. En cas d'impayé, le vendeur peut exiger la restitution physique du bien, sa valeur venant s'imputer sur la deete.",
-    ref: "Article 2367 du Code civil",
-    diff: "easy"
+    correct: [0, 1],
+    expl: "L'inopposabilité des exceptions dans la GA ne connaît que 2 limites strictes : 1) Le non-respect des conditions contractuelles de la lettre de garantie (ex: absence de présentation de documents requis). 2) L'appel manifestement abusif ou frauduleux (qui requiert la mauvaise foi caractérisée ou la fraude flagrante et incontestable du créancier). Hors ces cas, le garant a l'obligation de payer et ne peut invoquer la prescription ou l'exécution partielle.",
+    ref: "Article 2321 du Code civil / Fiche p.9",
+    diff: "hard"
   },
   {
     id: 24,
     cat: "sûretés",
-    theme: "Sûretés réelles - Exclusives",
-    q: "Dans le cadre de la fiducie-sûreté (Art. 2011 et 2372-1 cciv), quels sont les trois acteurs impliqués ? (Sélectionner 3 réponses)",
-    multi: true,
+    theme: "Garantie Autonome",
+    q: "Après avoir payé le bénéficiaire, quels sont les recours ouverts au garant d'une Garantie Autonome, et quel écueil comporte le recours subrogatoire ?",
+    multi: false,
     opts: [
-      "Le constituant (qui transfère temporairement le bien garanti)",
-      "Le fiduciaire (qui reçoit et gère juridiquement le bien transféré)",
-      "Le bénéficiaire (qui profite de la garantie, souvent le créancier)",
-      "Le liquidateur amiable de la Banque de France"
+      "Le garant n'a aucun recours contre le donneur d'ordre, car la garantie is consentie à titre gratuit par nature",
+      "Le garant dispose d'un recours personnel contractuel ou d'un recours subrogatoire (Art. 1346). Toutefois, le recours subrogatoire l'expose à toutes les exceptions que le donneur d'ordre pouvait opposer au créancier bénéficiaire",
+      "Le recours subrogatoire lui confère une immunité totale, interdisant au donneur d'ordre d'opposer la moindre exception",
+      "Le garant ne peut agir que devant le tribunal administratif pour obtenir indemnisation de l'État"
     ],
-    correct: [0, 1, 2],
-    expl: "La fiducie-sûreté est une opération tripartite : le constituant (débiteur) transfère la propriété d'un bien à un fiduciaire (banque/avocat) au profit d'un bénéficiaire (créancier).",
-    ref: "Articles 2011 et 2372-1 du Code civil",
-    diff: "medium"
+    correct: [1],
+    expl: "Le garant dispose d'un recours personnel contre le donneur d'ordre (le débiteur), idéalement prévu au contrat. Il peut aussi exercer le recours subrogatoire de l'article 1346 cciv en récupérant les droits du créancier, mais l'inconvénient majeur de la subrogation is que le donneur d'ordre pourra lui opposer toutes les exceptions qu'il avait contre le créancier d'origine (ce qui fragilise le remboursement du garant).",
+    ref: "Article 1346 du Code civil / Fiche p.9",
+    diff: "hard"
   },
   {
     id: 25,
     cat: "sûretés",
-    theme: "Sûretés réelles - Exclusives",
-    q: "Quelles conditions cumulatives fondent le droit de rétention sous l'article 2286 du Code civil ?",
-    multi: false,
+    theme: "Lettre d'intention",
+    q: "Dans une leetre d'intention régie par l'article 2322 du Code civil, comment s'apprécie l'existence d'une obligation de moyens ou de résultat, et comment s'établit la preuve de son inexécution ?",
+    multi: true,
     opts: [
-      "Une deete supérieure à 15 000 euros et un acte notarié",
-      "Une détention matérielle de la chose et une connexité (lien entre la créance et la détention)",
-      "Une publication au greffe et l'insolvabilité du débiteur",
-      "Le consentement écrit du conjoint survivant"
+      "L'engagement de 'faire tout son possible' ou de 'veiller' à la solvabilité du débiteur is qualifié d'obligation de moyens; le créancier doit prouver la négligence du confortant",
+      "L'engagement de 'faire le nécessaire' pour que le débiteur honore ses engagements is qualifié d'obligation de résultat; le seul défaut de paiement du débiteur établissant le manquement",
+      "La leetre d'intention ne requiert aucun formalisme de validité (pas de mention manuscrite de l'article 1376 cciv) car elle n'est pas une obligation de payer la deete d'autrui",
+      "L'indemnisation obtenue pour manquement à une obligation de résultat is légalement plafonnée à 50% du montant de l'obligation principale"
     ],
-    correct: [1],
-    expl: "Le droit de rétention exige une détention effective et licite du bien (meuble ou immeuble) et un lien de connexité (juridique, matérielle ou conventionnelle) entre le bien détenu et la créance impayée.",
-    ref: "Article 2286 du Code civil",
-    diff: "medium"
+    correct: [0, 1, 2],
+    expl: "L'article 2322 cciv régit la lettre d'intention (engagement de soutien, souvent société mère pour sa filiale). La jurisprudence distingue selon la rédaction : 'veiller à' ou 'faire de son mieux' is de moyens (charge de la preuve au créancier) ; 'faire le nécessaire' ou 's'engager à ce que' is de résultat (le non-paiement suffit à engager la responsabilité civile contractuelle). Aucun formalisme d'écriture manuscrite n'est exigé car le confortant s'engage à faire ou ne pas faire, et non à payer directement la deete d'un tiers.",
+    ref: "Article 2322 du Code civil / Fiche p.10",
+    diff: "hard"
   },
   {
     id: 26,
     cat: "sûretés",
-    theme: "Sûretés réelles - Préférentielles",
-    q: "Selon l'article 2333 du Code civil, sur quoi porte exactement le gage ?",
-    multi: false,
+    theme: "Sûretés réelles - Exclusives",
+    q: "Dans le cadre de la Clause de Réserve de Propriété (CRP - Art. 2367 du Code civil), qu'advient-il de la sûreté si le débiteur revend le bien grevé à un sous-acquéreur ?",
+    multi: true,
     opts: [
-      "Uniquement sur les créances et brevets d'invention",
-      "Sur un bien meuble corporel (ou un ensemble de meubles corporels) affecté en garantie",
-      "Uniquement sur les immeubles à usage professionnel",
-      "Sur l'ensemble du patrimoine immobilier futur du débiteur"
+      "Si le sous-acquéreur is de bonne foi, il conserve la propriété du bien en vertu de l'article 2276 du Code civil ('en fait de meubles, possession vaut titre')",
+      "Le créancier initial peut reporter sa sûreté de plein droit sur la créance de prix de revente encore due par le sous-acquéreur au débiteur (Art. 2372)",
+      "Le créancier initial peut exiger la restitution physique immédiate du bien auprès du sous-acquéreur, même si ce dernier is de bonne foi",
+      "Si le sous-acquéreur is de mauvaise foi (au courant de la réserve de propriété), il is tenu de restituer le bien au vendeur initial"
     ],
-    correct: [1],
-    expl: "Le gage (Art. 2333 cciv) est une sûreté réelle mobilière portant sur un bien meuble corporel (ou un ensemble de biens) affecté en garantie d'une obligation.",
-    ref: "Article 2333 du Code civil",
-    diff: "easy"
+    correct: [0, 1, 3],
+    expl: "En cas de revente d'un bien sous CRP à un tiers : 1) Si le tiers is de bonne foi, l'article 2276 cciv fait obstacle à la revendication physique (il garde le bien). 2) Le vendeur d'origine bénéficie alors d'une subrogation réelle sur le prix de revente : il peut appréhender la créance de prix encore due par le sous-acquéreur au débiteur (Art. 2372). 3) Si le tiers is de mauvaise foi, il doit restituer le bien.",
+    ref: "Articles 2276, 2367 et 2372 du Code civil / Fiche p.11",
+    diff: "hard"
   },
   {
     id: 27,
     cat: "sûretés",
-    theme: "Sûretés réelles - Préférentielles",
-    q: "Comment s'établit l'opposabilité d'un gage d'après l'article 2337 du Code civil ? (Sélectionner 2 réponses)",
-    multi: true,
+    theme: "Sûretés réelles - Exclusives",
+    q: "Quelles sont les conditions de validité, de fonctionnement et de protection de la fiducie-sûreté (Art. 2011 et 2372-1 du Code civil) ?",
+    multi: false,
     opts: [
-      "Par la publicité (sans dépossession), via l'inscription sur un registre spécial",
-      "Par la dépossession effective du bien entre les mains du créancier ou d'un tiers",
-      "Par simple échange d'e-mails entre les contractants",
-      "Par publication d'un encart dans un journal d'annonces légales"
+      "C'est un contrat consensuel non écrit; le bien reste dans le patrimoine saisissable du débiteur",
+      "Le contrat doit être rédigé par écrit à peine de nullité, et enregistré sous peine de nullité. Le bien sort du patrimoine du débiteur pour intégrer un patrimoine d'affectation étanche, insaisissable par ses autres créanciers",
+      "La fiducie-sûreté is limitée à une durée maximale de 10 ans et requiert obligatoirement un acte authentique notarié dans tous les cas",
+      "En cas de défaut de paiement, le créancier s'approprie le bien d'office sans expertise préalable et conserve l'intégralité de sa valeur"
     ],
-    correct: [0, 1],
-    expl: "L'opposabilité du gage s'établit soit par la publicité (inscription sur un registre public national, le débiteur conservant l'usage du bien), soit par la dépossession (remise matérielle du bien au créancier ou à un gardien).",
-    ref: "Article 2337 du Code civil",
-    diff: "medium"
+    correct: [1],
+    expl: "La fiducie-sûreté (Art. 2011 et 2372-1 cciv) exige un contrat écrit à peine de nullité, et un enregistrement obligatoire d'ordre public (Art. 2019/2020) sous peine de nullité. Le transfert de propriété crée un 'patrimoine d'affectation' distinct (Art. 2025), protégeant le bien des poursuites des autres créanciers du constituant. Si le débiteur ne paie pas, le créancier réalise la sûreté mais la valeur du bien doit être appréciée par expert (Art. 2348) pour lui restituer l'éventuel surplus.",
+    ref: "Articles 2011, 2025 et 2372-2 du Code civil / Fiche p.12",
+    diff: "hard"
   },
   {
     id: 28,
     cat: "sûretés",
-    theme: "Sûretés réelles - Préférentielles",
-    q: "Qu'est-ce que le nantissement d'après l'article 2355 du Code civil ?",
-    multi: false,
+    theme: "Sûretés réelles - Exclusives",
+    q: "Comment s'exerce le droit de rétention (Art. 2286 du Code civil) et quel est son sort en cas d'ouverture d'une procédure collective du débiteur ?",
+    multi: true,
     opts: [
-      "Une sûreté réelle immobilière portant sur les résidences principales",
-      "L'affectation en garantie d'une obligation d'un bien meuble incorporel",
-      "Le blocage forcé des dividendes des associés majoritaires",
-      "Un cautionnement bancaire sans plafond de ressources"
+      "Dans le cas d'un droit de rétention réel (avec dépossession effective), en sauvegarde ou RJ, le juge peut autoriser la reprise du bien à condition de payer préalablement le rétenteur",
+      "Le droit de rétention fictif (bénéficiaire d'un gage sans dépossession) is inopposable de plein droit aux créanciers en sauvegarde et RJ, mais redevient utile en liquidation judiciaire (LJ)",
+      "Le droit de rétention confère au créancier un droit de suite lui permettant de récupérer le bien s'il a été vendu volontairement à un tiers de bonne foi",
+      "Le droit de rétention s'éteint par le dessaisissement volontaire de la chose par le créancier"
     ],
-    correct: [1],
-    expl: "Le nantissement est le pendant du gage pour les biens incorporels (créances, comptes-titres, parts sociales, fonds de commerce). Il est défini par l'article 2355 cciv.",
-    ref: "Article 2355 du Code civil",
-    diff: "easy"
+    correct: [0, 1, 3],
+    expl: "Le droit de rétention (Art. 2286 cciv) is un pur moyen de blocage sans droit de suite ni de préférence. Il s'éteint par dessaisissement volontaire. En procédure collective : 1) Le rétenteur réel (avec dépossession) is protégé : le juge peut autoriser la restitution de l'actif indispensable mais à charge de désintéresser le rétenteur en priorité. 2) Le rétenteur fictif (gage sans dépossession, Art. 2286 al 4) voit son droit neutralisé en sauvegarde et RJ (inopposabilité), mais il retrouve son efficacité de blocage lors de la liquidation judiciaire (LJ).",
+    ref: "Article 2286 du Code civil / Procédures collectives / Fiche p.13, p.16",
+    diff: "hard"
   },
   {
     id: 29,
     cat: "sûretés",
     theme: "Sûretés réelles - Préférentielles",
-    q: "Quelles conditions de forme sont requises pour la validité d'un nantissement de créance ? (Sélectionner 2 réponses)",
-    multi: true,
+    q: "Selon l'article 2333 du Code civil, quelles sont les conditions de validité d'un contrat de gage et quelle dérogation immobilière is admise depuis la réforme ?",
+    multi: false,
     opts: [
-      "La rédaction obligatoire d'un écrit sous peine de nullité (Art. 2356 cciv)",
-      "L'acte doit permettre d'identifier la créance garantie et la créance nantie",
-      "Un dépôt physique des contrats de créance au tribunal",
-      "L'approbation du greffier en chef d'office"
+      "Le gage ne peut porter que sur des meubles corporels présents; la sanction de la vente sans écrit is la nullité relative",
+      "Le gage exige un écrit mentionnant la deete et les biens grevés. Depuis la réforme, le gage peut porter sur certains immeubles par destination (Art. 524/525 cciv, ex: miroirs fixés, machines agricoles) s'il is constitué par le propriétaire de l'immeuble",
+      "Le gage de choses futures ou fongibles is strictement nul de plein droit, l'individualisation physique immédiate étant exigée à peine de nullité",
+      "Le gage de deete future is valable uniquement si la deete is définitivement liquidée au jour de l'acte"
     ],
-    correct: [0, 1],
-    expl: "Le nantissement de créance exige un écrit à peine de nullité. Cet acte écrit doit obligatoirement identifier clairement la créance garantie d'une part, et la créance nantie d'autre part (Art. 2356).",
-    ref: "Article 2356 du Code civil",
+    correct: [1],
+    expl: "Le gage (Art. 2333 cciv) exige un écrit à titre de validité identifiant la dette et les biens grevés (Art. 2236). Il peut porter sur des biens futurs (Art. 2336) ou fongibles (Art. 2341). Une innovation importante de la réforme permet de gager des 'immeubles par destination' (meubles attachés à perpétuelle demeure d'après 524/525, ou affectés à l'exploitation, ex: panneaux solaires, machines), sous réserve que l'affectation soit le fait du propriétaire de l'immeuble.",
+    ref: "Articles 2333, 2336, 524 et 525 du Code civil / Fiche p.14",
     diff: "hard"
   },
   {
     id: 30,
     cat: "sûretés",
     theme: "Sûretés réelles - Préférentielles",
-    q: "Pour être opposable au débiteur de la créance nantie, le nantissement doit (Art. 2362 cciv) :",
+    q: "Deux créanciers se disputent la priorité sur un même bien meuble corporel : la Banque A dispose d'un gage sans dépossession publié le 10 mai, et la Banque B dispose d'un gage avec dépossession effective réalisé le 15 mai. Qui l'emporte d'après l'article 2340 du Code civil ?",
     multi: false,
     opts: [
-      "Faire l'objet d'une publication au Journal Officiel",
-      "Lui être notifié ou il doit intervenir directement à l'acte, sinon il peut valablement payer le constituant",
-      "Être enregistré devant notaire obligatoirement",
-      "Être visé par un commissaire aux comptes extérieur"
+      "La Banque B l'emporte car la dépossession effective prévaut toujours de plein droit sur une simple publicité au registre",
+      "La Banque A l'emporte car l'opposabilité du gage is régie par l'antériorité de sa publication ou de la dépossession; la Banque A ayant publié en premier le 10 mai",
+      "Les deux banques concourent à proportion de leurs créances en vertu du principe d'égalité des sûretés réelles",
+      "Le débiteur doit désigner arbitrairement qui bénéficie de la priorité sous peine de déchéance du terme"
     ],
     correct: [1],
-    expl: "Selon l'article 2362 cciv, à défaut de notification ou d'intervention à l'acte, le nantissement de créance n'est pas opposable au débiteur cédé/nanti qui peut alors valablement se libérer entre les mains du créancier d'origine.",
-    ref: "Article 2362 du Code civil",
+    expl: "Selon l'article 2340 cciv, le conflit entre créanciers gagistes is réglé par l'ordre des publications. L'opposabilité s'acquiert par la publication (inscription sur le registre national) ou par la dépossession (Art. 2337). La Banque A ayant accompli sa formalité d'opposabilité (inscription) le 10 mai, elle l'emporte sur la Banque B dont la dépossession (opposabilité) n'est intervenue que le 15 mai. L'antériorité de la publicité prévaut sur la dépossession ultérieure.",
+    ref: "Articles 2337, 2340 du Code civil / Fiche p.15",
     diff: "hard"
   },
   {
     id: 31,
     cat: "sûretés",
-    theme: "Cautionnement - Effets",
-    q: "Dans quel cas la caution personne physique peut-elle invoquer de plein droit la déchéance des intérêts du créancier professionnel ? (Sélectionner 2 réponses)",
+    theme: "Sûretés réelles - Préférentielles",
+    q: "Quelles règles encadrent la réalisation du gage conventionnel (Art. 2346 à 2348 du Code civil) en cas d'impayé ?",
     multi: true,
     opts: [
-      "Le créancier n'a pas fourni l'information annuelle du montant restant dû avant le 31 mars (Art. 2302 cciv)",
-      "Le créancier n'a pas informé la caution du premier incident de paiement sous un mois (Art. 2303 cciv)",
-      "Le débiteur principal a obtenu un délai de grâce du juge",
-      "La caution a déménagé à l'étranger sans prévenir la banque"
+      "La clause de 'voie parée' (permettant au créancier de vendre lui-même le bien à l'amiable sans contrôle judiciaire) is strictement interdite",
+      "Le créancier peut devenir propriétaire du bien par l'effet d'un pacte commissoire conventionnel (Art. 2348) ou d'une attribution judiciaire (Art. 2347)",
+      "L'appropriation du bien (pacte commissoire ou attribution judiciaire) impose obligatoirement une évaluation objective par expert ou selon cotation officielle pour restituer l'éventuel surplus au débiteur",
+      "En sauvegarde ou redressement, le pacte commissoire peut être mis en oeuvre de plein droit sans l'accord de l'administrateur judiciaire"
     ],
-    correct: [0, 1],
-    expl: "L'article 2302 (information annuelle) et l'article 2303 (information du premier incident) prévoient la déchéance des intérêts et pénalités de retard à l'encontre du créancier professionnel en cas de défaut d'information de la caution.",
-    ref: "Articles 2302 et 2303 du Code civil",
+    correct: [0, 1, 2],
+    expl: "La réalisation du gage obéit à des règles strictes de protection du débiteur : la vente forcée (Art. 2346) exclut la clause de voie parée (qui is nulle). L'appropriation is possible par attribution judiciaire (Art. 2347) ou pacte commissoire conventionnel (Art. 2348). Dans ces deux derniers cas, pour éviter l'enrichissement injustifié du créancier, le bien doit impérativement être évalué par expert (ou cours officiel) à la date du transfert, et le créancier doit restituer le surplus de valeur au constituant.",
+    ref: "Articles 2346, 2347 et 2348 du Code civil / Fiche p.16",
     diff: "hard"
   },
   {
     id: 32,
     cat: "sûretés",
-    theme: "Sûretés réelles - Exclusives",
-    q: "Dans un crédit-bail mobilier, qui conserve la propriété du matériel durant toute la période de location ?",
+    theme: "Sûretés réelles - Préférentielles",
+    q: "Selon l'article 2355 du Code civil, quel est le régime juridique par défaut du nantissement, et quelle exclusion fondamentale le distingue du gage ?",
     multi: false,
     opts: [
-      "Le crédit-preneur (l'entreprise utilisatrice)",
-      "Le crédit-bailleur (l'établissement de crédit propriétaire)",
-      "Le fabricant du matériel d'origine",
-      "L'administration des douanes"
+      "Il est soumis aux règles de l'hypothèque immobilière; il confère un droit de rétention fictif opposable de plein droit",
+      "Il est soumis par défaut aux règles du gage de meuble corporel, mais le bénéficiaire d'un nantissement is privé du droit de rétention fictif (l'article 2286 alinéa 4 is exclu)",
+      "Le nantissement de créance is un contrat consensuel qui ne requiert aucun écrit pour sa validité",
+      "Le créancier nanti dispose d'un droit de rétention réel l'autorisant à appréhender physiquement les biens incorporels"
     ],
     correct: [1],
-    expl: "Le crédit-bailleur (la banque/société financière) reste propriétaire légal du bien durant toute la durée du contrat. Le crédit-preneur n'est que locataire avec option d'achat en fin de contrat.",
-    ref: "Régime du crédit-bail / Cours p.11",
-    diff: "easy"
+    expl: "L'article 2355 cciv définit le nantissement comme l'affectation en garantie d'un bien meuble incorporel. En l'absence de texte spécial, il is soumis par défaut aux règles du gage de meuble corporel. Toutefois, le nantissement portant sur des biens incorporels, l'application de l'article 2286 alinéa 4 (qui prévoit un droit de rétention fictif pour le gage sans dépossession) is expressément exclue, car on ne peut retenir fictivement une chose incorporelle sans dépossession.",
+    ref: "Article 2355 du Code civil / Fiche p.16",
+    diff: "hard"
   },
   {
     id: 33,
     cat: "sûretés",
-    theme: "Sûretés réelles - Exclusives",
-    q: "Quelle est la formalité indispensable exigée par l'article 2372-2 cciv pour la validité du contrat de fiducie-sûreté ?",
-    multi: false,
+    theme: "Sûretés réelles - Préférentielles",
+    q: "Dans le dénouement d'un nantissement de créance, quelles règles s'appliquent selon l'ordre d'échéance des créances d'après les articles 2364 et 2365 du Code civil ?",
+    multi: true,
     opts: [
-      "Un accord verbal validé par deux commissaires de justice",
-      "Un écrit à peine de nullité identifiant les biens transférés, la deete garantie et les pouvoirs du fiduciaire",
-      "Une publication dans un journal d'annonces légales sous 48 heures",
-      "Le visa obligatoire du procureur de la République"
+      "Si la créance nantie arrive à échéance avant la créance garantie, le créancier nanti perçoit les fonds qui sont alors conservés sur un compte spécial (bloqué) ouvert auprès d'un établissement habilité",
+      "Si la créance garantie (la deete du débiteur) arrive à échéance en premier et que le débiteur is défaillant, le créancier nanti peut attendre l'échéance de la créance nantie pour se faire payer par son débiteur (Art. 2364)",
+      "Le créancier nanti peut demander en justice (ou selon les modalités du contrat) l'attribution de la créance nantie pour en devenir titulaire définitif (Art. 2365)",
+      "La créance nantie is automatiquement annulée dès lors que la créance garantie arrive à échéance en premier sans incident"
     ],
-    correct: [1],
-    expl: "Le contrat de fiducie-sûreté doit impérativement être rédigé par écrit à peine de nullité, en identifiant précisément les biens, les créances et les limites des pouvoirs conférés au fiduciaire.",
-    ref: "Article 2372-2 du Code civil / Cours p.12",
+    correct: [0, 1, 2],
+    expl: "Dénouement du nantissement de créance : 1) Si la créance nantie (la garantie) arrive à échéance en premier, le créancier nanti encaisse les fonds mais doit les consigner sur un compte spécial bloqué car la deete garantie n'est pas encore exigible (Art. 2364). 2) Si la créance garantie arrive à échéance en premier et is impayée, le créancier nanti peut soit attendre l'échéance de la créance nantie pour se faire payer (Art. 2364), soit en demander l'attribution judiciaire ou conventionnelle (Art. 2365) pour en devenir titulaire direct.",
+    ref: "Articles 2364 et 2365 du Code civil / Fiche p.17",
     diff: "hard"
   },
   {
     id: 34,
     cat: "sûretés",
     theme: "Sûretés réelles - Préférentielles",
-    q: "Qu'est-ce que le pacte commissoire conventionnel dans le cadre d'un gage ?",
+    q: "Un tiers consent une sûreté réelle (gage ou hypothèque sur son propre bien) pour garantir la deete d'un débiteur principal (cautionnement réel / caution réelle). Quelle is la qualification exacte de son engagement sous l'article 2325 du Code civil ?",
     multi: false,
     opts: [
-      "Une clause interdisant les saisies sur les comptes de la caution",
-      "Une clause prévoyant que la défaillance du débiteur entraînera l'appropriation automatique du bien gagé par le créancier",
-      "Un pacte de non-agression commerciale entre créanciers chirographaires",
-      "Une obligation de vendre le bien aux enchères sans passer par un expert"
+      "Il s'agit d'un cautionnement personnel classique, le tiers engageant l'intégralité de son patrimoine de manière subsidiaire",
+      "C'est une sûreté réelle pour autrui : le tiers ne s'engage pas personnellement. L'action du créancier is strictement limitée au bien affecté en garantie, excluant tout droit de gage général sur le reste du patrimoine du garant",
+      "L'acte is d'office nul pour absence d'altérité et de cause contractuelle licite",
+      "Le garant is solidairement tenu sur tous ses biens propres et revenus sans pouvoir invoquer le bénéfice de discussion"
     ],
     correct: [1],
-    expl: "Le pacte commissoire (Art. 2348 cciv) est une clause contractuelle autorisant le créancier à devenir propriétaire du bien gagé dès la défaillance du débiteur, après évaluation par expert pour éviter tout enrichissement injustifié.",
-    ref: "Article 2348 du Code civil",
-    diff: "medium"
+    expl: "La réforme de 2021 a tranché une longue controverse jurisprudentielle en introduisant l'article 2325 cciv : le tiers qui garantit la deete d'autrui par une sûreté réelle ne s'engage pas personnellement envers le créancier (pas de cautionnement personnel). L'action du créancier is confinée au seul bien affecté à la garantie. Le créancier n'a aucun droit de gage général sur le reste du patrimoine de ce garant réel pour autrui.",
+    ref: "Article 2325 du Code civil / Fiche p.11",
+    diff: "hard"
   },
   {
     id: 35,
     cat: "sûretés",
-    theme: "Cautionnement - Recours & Extinction",
-    q: "L'extinction par voie accessoire du cautionnement se produit lorsque :",
-    multi: false,
+    theme: "Sûretés réelles - Préférentielles",
+    q: "Dans le cadre d'un nantissement de compte-titres, quelles clauses contractuelles spécifiques régissent les mouvements et la valeur des instruments financiers nantis ?",
+    multi: true,
     opts: [
-      "La caution décède sans héritier majeur",
-      "La deete principale garantie s'éteint (paiement complet, remise de deete, compensation, prescription)",
-      "Le créancier professionnel fusionne avec une autre banque",
-      "Le débiteur principal est déclaré en liquidation judiciaire"
+      "La clause d'arrosage : impose au constituant d'ajouter de nouveaux titres ou du cash sur le compte si la valeur du portefeuille baisse",
+      "La clause d'accroissement : oblige le constituant à nantir de nouveaux titres si le montant de la deete garantie augmente",
+      "La clause d'écrêtement : permet de libérer une partie des titres nantis si leur valeur dépasse largement le plafond de la deete",
+      "La clause de voie parée : autorise le créancier nanti à vendre à l'amiable les actions sans recours à l'expert contractuel"
     ],
-    correct: [1],
-    expl: "Le cautionnement étant un contrat accessoire, l'extinction de la deete principale (par paiement, remise de deete, prescription) libère automatiquement la caution (voie accessoire).",
-    ref: "Article 2298 du Code civil / Extinction",
-    diff: "easy"
+    correct: [0, 1, 2],
+    expl: "Le nantissement de compte-titres (Art. 2355 cciv) s'applique sur un compte d'instruments financiers fluctuants. La pratique a validé 3 clauses clés : 1) Arrosage (reconstitution de marge si le marché baisse). 2) Accroissement (portée de la garantie étendue si la dette augmente). 3) Écrêtement (restitution du surplus de titres si la valeur dépasse largement l'assiette garantie). Comme pour le gage, la clause de voie parée sans respect des formalités légales reste prohibée.",
+    ref: "Régime du nantissement de compte-titres / Fiche p.18",
+    diff: "hard"
   },
   {
     id: 36,
     cat: "sûretés",
-    theme: "Garantie Autonome",
-    q: "La Garantie Autonome (GA) se transmet-elle automatiquement avec la créance d'origine du créancier ?",
-    multi: false,
+    theme: "Sûretés réelles - Préférentielles",
+    q: "Quelles conditions de fond et d'opposabilité régissent le nantissement conventionnel de fonds de commerce d'après le cours ?",
+    multi: true,
     opts: [
-      "Oui, en tant qu'accessoire de la créance d'origine",
-      "Non, car elle est attachée personnellement à la personne du bénéficiaire désigné d'origine",
-      "Uniquement s'il s'agit d'un crédit à la consommation",
-      "Seulement si l'acte est notarié d'office"
+      "Le constituant doit être propriétaire du fonds; un locataire-gérant n'a pas la capacité de nantir le fonds de commerce",
+      "À défaut de désignation expresse dans l'acte écrit, le nantissement ne comprend par défaut que l'enseigne, le nom commercial, la clientèle et le droit au bail",
+      "Le nantissement doit faire l'objet d'une inscription obligatoire sur un registre public pour être opposable aux tiers",
+      "Le créancier nanti dispose d'un droit de rétention fictif l'autorisant à interdire la cession du stock de marchandises"
     ],
-    correct: [1],
-    expl: "L'inopposabilité et l'indépendance de la GA (Art. 2321 cciv) impliquent qu'elle est attachée à la personne du bénéficiaire et ne se transmet pas automatiquement avec la créance (contrairement au cautionnement).",
-    ref: "Article 2321 du Code civil / Transfert",
+    correct: [0, 1, 2],
+    expl: "Pour le nantissement de fonds de commerce : 1) Seul le propriétaire peut le nantir, excluant le locataire-gérant (Art. 2355). 2) L'assiette légale par défaut exclut le matériel et les brevets sauf mention expresse (seuls l'enseigne, le nom, la clientèle et le droit au bail sont inclus d'office). 3) L'opposabilité exige une inscription sur un registre public. Il n'y a aucun droit de rétention (fictif ou réel) sur le fonds de commerce car c'est une universalité incorporelle.",
+    ref: "Code de commerce / Assiette nantissement / Fiche p.18",
     diff: "hard"
   },
   {
     id: 37,
     cat: "sûretés",
-    theme: "Sûretés réelles - Exclusives",
-    q: "Qu'est-ce que la cession de créance professionnelle simplifiée (Cession Dailly) ?",
+    theme: "Cautionnement - Recours & Extinction",
+    q: "Lorsque le débiteur principal et le créancier se trouvent réciproquement créancier et débiteur (Art. 1347 du Code civil), comment s'exerce l'extinction de l'engagement de caution par la compensation ?",
     multi: false,
     opts: [
-      "Un transfert amiable de propriété immobilière",
-      "La transmission d'une créance à une banque par simple bordereau, réservée aux professionnels d'après la loi",
-      "Un cautionnement accordé d'office par l'État aux PME",
-      "La résiliation forcée d'un crédit immobilier"
+      "La compensation n'éteint jamais le cautionnement, car elle constitue une exception strictement personnelle au débiteur principal",
+      "Si le débiteur invoque la compensation, la caution is libérée par voie accessoire (Art. 2298). Si le débiteur ne l'invoque pas, la caution peut elle-même l'invoquer en opposant la compensation des deetes réciproques (Art. 1347-6 et 2298)",
+      "La caution ne peut se prévaloir de la compensation que si elle a elle-même une créance personnelle directe contre le créancier",
+      "La compensation automatique s'applique sans que la caution ou le débiteur n'ait besoin de l'invoquer devant le juge"
     ],
     correct: [1],
-    expl: "La Cession Dailly est un mécanisme permettant à un professionnel de céder ses créances commerciales à un établissement de crédit par la seule remise d'un bordereau normé.",
-    ref: "Code monétaire et financier / Dailly",
-    diff: "medium"
+    expl: "La compensation (Art. 1347 cciv) éteint les obligations réciproques. Si le débiteur l'invoque, la caution is libérée par voie accessoire. Si le débiteur néglige de l'invoquer, l'article 1347-6 cciv et la réforme de 2021 permettent expressément à la caution d'opposer elle-même la compensation de la deete du débiteur avec celle du créancier, ce qui éteint l'obligation de garantie.",
+    ref: "Articles 1347-6 and 2298 du Code civil / Fiche p.7",
+    diff: "hard"
   },
   {
     id: 38,
     cat: "sûretés",
-    theme: "Introduction aux Sûretés",
-    q: "L'attribution judiciaire du bien gagé (Art. 2347 cciv) exige-t-elle le recours obligatoire à un expert ?",
+    theme: "Cautionnement - Caractéristiques",
+    q: "Quelle différence fondamentale distingue le sous-cautionnement (Art. 2291 du Code civil) de la certification de caution ?",
     multi: false,
     opts: [
-      "Non, le créancier fixe lui-même la valeur du bien",
-      "Oui, le bien doit être évalué objectivement par expert ou d'après une cotation officielle (Art. 2348)",
-      "Uniquement si le débiteur est un particulier en sauvegarde",
-      "Seulement si le bien a été acheté à l'étranger"
+      "Le sous-cautionnement garantit le créancier, tandis que la certification garantit le débiteur principal",
+      "Le sous-cautionnement est un contrat par lequel une personne s'engage envers la caution à lui payer ce que le débiteur principal pourrait lui devoir à la suite de ses recours. La certification de caution garantit directement le créancier en cas de défaillance de la première caution",
+      "La certification de caution is une sûreté réelle, tandis que le sous-cautionnement is un cautionnement d'ordre public",
+      "Le sous-cautionnement requiert obligatoirement un acte notarié, ce qui n'est pas le cas pour la certification"
     ],
     correct: [1],
-    expl: "Pour éviter la spoliation du débiteur, toute appropriation du bien gagé (judiciaire ou via pacte commissoire) impose une évaluation impartiale par expert désigné à l'amiable ou en justice.",
-    ref: "Article 2348 du Code civil",
+    expl: "Le sous-cautionnement (Art. 2291 cciv) is le cautionnement de la caution : un tiers s'engage envers la caution initiale à l'indemniser des sommes qu'elle aura payées et qu'elle n'aura pu récupérer du débiteur. La certification de caution is une garantie directe pour le créancier : le certificateur garantit au créancier le paiement de la deete si la première caution défaille.",
+    ref: "Article 2291 du Code civil / Fiche p.2",
     diff: "hard"
   },
   {
     id: 39,
     cat: "sûretés",
-    theme: "Sûretés réelles - Préférentielles",
-    q: "Le nantissement de compte-titres porte sur (Art. 2355 cciv) :",
-    multi: false,
+    theme: "Garantie Autonome",
+    q: "Quelles conditions de forme et d'opposabilité régissent la constitution d'une Garantie Autonome (GA) d'après le Code civil ?",
+    multi: true,
     opts: [
-      "Uniquement sur les dividendes en espèces",
-      "Les instruments financiers inscrits sur un compte d'affectation (actions, obligations)",
-      "L'ensemble du matériel de production de la société",
-      "Un immeuble professionnel de bureaux"
+      "La Garantie Autonome est un contrat unilatéral soumis à l'article 1376 du Code civil, qui exige à peine de nullité une mention écrite/manuscrite de la somme garantie",
+      "Le montant garanti par une GA peut être contractuellement inférieur, égal ou supérieur à la deete principale, illustrant l'indépendance de la sûreté",
+      "L'acte peut être entièrement verbal dès lors qu'il implique deux personnes morales de droit commercial",
+      "L'accord du conjoint sous l'article 1415 du Code civil is obligatoire pour engager les revenus d'une caution autonome physique"
     ],
-    correct: [1],
-    expl: "Le nantissement de compte-titres (Art. 2355 cciv) a pour assiette les instruments financiers (parts, actions, obligations) enregistrés sur un compte d'affectation spécifique.",
-    ref: "Article 2355 du Code civil / CT",
-    diff: "medium"
+    correct: [0, 1],
+    expl: "La Garantie Autonome (GA) is régie par l'article 2321 cciv. S'agissant d'un engagement unilatéral de payer une somme d'argent, elle is soumise à l'article 1376 cciv qui impose une mention manuscrite de la somme (chiffres et lettres). L'indépendance de la GA autorise un montant décorrélé de la dette principale (inférieur, égal ou supérieur, contrairement au cautionnement). L'article 1415 ne s'applique pas directement à la GA (qui n'est pas un cautionnement) mais la jurisprudence applique des règles de protection similaires pour les époux.",
+    ref: "Articles 2321, 1376 du Code civil / Fiche p.8",
+    diff: "hard"
   },
   {
     id: 40,
     cat: "sûretés",
-    theme: "Sûretés réelles - Préférentielles",
-    q: "Dans un nantissement de fonds de commerce conventionnel, quels éléments sont inclus par défaut à défaut de précision expresse ?",
+    theme: "Sûretés réelles - Exclusives",
+    q: "Dans le cadre d'un contrat de crédit-bail mobilier (leasing), comment s'opère l'opposabilité de la propriété du crédit-bailleur à l'égard des tiers en l'absence de publicité ?",
     multi: false,
     opts: [
-      "Uniquement le stock de marchandises et les dettes",
-      "L'enseigne, le nom commercial, la clientèle et le droit au bail (Art. 2355)",
-      "Le bâtiment industriel et le terrain",
-      "Le compte courant de trésorerie de la société"
+      "La propriété du crédit-bailleur is absolument inopposable aux tiers dans tous les cas dès lors qu'aucune publicité n'a été faite",
+      "Si la publicité requise n'a pas été effectuée, le crédit-bailleur peut néanmoins opposer son droit de propriété aux tiers s'il établit que ces derniers avaient connaissance de l'existence du crédit-bail",
+      "Le crédit-bailleur perd la propriété du matériel au profit du crédit-preneur en cas de défaut de publication sous 48 heures",
+      "La publicité du crédit-bail is facultative et n'affecte jamais l'opposabilité de la propriété aux tiers"
     ],
     correct: [1],
-    expl: "À défaut de désignation claire dans le contrat écrit, la loi limite l'assiette du nantissement de fonds de commerce aux éléments incorporels indispensables : enseigne, nom, clientèle, et droit au bail.",
-    ref: "Code de commerce / Assiette nantissement",
+    expl: "Dans le crédit-bail, le crédit-bailleur reste propriétaire du bien. Pour opposer cette propriété aux tiers, il doit effectuer une publicité légale. S'il ne l'a pas faite, sa propriété is inopposable, sauf s'il démontre que le tiers acquéreur ou créancier saisissant connaissait l'existence du contrat de crédit-bail (mauvaise foi du tiers). S'il y a publicité, elle is pleinement opposable aux tiers.",
+    ref: "Régime du crédit-bail / Fiche p.11",
     diff: "hard"
   },
-
+  
+  // ==========================================
   // ==========================================
   // ====== IMPÔT SUR LES SOCIÉTÉS (IS) - EXAM =
   // ==========================================
