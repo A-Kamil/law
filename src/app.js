@@ -1028,66 +1028,799 @@ let flashcardsInitialized = false;
 
 const FLASHCARDS_DATA = [
   {
+    theme: "Gage Général - Notion",
+    q: "Quelle est la définition exacte du droit de gage général ?",
+    a: "C'est le droit reconnu par les <strong>articles 2284 et 2285</strong> du Code civil à tout créancier de faire saisir tous les biens de son débiteur afin d'obtenir paiement de sa créance.",
+    ref: "Articles 2284 et 2285 du Code civil / Fiche p.1"
+  },
+  {
+    theme: "Gage Général - Faiblesses",
+    q: "Quelles sont les deux faiblesses majeures du droit de gage général pour un créancier ?",
+    a: "1. Le patrimoine du débiteur peut s'avérer insuffisant (insolvabilité).<br>2. L'égalité entre créanciers chirographaires implique le concours et subit la règle du <strong>'prix de la course'</strong>.",
+    ref: "Article 2285 du Code civil / Fiche p.1"
+  },
+  {
+    theme: "Gage Général - Prix de la course",
+    q: "Qu'est-ce que la règle du 'prix de la course' entre créanciers chirographaires ?",
+    a: "C'est le principe de fait selon lequel <strong>le premier créancier qui saisit est le premier payé</strong> sur le patrimoine du débiteur commun, ruinant l'égalité théorique.",
+    ref: "Article 2285 du Code civil / Fiche p.1"
+  },
+  {
+    theme: "Sûretés - Types",
+    q: "Quelle est la distinction fondamentale entre une sûreté réelle et une sûreté personnelle ?",
+    a: "La **sûreté réelle** confère un droit de préférence ou d'exclusivité sur un <strong>bien déterminé</strong>. La **sûreté personnelle** adjoint l'engagement de paiement d'un <strong>tiers (garant)</strong>.",
+    ref: "Cours d'introduction / Fiche p.1"
+  },
+  {
+    theme: "Sûretés Personnelles - Liste",
+    q: "Quelles sont les trois sûretés personnelles reconnues par le Code civil ?",
+    a: "1. Le <strong>cautionnement</strong>.<br>2. La <strong>garantie autonome</strong>.<br>3. La <strong>lettre d'intention</strong>.",
+    ref: "Livre IV du Code civil / Fiche p.1"
+  },
+  {
+    theme: "Réforme 2021 - Date",
+    q: "Quelle est la date d'entrée en vigueur de la grande réforme par ordonnance du droit des sûretés ?",
+    a: "Elle est entrée en vigueur le <strong>1er janvier 2022</strong>. Les contrats antérieurs restent soumis au droit ancien.",
+    ref: "Ordonnance du 15 septembre 2021 / Fiche p.1"
+  },
+  {
+    theme: "Entrepreneur Individuel - EI",
+    q: "Quel est l'effet de la réforme de 2022 sur le patrimoine de l'Entrepreneur Individuel (EI) ?",
+    a: "Elle instaure la <strong>séparation de plein droit</strong> (sans déclaration) entre le patrimoine professionnel et le patrimoine personnel de l'EI.",
+    ref: "Réforme de l'EI de 2022 / Fiche p.1"
+  },
+  {
+    theme: "EI - Auto-garantie",
+    q: "Un EI peut-il se porter caution pour sa propre dette en voulant utiliser son autre patrimoine ?",
+    a: "<strong>Non !</strong> La séparation légale des patrimoines n'altère pas l'identité de la personne : nul ne peut se porter caution de sa propre dette (absence d'altérité).",
+    ref: "Réforme de l'EI de 2022 / Fiche p.1"
+  },
+  {
+    theme: "Cautionnement - Définition",
+    q: "Quelle est la définition du cautionnement selon l'article 2288 du Code civil ?",
+    a: "C'est le contrat par lequel une caution s'oblige envers le créancier à <strong>payer la dette du débiteur en cas de défaillance</strong> de celui-ci.",
+    ref: "Article 2288 du Code civil / Fiche p.2"
+  },
+  {
+    theme: "Cautionnement - Unilatéralité",
+    q: "Le cautionnement est-il un contrat unilatéral ou synallagmatique ?",
+    a: "C'est un contrat <strong>unilatéral</strong>, car seule la caution s'engage envers le créancier à payer en cas de défaillance.",
+    ref: "Article 2288 du Code civil / Fiche p.2"
+  },
+  {
+    theme: "Cautionnement - Commercialité",
+    q: "À quelle condition un cautionnement prend-il une nature commerciale ?",
+    a: "S'il est souscrit par un **établissement de crédit** ou s'il garantit un **acte de commerce** (cautionnement intéressé).",
+    ref: "Jurisprudence commerciale / Fiche p.2"
+  },
+  {
+    theme: "Cautionnement Commercial - Preuve",
+    q: "Quel est le régime de la preuve pour un cautionnement commercial ?",
+    a: "C'est la <strong>liberté de la preuve</strong> (par tous moyens), dérogeant à l'écrit obligatoire requis au-delà de 1500€ en matière civile.",
+    ref: "Article 110-3 du Code de commerce / Fiche p.2"
+  },
+  {
+    theme: "Cautionnement Commercial - Solidarité",
+    q: "Quelle présomption s'applique en matière de cautionnement commercial ?",
+    a: "Le cautionnement commercial est <strong>présumé solidaire</strong> en jurisprudence, sauf clause contraire expresse.",
+    ref: "Jurisprudence constante / Fiche p.2"
+  },
+  {
+    theme: "Sous-cautionnement - Notion",
+    q: "Qu'est-ce que le sous-cautionnement (Art. 2291) ?",
+    a: "C'est le cautionnement de la caution : une personne (sous-caution) s'engage envers la caution à lui <strong>payer ce que le débiteur principal lui doit</strong> suite à ses recours.",
+    ref: "Article 2291 du Code civil / Fiche p.2"
+  },
+  {
+    theme: "Certification de caution - Notion",
+    q: "Qu'est-ce que la certification de caution (Art. 2291) ?",
+    a: "C'est un contrat par lequel un tiers garantit au créancier le paiement de la dette <strong>en cas de défaillance de la première caution</strong> (seconde caution).",
+    ref: "Article 2291 du Code civil / Fiche p.2"
+  },
+  {
+    theme: "Cautionnement - Caractère accessoire",
+    q: "Quel texte consacre la dépendance de l'engagement de caution envers la validité de la dette principale ?",
+    a: "L'<strong>article 2293</strong> du Code civil consacre le caractère accessoire renforcé du cautionnement.",
+    ref: "Article 2293 du Code civil / Fiche p.2"
+  },
+  {
+    theme: "Cautionnement - Montant maximal",
+    q: "Le cautionnement peut-il être plus lourd que la dette principale d'après l'article 2296 ?",
+    a: "<strong>Non !</strong> Il ne peut jamais dépasser la dette principale. S'il la dépasse, il est réduit d'office au montant de la dette principale.",
+    ref: "Article 2296 du Code civil / Fiche p.2, p.4"
+  },
+  {
     theme: "Cautionnement - Exceptions (Art. 2298)",
-    q: "En tant que caution personne physique poursuivie par un créancier professionnel, puis-je invoquer la nullité du contrat principal pour vice du consentement subi par le débiteur principal (dol ou erreur), alors même que le débiteur refuse de l'invoquer ?",
-    a: "<strong>Oui, depuis le 1er janvier 2022 !</strong> L'article 2298 du Code civil met fin à une longue jurisprudence restrictive. Désormais, la caution peut opposer toutes les exceptions appartenant au débiteur, qu'elles soient inhérentes à la dette ou <strong>personnelles au débiteur</strong>, y compris la nullité relative pour dol ou erreur subi par le débiteur principal. C'est une consécration majeure du caractère accessoire renforcé du cautionnement.",
-    ref: "Art. 2298 du Code civil / Fiche p.2, p.6, p.7"
+    q: "Depuis 2022, quelles exceptions la caution peut-elle opposer au créancier ?",
+    a: "La caution peut opposer <strong>toutes les exceptions</strong> appartenant au débiteur : les inhérentes à la dette ET les **personnelles au débiteur** (ex: dol subi par lui).",
+    ref: "Article 2298 du Code civil / Fiche p.2, p.6"
   },
   {
-    theme: "Cautionnement - Régime matrimonial & EI",
-    q: "Si un époux marié sous le régime de la communauté légale réduite aux acquêts consent seul un cautionnement sans accord exprès de son conjoint, et qu'il est également entrepreneur individuel (EI), comment s'articulent l'article 1415 du Code civil et la protection des patrimoines de l'EI ?",
-    a: "<strong>Double étanchéité de plein droit !</strong> D'une part, l'article 1415 cciv protège la communauté : seuls ses biens propres et ses revenus personnels sont engagés (la masse commune est préservée). D'autre part, la séparation légale de l'EI (post-2022) fait que s'il cautionne pour son activité professionnelle, il engage d'office ses biens professionnels propres + revenus. Son patrimoine personnel et la communauté sont protégés de plein droit s'il n'a pas renoncé au bénéfice de protection au profit d'un créancier.",
-    ref: "Art. 1415 cciv & Loi EI 2022 / Fiche p.1, p.3"
+    theme: "Cautionnement - Dol du débiteur",
+    q: "La caution peut-elle opposer au créancier le dol subi par le débiteur principal ?",
+    a: "<strong>Oui !</strong> Depuis la réforme de 2021, la caution peut se prévaloir du dol subi par le débiteur pour faire annuler ou éteindre sa garantie.",
+    ref: "Article 2298 du Code civil / Fiche p.2, p.7"
   },
   {
-    theme: "Cautionnement - Sanctions (Art. 2219 vs 2300)",
-    q: "Quelle est la différence fondamentale entre un manquement au devoir de mise en garde (Art. 2219) et la sanction de la disproportion manifeste (Art. 2300) d'un cautionnement souscrit par une personne physique auprès d'un créancier pro depuis 2022 ?",
-    a: "<strong>Objet et sanction diffèrent !</strong><br>1. Le <strong>devoir de mise en garde (Art. 2219)</strong> porte sur l'inadaptation du crédit ou l'endettement excessif du débiteur principal. Sanction : déchéance du droit d'agir du créancier à concurrence du préjudice subi par la caution.<br>2. La <strong>disproportion manifeste (Art. 2300)</strong> porte sur l'incapacité financière propre de la caution à faire face à son engagement au jour de sa signature. Sanction : réduction du cautionnement au montant qu'elle pouvait raisonnablement garantir (et non plus la décharge totale !).",
-    ref: "Art. 2219 et 2300 du Code civil / Fiche p.3, p.4"
+    theme: "Cautionnement - Subsidiarité",
+    q: "Qu'est-ce que le caractère subsidiaire du cautionnement d'après l'article 2288 ?",
+    a: "La caution **ne paie qu'en cas de défaillance** du débiteur principal. Le créancier doit d'abord poursuivre le débiteur avant de s'adresser à la caution.",
+    ref: "Article 2288 du Code civil / Fiche p.2"
   },
   {
-    theme: "Cautionnement - Obligation d'information",
-    q: "Un créancier omet l'information annuelle obligatoire (Art. 2302) ET l'information du premier incident de paiement sous un mois (Art. 2303) envers une caution personne physique. Les sanctions se cumulent-elles et quelle est leur portée exacte ?",
-    a: "<strong>Oui, les sanctions se cumulent !</strong> Le créancier professionnel est déchu de plein droit du droit aux intérêts et pénalités de retard :<br>1. Échus depuis la précédente information annuelle jusqu'à la nouvelle (Art. 2302).<br>2. Échus entre la date du premier incident et celle de l'information effective de la caution (Art. 2303).<br>En pratique, la caution ne sera tenue de payer que le capital principal restant dû, purgé de tous les intérêts contractuels.",
-    ref: "Art. 2302 et 2303 du Code civil / Fiche p.5"
+    theme: "Bénéfice de discussion - Notion",
+    q: "Qu'est-ce que le bénéfice de discussion (Art. 2305) ?",
+    a: "C'est la faculté pour la caution d'obliger le créancier à <strong>poursuivre d'abord le débiteur principal</strong> et réaliser ses biens avant de se tourner vers elle.",
+    ref: "Article 2305 du Code civil / Fiche p.2"
   },
   {
-    theme: "Cautionnement - Décès de la caution (Art. 2317)",
-    q: "En cas de décès de la caution personne physique, ses héritiers acceptant la succession sont-ils tenus des dettes nées après le décès ?",
-    a: "<strong>Non, sauf pour le règlement !</strong> L'article 2317 du Code civil consacre la distinction entre obligation de couverture et de règlement. Au décès de la caution, l'obligation de couverture (qui garantit les dettes futures) s'éteint de plein droit. Les héritiers ne sont tenus que par l'obligation de règlement, c'est-à-dire les dettes qui étaient déjà nées et existantes dans le patrimoine du débiteur principal au jour du décès de la caution.",
-    ref: "Art. 2317 du Code civil / Fiche p.7"
+    theme: "Bénéfice de discussion - Invocation",
+    q: "À quel moment et sous quelle condition de forme le bénéfice de discussion doit-il être invoqué ?",
+    a: "Il doit être invoqué par la caution <strong>dès les premières poursuites</strong> dirigées contre elle.",
+    ref: "Article 2305 du Code civil / Fiche p.2"
   },
   {
-    theme: "Cautionnement - Recours subrogatoire vs personnel",
-    q: "Pourquoi le recours subrogatoire (Art. 1346 / 2309) de la caution est-il qualifié de 'parfois dangereux' par rapport à son recours personnel (Art. 2308) contre le débiteur principal ?",
-    a: "<strong>À cause de l'opposabilité des exceptions !</strong><br>Le garant dispose d'un recours personnel contre le donneur d'ordre (le débiteur), idéalement prévu au contrat. Il peut aussi exercer le recours subrogatoire de l'article 1346 cciv en récupérant les droits du créancier, mais l'inconvénient majeur de la subrogation est que le donneur d'ordre pourra lui opposer toutes les exceptions qu'il avait contre le créancier d'origine (ce qui fragilise le remboursement du garant).",
-    ref: "Art. 2308 et 2309 du Code civil / Fiche p.6"
+    theme: "Bénéfice de discussion - Extinction",
+    q: "Dans quels cas le bénéfice de discussion disparaît-il d'office ?",
+    a: "Il disparaît si la caution est **solidaire**, ou si elle y a **renoncé** expressément.",
+    ref: "Article 2305 du Code civil / Fiche p.2"
   },
   {
-    theme: "Garantie Autonome - Critère de qualification (Art. 2321)",
-    q: "Quelle clause contractuelle insérée dans une Garantie Autonome (GA) risque de la faire requalifier d'office en cautionnement par le juge ?",
-    a: "<strong>La clause de règlement de la deete du débiteur !</strong> Si la lettre de garantie stipule que le garant s'oblige à payer « la deete du débiteur », ou fait référence à l'inexécution contractuelle pour fixer le montant (ex: « à hauteur du solde débiteur impayé »), le juge requalifiera l'acte en cautionnement d'office car la garantie perd son indépendance. Pour rester autonome (Art. 2321), le garant doit s'engager à payer une somme déterminée ou déterminable selon des modalités propres, sans référence à l'existence de la deete.",
-    ref: "Art. 2321 du Code civil / Double critère de qualification / Fiche p.8"
+    theme: "Bénéfice de division - Notion",
+    q: "Qu'est-ce que le bénéfice de division (Art. 2306) ?",
+    a: "En cas de cofidéjusseurs, c'est le droit pour une caution d'obliger le créancier à <strong>diviser ses poursuites</strong> entre toutes les cautions solvables.",
+    ref: "Article 2306 du Code civil / Fiche p.2"
   },
   {
-    theme: "Sûretés réelles - Sûreté réelle pour autrui (Art. 2325)",
-    q: "Un tiers qui affecte son propre bien en garantie de la dette d'autrui (cautionnement réel) peut-il être poursuivi sur le reste de ses biens personnels si le bien s'avère insuffisant ?",
-    a: "<strong>Absolument pas !</strong> L'article 2325 du Code civil consacre la nature de la <strong>sûreté réelle pour autrui</strong> (ancienne caution réelle). Le tiers garant réel ne contracte aucun engagement personnel envers le créancier. L'action du créancier est strictement réelle et limitée au seul bien affecté en garantie. Il n'a aucun droit de gage général sur le reste du patrimoine du garant, même si la vente du bien ne suffit pas à le désintéresser.",
-    ref: "Art. 2325 du Code civil (Réforme 2021) / Fiche p.11"
+    theme: "Cofidéjusseurs - Notion",
+    q: "Qu'est-ce que des cofidéjusseurs d'après le cours ?",
+    a: "Ce sont **plusieurs cautions** qui garantissent solidairement ou non la **même dette** envers le même créancier.",
+    ref: "Article 2306 du Code civil / Fiche p.2, p.6"
   },
   {
-    theme: "Sûretés réelles - Conflit de gages (Art. 2340)",
-    q: "En cas de conflit de gages sur un même bien : la Banque A (sans dépossession, publiée le 1er juin) et la Banque B (avec dépossession effective du bien le 5 juin). Qui l'emporte ?",
-    a: "<strong>La Banque A (sans dépossession) !</strong> L'article 2340 du Code civil pose que le conflit entre créanciers gagistes est réglé par l'ordre des publications (inscription ou dépossession). L'opposabilité de la Banque A ayant été acquise par publication le 1er juin, elle prime sur la Banque B dont la dépossession (opposabilité) n'est intervenue que le 5 juin. L'antériorité de la formalité d'opposabilité l'emporte de manière absolue.",
-    ref: "Art. 2337 et 2340 du Code civil / Fiche p.15"
+    theme: "Cautionnement - Fond (Art. 1128)",
+    q: "Quelles sont les conditions de fond de droit commun requises pour la validité du cautionnement ?",
+    a: "Le **consentement**, la **capacité**, le **pouvoir** de contracter et un **contenu licite et certain**.",
+    ref: "Article 1128 du Code civil / Fiche p.2"
   },
   {
-    theme: "Nantissement de créance - Dénouement (Art. 2364/2365)",
-    q: "Quelle différence existe-t-il dans le dénouement d'un nantissement de créance selon que la créance nantie (la garantie) ou la créance garantie (la dette) arrive à échéance en premier ?",
-    a: "<strong>Consignation VS Paiement direct !</strong><br>1. Si la <strong>créance nantie</strong> arrive à échéance en premier (Art. 2364) : le créancier perçoit les fonds mais la deete garantie n'est pas encore exigible. Il doit obligatoirement <strong>consigner les fonds sur un compte spécial bloqué</strong>.<br>2. Si la <strong>créance garantie</strong> arrive à échéance en premier et est impayée : le créancier nanti peut attendre l'échéance de la créance nantie pour se faire payer par le débiteur de la créance nantie (Art. 2364) ou en demander l'attribution conventionnelle ou judiciaire (Art. 2365).",
-    ref: "Art. 2364 et 2365 du Code civil / Fiche p.17"
+    theme: "Protection - Consentement (Art. 1130)",
+    q: "Quelle condition régit le consentement de la caution ?",
+    a: "Le consentement doit être <strong>libre et éclairé</strong>, exempt de vices du consentement (erreur, dol ou violence d'après l'article 1130).",
+    ref: "Article 1130 du Code civil / Fiche p.2"
+  },
+  {
+    theme: "Information Précontractuelle (Art. 1112-1)",
+    q: "À quelle obligation générale d'information le créancier est-il soumis avant la signature ?",
+    a: "À l'**obligation précontractuelle d'information** (Art. 1112-1) : fournir toute information déterminante pour le consentement de la caution.",
+    ref: "Article 1112-1 du Code civil / Fiche p.2"
+  },
+  {
+    theme: "Cautionnement - Express",
+    q: "Le cautionnement peut-il être tacite d'après l'article 2294 ?",
+    a: "<strong>Non !</strong> Le cautionnement ne se présume point; il doit être <strong>exprès</strong>.",
+    ref: "Article 2294 du Code civil / Fiche p.2"
+  },
+  {
+    theme: "Mise en garde - Définition",
+    q: "Qu'est-ce que le devoir de mise en garde par rapport au conseil d'après le cours ?",
+    a: "C'est une mesure intermédiaire consistant en une <strong>information personnalisée et d'alerte</strong> sur les risques d'insolvabilité.",
+    ref: "Jurisprudence / Fiche p.2"
+  },
+  {
+    theme: "Mise en garde - Avant 2022",
+    q: "À qui bénéficiait le devoir de mise en garde avant la réforme de 2021 ?",
+    a: "Uniquement à la <strong>caution non avertie</strong> en relation avec un professionnel du crédit.",
+    ref: "Jurisprudence antérieure / Fiche p.3"
+  },
+  {
+    theme: "Mise en garde - Appréciation avertie",
+    q: "Sur quels critères les juges appréciaient-ils si une caution était 'avertie' ?",
+    a: "Sur sa **formation**, son **expérience pro** et ses **liens d'affaires ou familiaux** avec le débiteur principal.",
+    ref: "Jurisprudence constante / Fiche p.3"
+  },
+  {
+    theme: "Mise en garde - Objets historiques",
+    q: "Quels étaient les deux objets du devoir de mise en garde de la banque avant 2022 ?",
+    a: "1. La **disproportion** de l'engagement.<br>2. L'**inadaptation du crédit** octroyé au débiteur principal.",
+    ref: "Ancien droit / Fiche p.3"
+  },
+  {
+    theme: "Mise en garde - Sanction ancienne",
+    q: "Quelle était la sanction en cas de manquement au devoir de mise en garde avant 2022 ?",
+    a: "L'octroi de dommages et intérêts fondant la **responsabilité civile (RC) de la banque**.",
+    ref: "Ancien droit / Fiche p.3"
+  },
+  {
+    theme: "Mise en garde - Loi moderne (Art. 2219)",
+    q: "Depuis le 1er janvier 2022, qui bénéficie du devoir de mise en garde de l'article 2219 ?",
+    a: "<strong>Toute caution personne physique</strong> engagée avec un créancier professionnel (plus de distinction avertie/non avertie).",
+    ref: "Article 2219 du Code civil / Fiche p.3"
+  },
+  {
+    theme: "Créancier Professionnel - Définition",
+    q: "Quelle est la définition du créancier professionnel sous l'article 2219 ?",
+    a: "C'est celui dont <strong>la créance est née de sa profession</strong> (ex: banque, fournisseur professionnel).",
+    ref: "Article 2219 du Code civil / Fiche p.3"
+  },
+  {
+    theme: "Mise en garde - Objet moderne",
+    q: "Sur quel double risque porte le devoir de mise en garde post-2022 d'après le cours ?",
+    a: "Le risque d'<strong>inadaptation du crédit</strong> ET le risque de **disproportion** de l'engagement de caution.",
+    ref: "Article 2219 du Code civil / Fiche p.3"
+  },
+  {
+    theme: "Mise en garde - Sanction moderne",
+    q: "Quelle est la sanction moderne du défaut de mise en garde (Art. 2219) ?",
+    a: "La <strong>déchéance du droit d'agir du créancier</strong> à hauteur du préjudice subi par la caution.",
+    ref: "Article 2219 du Code civil / Fiche p.3"
+  },
+  {
+    theme: "Sociétés - Pouvoir caution",
+    q: "Par quel intermédiaire une société peut-elle se porter caution ?",
+    a: "Uniquement par l'intermédiaire de <strong>ses organes de représentation légale</strong> (dirigeants).",
+    ref: "Droit des sociétés / Fiche p.3"
+  },
+  {
+    theme: "Organes - Dépassement objet social",
+    q: "Dans une SARL, le dépassement de l'objet social par le dirigeant annule-t-il le cautionnement ?",
+    a: "<strong>Non !</strong> Le dépassement de l'objet social est **inopposable aux tiers de bonne foi**. La SARL reste engagée.",
+    ref: "Droit des sociétés commerciaux / Fiche p.3"
+  },
+  {
+    theme: "Société Civile - Dépassement objet social",
+    q: "Dans une SCI, quelle est la sanction d'un cautionnement qui dépasse l'objet social ?",
+    a: "Il est frappé de <strong>nullité absolue</strong> s'il n'entre pas dans l'objet social ou s'il compromet l'existence de la société.",
+    ref: "Droit des sociétés civiles / Fiche p.3"
+  },
+  {
+    theme: "Sociétés - Intérêt social (Art. 1833)",
+    q: "Quelle règle d'ordre public de l'article 1833 s'applique à tout cautionnement de société ?",
+    a: "Le cautionnement doit être conforme à l'<strong>intérêt social</strong> de la société, sous peine de nullité absolue.",
+    ref: "Article 1833 du Code civil / Fiche p.3"
+  },
+  {
+    theme: "Sociétés - Cautionnement intéressé",
+    q: "Qu'est-ce qu'un cautionnement 'intéressé' pour une société ?",
+    a: "C'est un cautionnement qui procure un **avantage économique ou commercial** indirect à la société garante.",
+    ref: "Droit des sociétés / Fiche p.3"
+  },
+  {
+    theme: "Époux - Gage commun (Art. 1413)",
+    q: "En principe, sous le régime de communauté légale, les dettes d'un époux engagent-elles les biens communs ?",
+    a: "<strong>Oui !</strong> En principe, les dettes contractées pendant le mariage engagent les biens communs d'après l'**article 1413**.",
+    ref: "Article 1413 du Code civil / Fiche p.3"
+  },
+  {
+    theme: "Époux - Caution signée seule (Art. 1415)",
+    q: "Quels biens sont engagés si un époux cautionne seul sans l'accord de son conjoint (Art. 1415) ?",
+    a: "Uniquement ses <strong>biens propres</strong> et ses <strong>revenus</strong>. Les biens communs du couple sont préservés.",
+    ref: "Article 1415 du Code civil / Fiche p.3"
+  },
+  {
+    theme: "Époux - Caution signée avec accord",
+    q: "Quels biens sont engagés si un époux cautionne avec l'accord exprès de son conjoint ?",
+    a: "Les **biens propres de l'époux caution** ET l'intégralité des **biens communs** (les propres du conjoint restent exclus).",
+    ref: "Article 1415 du Code civil / Fiche p.3"
+  },
+  {
+    theme: "Époux - Double signature",
+    q: "Quels biens sont engagés si les deux époux co-signent le même cautionnement ?",
+    a: "Les **biens communs** ainsi que les **biens propres de chacun des deux époux**.",
+    ref: "Régimes matrimoniaux / Fiche p.3"
+  },
+  {
+    theme: "Époux - Actes distincts",
+    q: "Quels biens sont engagés si les époux signent deux cautionnements par actes distincts sans accord mutuel ?",
+    a: "Seuls les **biens propres et les revenus de chacun** (la masse commune reste exclue).",
+    ref: "Article 1415 du Code civil / Fiche p.3"
+  },
+  {
+    theme: "Époux - Séparation de biens",
+    q: "L'article 1415 du Code civil s'applique-t-il sous le régime de séparation de biens ?",
+    a: "<strong>Non !</strong> En l'absence de masse commune, l'article 1415 ne s'applique pas; chacun engage ses biens personnels.",
+    ref: "Régime de séparation de biens / Fiche p.3"
+  },
+  {
+    theme: "Cautionnement Indéfini - Notion",
+    q: "Qu'englobe un cautionnement qualifié d'indéfini ?",
+    a: "Il garantit le **principal de la dette**, les **intérêts**, les **indemnités contractuelles** et les **frais de poursuite**.",
+    ref: "Article 2292 du Code civil / Fiche p.4"
+  },
+  {
+    theme: "Cautionnement Limité (Art. 2296)",
+    q: "Qu'englobe un cautionnement limité ou 'défini' d'après l'article 2296 ?",
+    a: "Il garantit uniquement le **capital principal** de la dette, à l'exclusion des intérêts de retard sauf clause contraire.",
+    ref: "Article 2296 du Code civil / Fiche p.4"
+  },
+  {
+    theme: "Cautionnement Omnibus - Notion",
+    q: "Qu'est-ce qu'un cautionnement omnibus d'après le cours ?",
+    a: "C'est un cautionnement qui garantit **toutes les dettes présentes et futures** du débiteur envers le même créancier.",
+    ref: "Pratique bancaire / Fiche p.4"
+  },
+  {
+    theme: "Dette future - Définition",
+    q: "Qu'est-ce qu'un cautionnement de dette future ?",
+    a: "C'est un cautionnement garantissant une dette qui **n'existe pas encore juridiquement** au moment de l'engagement.",
+    ref: "Cours d'étendue / Fiche p.4"
+  },
+  {
+    theme: "Durée Indéterminée - Résiliation (Art. 1211)",
+    q: "Quelle faculté est offerte à la caution dans un engagement à durée indéterminée ?",
+    a: "Elle dispose du droit de <strong>résilier unilatéralement</strong> son engagement à tout moment en respectant un préavis.",
+    ref: "Article 1211 du Code civil / Fiche p.4"
+  },
+  {
+    theme: "Obligation de règlement - Définition",
+    q: "Qu'est-ce que l'obligation de règlement de la caution ?",
+    a: "C'est l'obligation de <strong>payer le créancier</strong> à l'échéance lorsque la dette couverte est exigible et impayée.",
+    ref: "Articles 2316 et 2318 du Code civil / Fiche p.4"
+  },
+  {
+    theme: "Obligation de couverture - Définition",
+    q: "Qu'est-ce que l'obligation de couverture de la caution ?",
+    a: "C'est la période durant laquelle la caution **accepte de garantir les dettes futures** qui naîtront dans le patrimoine du débiteur.",
+    ref: "Articles 2316 et 2318 du Code civil / Fiche p.4, p.7"
+  },
+  {
+    theme: "Dette future - Plafond couverture",
+    q: "Quel est le rôle de l'obligation de couverture dans un cautionnement de dette future ?",
+    a: "Elle sert de **plafond garanti** déterminant quelles dettes entreront ou non dans le champ de la garantie.",
+    ref: "Articles 2316 et 2318 du Code civil / Fiche p.4"
+  },
+  {
+    theme: "Proportionnalité - Cibles",
+    q: "À quels types d'engagements s'applique l'exigence de proportionnalité du cautionnement ?",
+    a: "À tous les cautionnements conclus par une <strong>personne physique (PP)</strong> avec un <strong>créancier professionnel</strong>.",
+    ref: "Article 2300 du Code civil / Fiche p.4"
+  },
+  {
+    theme: "Disproportion - Sanction Moderne (Art. 2300)",
+    q: "Quelle est la sanction de la disproportion manifeste d'un cautionnement depuis 2022 ?",
+    a: "Le cautionnement n'est plus nul; il est **réduit au montant** que la caution pouvait raisonnablement garantir.",
+    ref: "Article 2300 du Code civil / Fiche p.4"
+  },
+  {
+    theme: "Disproportion - Charge de la preuve (Art. 1353)",
+    q: "Sur qui pèse la charge de la preuve de la disproportion manifeste du cautionnement ?",
+    a: "Elle pèse sur <strong>la caution</strong> qui l'invoque, conformément à l'article 1353 du Code civil.",
+    ref: "Article 1353 du Code civil / Fiche p.5"
+  },
+  {
+    theme: "Fiche Patrimoniale - Effet mensonge",
+    q: "Qu'advient-il si la caution ment sur la fiche patrimoniale remplie pour le créancier ?",
+    a: "La caution **ne pourra plus invoquer la disproportion** manifeste de son engagement pour se défendre.",
+    ref: "Jurisprudence constante / Fiche p.5"
+  },
+  {
+    theme: "Époux - Appréciation disproportion",
+    q: "Comment s'apprécie la disproportion pour des cautions époux d'après le cours ?",
+    a: "On intègre dans l'actif et le passif les **biens propres** ET les **biens communs** du couple s'ils se sont engagés.",
+    ref: "Jurisprudence / Fiche p.5"
+  },
+  {
+    theme: "Preuve - Écrit (Art. 1359)",
+    q: "Quelle formalité de preuve exige un cautionnement civil supérieur à 1500€ ?",
+    a: "La rédaction obligatoire d'un <strong>écrit sous signature privée ou authentique</strong> d'après l'article 1359.",
+    ref: "Article 1359 du Code civil / Fiche p.5"
+  },
+  {
+    theme: "Preuve - Somme écrite (Art. 1376)",
+    q: "Quelle formalité impose l'article 1376 pour la preuve d'un engagement unilatéral de payer ?",
+    a: "L'acte doit comporter la signature de l'engagé et la mention de la **somme écrite en chiffres et en lettres**.",
+    ref: "Article 1376 du Code civil / Fiche p.5"
+  },
+  {
+    theme: "Formalisme Validité (Art. 2297)",
+    q: "Quel formalisme de validité régit le cautionnement d'une PP envers un pro post-2022 ?",
+    a: "L'obligation d'apposer une <strong>mention écrite</strong> définissant le montant maximal garanti en chiffres et en lettres.",
+    ref: "Article 2297 du Code civil / Fiche p.5"
+  },
+  {
+    theme: "Mention - Caractère Manuscrit",
+    q: "La mention obligatoire de l'article 2297 doit-elle être impérativement manuscrite ?",
+    a: "<strong>Non !</strong> Elle peut être d'origine **électronique** (permettant la signature électronique d'après 1174/1175).",
+    ref: "Article 2297 du Code civil / Fiche p.2, p.5"
+  },
+  {
+    theme: "Information Annuelle (Art. 2302)",
+    q: "Quelle information périodique le créancier pro doit-il fournir à la caution PP ?",
+    a: "L'**information annuelle (Art. 2302)** : montant du capital restant dû, des intérêts, frais, pénalités et durée.",
+    ref: "Article 2302 du Code civil / Fiche p.5"
+  },
+  {
+    theme: "Information Annuelle - Sanction",
+    q: "Quelle est la sanction du défaut d'information annuelle (Art. 2302) ?",
+    a: "La <strong>déchéance des intérêts et pénalités de retard</strong> contractuels échus depuis la précédente information.",
+    ref: "Article 2302 du Code civil / Fiche p.5"
+  },
+  {
+    theme: "Défaillance - Information (Art. 2303)",
+    q: "Dans quel délai le créancier pro doit-il informer la caution PP de la défaillance du débiteur ?",
+    a: "Dès le **premier incident de paiement** non régularisé dans le mois de son exigibilité d'après l'article 2303.",
+    ref: "Article 2303 du Code civil / Fiche p.5"
+  },
+  {
+    theme: "Défaillance - Sanction info",
+    q: "Quelle est la sanction du défaut d'information du premier incident de paiement (Art. 2303) ?",
+    a: "La <strong>déchéance des intérêts et pénalités de retard</strong> échus entre le premier incident et l'information effective.",
+    ref: "Article 2303 du Code civil / Fiche p.5"
+  },
+  {
+    theme: "Poursuites - Terme exigible",
+    q: "À quelle condition temporelle la caution peut-elle être poursuivie en paiement ?",
+    a: "Uniquement lorsque la dette du débiteur principal est **elle-même devenue exigible**.",
+    ref: "Droit des poursuites / Fiche p.5"
+  },
+  {
+    theme: "Prorogation du terme (Art. 2320)",
+    q: "La caution bénéficie-t-elle de la prorogation de terme accordée au débiteur principal ?",
+    a: "<strong>Oui !</strong> D'après l'**article 2320**, la caution bénéficie de plein droit du nouveau terme accordé au débiteur.",
+    ref: "Article 2320 du Code civil / Fiche p.5"
+  },
+  {
+    theme: "Délai de grâce - Sort caution",
+    q: "Le délai de grâce judiciaire octroyé au débiteur principal profite-t-il à la caution ?",
+    a: "<strong>Non !</strong> Le délai de grâce de l'article 1343-5 octroyé au débiteur **ne s'applique pas à la caution (Art. 2298)**.",
+    ref: "Article 2298 du Code civil / Fiche p.5"
+  },
+  {
+    theme: "Surendettement - Sort caution",
+    q: "La caution PP bénéficie-t-elle des mesures d'un plan de surendettement du débiteur particulier ?",
+    a: "<strong>Non !</strong> Elle n'en bénéficie pas, sauf accord exprès des créanciers.",
+    ref: "Régime du surendettement / Fiche p.5"
+  },
+  {
+    theme: "Sauvegarde & RJ - Déclaration créance",
+    q: "Quel est l'effet de l'absence de déclaration de créance en Sauvegarde/RJ sur la caution PP ?",
+    a: "La créance non déclarée devient <strong>inopposable de plein droit</strong> à la caution PP en Sauvegarde et en RJ.",
+    ref: "Droit des entreprises en difficulté / Fiche p.5"
+  },
+  {
+    theme: "Liquidation - Sort caution PP",
+    q: "L'ouverture d'une Liquidation Judiciaire (LJ) suspend-elle les poursuites contre la caution PP ?",
+    a: "<strong>Non !</strong> En LJ, la protection cesse et le créancier peut **poursuivre immédiatement la caution PP**.",
+    ref: "Régime de la LJ / Fiche p.5, p.7"
+  },
+  {
+    theme: "Cautionnement - Recours après paiement",
+    q: "Quels sont les deux recours ouverts à la caution après avoir désintéressé le créancier ?",
+    a: "Le <strong>recours personnel</strong> (Art. 2308) et le <strong>recours subrogatoire</strong> (Art. 2309 / 1346).",
+    ref: "Articles 2308 et 2309 du Code civil / Fiche p.6"
+  },
+  {
+    theme: "Recours - Formalité d'avertissement (Art. 2311)",
+    q: "Quelle obligation d'avertissement pèse sur la caution avant de payer le créancier ?",
+    a: "Elle doit **avertir le débiteur principal** avant d'effectuer le paiement (Art. 2311), sous peine de perdre ses recours faciles.",
+    ref: "Article 2311 du Code civil / Fiche p.6"
+  },
+  {
+    theme: "Défaut d'avertissement - Conséquence",
+    q: "Qu'advient-il de ses recours si la caution paie sans en avoir averti le débiteur principal ?",
+    a: "Ses recours sont **remis en cause** si le débiteur prouve qu'il pouvait payer le créancier ou l'avait déjà fait.",
+    ref: "Article 2311 du Code civil / Fiche p.6"
+  },
+  {
+    theme: "Incapacité débiteur - Utilité contrat",
+    q: "Si la dette est nulle pour incapacité du débiteur, sous quelle condition la caution conserve-t-elle ses recours ?",
+    a: "Uniquement s'il est prouvé que le contrat de base a été **utile au débiteur principal (Art. 1151)**.",
+    ref: "Article 1151 du Code civil / Fiche p.6"
+  },
+  {
+    theme: "Recours Personnel (Art. 2308) - Avantage",
+    q: "Quel est l'avantage juridique majeur du recours personnel (Art. 2308) de la caution ?",
+    a: "C'est un droit propre et nouveau : le débiteur **ne peut pas lui opposer les exceptions** qu'il avait contre le créancier.",
+    ref: "Article 2308 du Code civil / Fiche p.6"
+  },
+  {
+    theme: "Recours Subrogatoire (Art. 2309) - Danger",
+    q: "Quel est le danger ou inconvénient majeur du recours subrogatoire (Art. 2309) ?",
+    a: "Le débiteur **peut opposer à la caution toutes les exceptions** (prescription, etc.) qu'il avait contre le créancier d'origine.",
+    ref: "Article 2309 du Code civil / Fiche p.6"
+  },
+  {
+    theme: "Caution Consommation - Prescription",
+    q: "Quelle est la durée de prescription du recours d'une banque caution d'un crédit à la consommation ?",
+    a: "Le recours est soumis à une prescription courte de <strong>2 ans</strong>.",
+    ref: "Code de la consommation / Fiche p.6"
+  },
+  {
+    theme: "Recours Cofidéjusseurs (Art. 2312)",
+    q: "Dans quel cas une caution solvens peut-elle agir contre ses cofidéjusseurs (Art. 2312) ?",
+    a: "Lorsqu'elle a payé l'intégralité de la dette, elle peut réclamer à **chacune des autres cautions sa part et portion**.",
+    ref: "Article 2312 du Code civil / Fiche p.6"
+  },
+  {
+    theme: "Extinction Accessoire - Causes",
+    q: "Par quelles causes la dette principale s'éteint-elle, libérant la caution par voie accessoire ?",
+    a: "Le **paiement complet**, la **remise de dette**, la **compensation** ou la **prescription extinctive**.",
+    ref: "Voie accessoire / Fiche p.6"
+  },
+  {
+    theme: "Cautionnement Partiel - Imputation paiement",
+    q: "Comment s'impute un paiement partiel du débiteur en présence d'un cautionnement partiel ?",
+    a: "Le paiement partiel s'impute <strong>d'abord sur la partie non cautionnée</strong> de la dette principale.",
+    ref: "Règles d'imputation / Fiche p.7"
+  },
+  {
+    theme: "Remise de dette (Art. 1350-2)",
+    q: "La remise de dette accordée au débiteur principal libère-t-elle la caution ?",
+    a: "<strong>Oui !</strong> La remise de dette accordée au débiteur principal **libère intégralement la caution** (Art. 1350-2).",
+    ref: "Article 1350-2 du Code civil / Fiche p.7"
+  },
+  {
+    theme: "Remise de poursuite - Sort caution",
+    q: "La simple remise de poursuite accordée au débiteur principal libère-t-elle la caution ?",
+    a: "<strong>Non !</strong> La dette subsiste, le créancier peut encore poursuivre la caution.",
+    ref: "Régime des remises / Fiche p.7"
+  },
+  {
+    theme: "Compensation (Art. 1347-6)",
+    q: "La caution peut-elle opposer la compensation si le débiteur néglige de l'invoquer ?",
+    a: "<strong>Oui !</strong> L'**article 1347-6** l'autorise expressément à opposer la compensation des dettes réciproques.",
+    ref: "Articles 1347-6 et 2298 du Code civil / Fiche p.7"
+  },
+  {
+    theme: "Prescription Extinctive (Art. 2253)",
+    q: "La caution peut-elle invoquer la prescription de la dette si le débiteur y renonce ?",
+    a: "<strong>Oui !</strong> En vertu de l'**article 2253**, la caution peut invoquer la prescription même si le débiteur y renonce.",
+    ref: "Article 2253 du Code civil / Fiche p.7"
+  },
+  {
+    theme: "Exception Subrogation - Cibles (Art. 2314)",
+    q: "Quels sont les 3 critères cumulatifs de l'exception de défaut de subrogation (Art. 2314) ?",
+    a: "1. Perte d'un **droit préférentiel ou d'une sûreté utile**.<br>2. Par la **faute** du créancier.<br>3. Causant un **préjudice** à la caution.",
+    ref: "Article 2314 du Code civil / Fiche p.7"
+  },
+  {
+    theme: "Exception Subrogation - Sanction",
+    q: "Quelle est la sanction de l'exception de subrogation (Art. 2314) ?",
+    a: "La caution est **déchargée à hauteur du préjudice subi** (décharge totale ou partielle).",
+    ref: "Article 2314 du Code civil / Fiche p.7"
+  },
+  {
+    theme: "Divorce - Sort cautionnement",
+    q: "Le divorce de la caution et du débiteur éteint-il le cautionnement ?",
+    a: "<strong>Non !</strong> Le divorce n'éteint pas l'acte; le juge peut transférer la charge au conjoint reprenant l'activité.",
+    ref: "Article 1387-1 du Code civil / Fiche p.7"
+  },
+  {
+    theme: "Décès Caution - Sort dettes",
+    q: "Au décès de la caution PP, ses héritiers héritent-ils des dettes futures ?",
+    a: "<strong>Non !</strong> L'obligation de couverture s'éteint; ils n'héritent que de l'**obligation de règlement** (dettes nées avant le décès).",
+    ref: "Article 2317 du Code civil / Fiche p.7"
+  },
+  {
+    theme: "Fusion Sociétés - Sort couverture",
+    q: "La fusion de la société caution éteint-elle l'obligation de couverture pour l'avenir ?",
+    a: "<strong>Non, par exception !</strong> En cas de fusion de la société caution, toutes les obligations (couverture et règlement) sont transmises.",
+    ref: "Article 2318 du Code civil / Fiche p.7"
+  },
+  {
+    theme: "Garantie Autonome - Tripartite",
+    q: "Qu'est-ce que la Garantie Autonome (Art. 2321) ?",
+    a: "C'est l'engagement unilatéral d'un garant de **verser une somme sur simple demande**, indépendamment du contrat de base.",
+    ref: "Article 2321 du Code civil / Fiche p.8"
+  },
+  {
+    theme: "GA - Indépendance exceptions",
+    q: "Le garant d'une GA peut-il opposer au bénéficiaire les exceptions du débiteur ?",
+    a: "<strong>Non !</strong> C'est le principe d'**inopposabilité des exceptions** découlant de l'indépendance de la garantie.",
+    ref: "Article 2321 du Code civil / Fiche p.8"
+  },
+  {
+    theme: "GA - Sûreté accessoire ?",
+    q: "La Garantie Autonome est-elle un accessoire de la créance d'origine ?",
+    a: "<strong>Non !</strong> Elle est autonome et personnelle, elle **ne se transmet pas de plein droit** avec la créance d'origine.",
+    ref: "Article 2321 du Code civil / Fiche p.8"
+  },
+  {
+    theme: "GA - Interdictions légales",
+    q: "Dans quels contrats la Garantie Autonome est-elle strictement interdite ?",
+    a: "Dans les **baux d'habitation**, les **crédits à la consommation** et les **crédits immobiliers aux consommateurs**.",
+    ref: "Droit de la consommation et immobilier / Fiche p.8"
+  },
+  {
+    theme: "GA - Mention Manuscrite (Art. 1376)",
+    q: "La Garantie Autonome est-elle soumise à l'écriture d'une mention manuscrite ?",
+    a: "<strong>Oui !</strong> En tant que contrat unilatéral, elle exige une mention manuscrite de la somme d'après l'**article 1376**.",
+    ref: "Article 1376 du Code civil / Fiche p.8"
+  },
+  {
+    theme: "GA - Modalités d'appel",
+    q: "Quelles sont les trois modalités possibles d'appel d'une Garantie Autonome ?",
+    a: "1. La **première demande**.<br>2. La **garantie documentaire**.<br>3. La **garantie justifiée**.",
+    ref: "Lettre de garantie / Fiche p.9"
+  },
+  {
+    theme: "GA - Appel abusif",
+    q: "Quelles sont les deux seules exceptions à l'obligation de payer du garant de GA ?",
+    a: "1. Le **non-respect des conditions formelles** de la lettre.<br>2. L'**appel manifestement abusif ou frauduleux**.",
+    ref: "Article 2321 du Code civil / Fiche p.9"
+  },
+  {
+    theme: "GA - Disqualification",
+    q: "Quelle clause contractuelle disqualifie d'office une GA en cautionnement ?",
+    a: "Toute clause obligeant le garant à payer <strong>« la dette du débiteur »</strong> (perte d'autonomie et d'indépendance).",
+    ref: "Jurisprudence constante / Fiche p.8"
+  },
+  {
+    theme: "Lettre d'intention (Art. 2322)",
+    q: "Qu'est-ce qu'une lettre d'intention (Art. 2322) ?",
+    a: "C'est l'engagement unilatéral d'un confortant de **soutenir un débiteur** (souvent société mère pour sa filiale).",
+    ref: "Article 2322 du Code civil / Fiche p.10"
+  },
+  {
+    theme: "Lettre d'intention - Nature",
+    q: "La lettre d'intention comporte-t-elle une obligation de moyens ou de résultat ?",
+    a: "Elle peut être de <strong>moyens</strong> (veiller à, faire de son mieux) ou de <strong>résultat</strong> (s'engager à ce que, faire le nécessaire).",
+    ref: "Article 2322 du Code civil / Fiche p.10"
+  },
+  {
+    theme: "Lettre d'intention - Formalisme",
+    q: "Quel formalisme d'écriture manuscrite est exigé pour la validité de la lettre d'intention ?",
+    a: "<strong>Aucun !</strong> C'est un contrat consensuel car le garant s'engage à soutenir et non à payer une dette d'autrui.",
+    ref: "Article 2322 du Code civil / Fiche p.10"
+  },
+  {
+    theme: "Sûreté Réelle - Définition",
+    q: "Quelle est la définition d'une sûreté réelle d'après l'article 2323 ?",
+    a: "C'est l'<strong>affectation d'un bien</strong> au paiement préférentiel ou exclusif d'un créancier.",
+    ref: "Article 2323 du Code civil / Fiche p.11"
+  },
+  {
+    theme: "Sûreté réelle pour autrui (Art. 2325)",
+    q: "Qu'est-ce qu'une sûreté réelle pour autrui d'après le cours ?",
+    a: "C'est lorsqu'un tiers **affecte l'un de ses biens en garantie** de la dette d'un autre (sans s'engager personnellement).",
+    ref: "Article 2325 du Code civil / Fiche p.11"
+  },
+  {
+    theme: "Sûreté réelle pour autrui - Limite",
+    q: "Quels biens sont engagés par un tiers garant réel pour autrui ?",
+    a: "<strong>Uniquement le bien affecté !</strong> Le créancier n'a aucun droit de gage général sur le reste de son patrimoine.",
+    ref: "Article 2325 du Code civil / Fiche p.11"
+  },
+  {
+    theme: "Clause Réserve Propriété (Art. 2367)",
+    q: "Comment fonctionne la clause de réserve de propriété (CRP) ?",
+    a: "Elle **suspend le transfert de propriété** d'un bien jusqu'à l'entier paiement du prix par l'acheteur.",
+    ref: "Article 2367 du Code civil / Fiche p.11"
+  },
+  {
+    theme: "CRP - Forme",
+    q: "Quelle forme exige la CRP pour sa validité d'après l'article 2368 ?",
+    a: "Elle doit être obligatoirement rédigée par <strong>écrit</strong>.",
+    ref: "Article 2368 du Code civil / Fiche p.11"
+  },
+  {
+    theme: "CRP - Subrogation réelle",
+    q: "Qu'est-ce que la subrogation réelle en cas de revente du bien sous CRP ?",
+    a: "Le créancier initial peut reporter son droit sur la <strong>créance de prix de revente</strong> encore due par le sous-acquéreur.",
+    ref: "Article 2372 du Code civil / Fiche p.11"
+  },
+  {
+    theme: "Crédit-bail - Propriétaire",
+    q: "Qui conserve la propriété du bien dans un contrat de crédit-bail ?",
+    a: "Le <strong>crédit-bailleur</strong> (l'établissement de crédit propriétaire) pendant toute la période de location.",
+    ref: "Régime du crédit-bail / Fiche p.11"
+  },
+  {
+    theme: "Fiducie-sûreté (Art. 2011)",
+    q: "Qu'est-ce que la fiducie-sûreté (Art. 2011) ?",
+    a: "Le transfert temporaire de propriété d'un bien à un **fiduciaire** afin de garantir le paiement d'une dette.",
+    ref: "Article 2011 du Code civil / Fiche p.12"
+  },
+  {
+    theme: "Fiducie-sûreté - Étanche",
+    q: "Quel est le sort des biens en fiducie-sûreté vis-à-vis des autres créanciers ?",
+    a: "Ils entrent dans un **patrimoine d'affectation étanche** (Art. 2025) et deviennent insaisissables par les autres créanciers.",
+    ref: "Article 2025 du Code civil / Fiche p.12"
+  },
+  {
+    theme: "Droit de Rétention (Art. 2286)",
+    q: "Qu'est-ce que le droit de rétention (Art. 2286) ?",
+    a: "Le droit pour un créancier de <strong>conserver une chose</strong> légitimement détenue tant qu'il n'a pas été payé.",
+    ref: "Article 2286 du Code civil / Fiche p.13"
+  },
+  {
+    theme: "Droit de Rétention - Connexités",
+    q: "Quels sont les 3 types de connexités requis pour le droit de rétention ?",
+    a: "La connexité **juridique** (même contrat), **matérielle** (dépenses sur la chose) ou **conventionnelle**.",
+    ref: "Régime de rétention / Fiche p.13"
+  },
+  {
+    theme: "Gage - Définition (Art. 2333)",
+    q: "Sur quoi porte le gage d'après l'article 2333 ?",
+    a: "Sur un **bien meuble corporel** (ou un ensemble de meubles corporels) affecté en garantie d'une obligation.",
+    ref: "Article 2333 du Code civil / Fiche p.14"
+  },
+  {
+    theme: "Gage - Dérogations immobilières",
+    q: "Le gage peut-il porter sur un immeuble d'après la réforme ?",
+    a: "<strong>Oui, par exception !</strong> Sur certains **immeubles par destination** (Art. 524/525, ex: panneaux solaires, machines).",
+    ref: "Articles 524 et 525 du Code civil / Fiche p.14"
+  },
+  {
+    theme: "Gage - Opposabilité",
+    q: "Quelles sont les deux modalités d'opposabilité du gage ?",
+    a: "La <strong>publicité</strong> (inscription sur un registre spécial) ou la <strong>dépossession</strong> effective du bien.",
+    ref: "Article 2337 du Code civil / Fiche p.15"
+  },
+  {
+    theme: "Conflit de gages - Publication",
+    q: "Comment se règle le conflit entre un gage avec dépossession et un gage sans dépossession ?",
+    a: "Par l'<strong>antériorité de la formalité d'opposabilité</strong> (le premier à avoir publié ou dépossédé d'après 2340 l'emporte).",
+    ref: "Article 2340 du Code civil / Fiche p.15"
+  },
+  {
+    theme: "Pacte Commissoire - Gage",
+    q: "Qu'est-ce que le pacte commissoire dans un gage (Art. 2348) ?",
+    a: "La clause prévoyant que la défaillance du débiteur entraînera l'<strong>appropriation automatique du bien</strong> par le créancier.",
+    ref: "Article 2348 du Code civil / Fiche p.16"
+  },
+  {
+    theme: "Gage - Évaluation obligatoire",
+    q: "Quelle formalité est obligatoire pour mettre en oeuvre un pacte commissoire ?",
+    a: "Le bien doit être **évalué objectivement par un expert** (ou cotation officielle) pour restituer l'éventuel surplus au débiteur.",
+    ref: "Article 2348 du Code civil / Fiche p.16"
+  },
+  {
+    theme: "Voie parée - Gage",
+    q: "La clause de voie parée est-elle autorisée dans le gage d'après l'article 2346 ?",
+    a: "<strong>Non !</strong> Elle est strictement interdite (le créancier ne peut pas vendre lui-même le bien à l'amiable).",
+    ref: "Article 2346 du Code civil / Fiche p.16"
+  },
+  {
+    theme: "Nantissement - Définition",
+    q: "Qu'est-ce que le nantissement d'après l'article 2355 ?",
+    a: "L'affectation en garantie d'une obligation d'un **bien meuble incorporel** (créances, comptes-titres, etc.).",
+    ref: "Article 2355 du Code civil / Fiche p.16"
+  },
+  {
+    theme: "Nantissement - Rétention fictive",
+    q: "Le bénéficiaire d'un nantissement dispose-t-il d'un droit de rétention fictif ?",
+    a: "<strong>Non !</strong> L'application de l'article 2286 alinéa 4 (rétention fictive) est **expressément exclue** pour le nantissement.",
+    ref: "Article 2355 du Code civil / Fiche p.16"
+  },
+  {
+    theme: "Nantissement créance - Validité",
+    q: "Quelle formalité de forme est exigée pour la validité d'un nantissement de créance ?",
+    a: "Un <strong>écrit à peine de nullité</strong> identifiant clairement la créance garantie et la créance nantie (Art. 2356).",
+    ref: "Article 2356 du Code civil / Fiche p.17"
+  },
+  {
+    theme: "Nantissement créance - Opposabilité débiteur",
+    q: "Comment le nantissement de créance devient-il opposable au débiteur de la créance nantie (Art. 2362) ?",
+    a: "Par la **notification** de l'acte ou par son **intervention directe** à l'acte.",
+    ref: "Article 2362 du Code civil / Fiche p.17"
+  },
+  {
+    theme: "Nantissement créance - Échéances croisées",
+    q: "Qu'advient-il si la créance nantie arrive à échéance avant la créance garantie (Art. 2364) ?",
+    a: "Le créancier perçoit les fonds mais doit obligatoirement les <strong>consigner sur un compte spécial bloqué</strong>.",
+    ref: "Article 2364 du Code civil / Fiche p.17"
+  },
+  {
+    theme: "Compte-titres - Clause d'arrosage",
+    q: "Qu'est-ce que la clause d'arrosage dans un nantissement de compte-titres ?",
+    a: "L'obligation pour le constituant d'**ajouter des titres ou du cash** si la valeur du portefeuille nanti baisse.",
+    ref: "Nantissement de CT / Fiche p.18"
+  },
+  {
+    theme: "Fonds de commerce - Assiette",
+    q: "Quels éléments incorporels composent par défaut l'assiette d'un nantissement de fonds de commerce ?",
+    a: "L'**enseigne**, le **nom commercial**, la **clientèle** et le **droit au bail**.",
+    ref: "Code de commerce / Fiche p.18"
+  },
+  {
+    theme: "Fonds de commerce - Capacité",
+    q: "Un locataire-gérant peut-il nantir le fonds de commerce qu'il exploite ?",
+    a: "<strong>Non !</strong> Le constituant d'un nantissement de fonds de commerce doit impérativement en être le **propriétaire**.",
+    ref: "Code de commerce / Fiche p.18"
   }
 ];
+
 
 function initFlashcards() {
   if (flashcardsInitialized) return;
